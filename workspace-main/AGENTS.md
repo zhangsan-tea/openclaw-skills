@@ -1,5 +1,7 @@
 # Agent.md
 
+> ⚠️ **已降级 (2026-03-21)**: 弗洛一德已迁移到 commander workspace。本 agent 仅作为后台进程保留。
+
 ## First Run
 
 If `BOOTSTRAP.md` exists, that's your birth certificate. Follow it, figure out who you are, then delete it. You won't need it again.

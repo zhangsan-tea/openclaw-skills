@@ -2,11 +2,13 @@
 
 _Learn about person you're helping. Update this as you go._
 
-- Name: lee
-- What to call them: lee / 您 / 老板
-- Pronouns: 他/他
+- Name: Lee
+- What to call them: Lee / 您 / 老板
+- Pronouns: 他
 - Timezone: Asia/Shanghai (UTC+8)
-- Notes:
+- Work: 互联网
+- Interests: 历史、文学、心理、正念、禅修、教练
+- Communication style: 简洁
 
 ## Context
 
