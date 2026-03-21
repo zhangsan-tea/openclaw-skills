@@ -1,0 +1,47 @@
+{
+  "name": "tencent_meeting",
+  "description": "腾讯会议管理工具",
+  "functions": [
+    {
+      "name": "create_meeting",
+      "description": "创建腾讯会议",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "subject": {"type": "string", "description": "会议主题"},
+          "start_time": {"type": "string", "description": "开始时间，ISO 8601格式"},
+          "end_time": {"type": "string", "description": "结束时间，ISO 8601格式"},
+          "host_id": {"type": "string", "description": "主持人用户ID（可选）"},
+          "attendees": {"type": "array", "items": {"type": "string"}, "description": "参会人用户ID列表（可选）"}
+        },
+        "required": ["subject", "start_time", "end_time"]
+      }
+    },
+    {
+      "name": "list_meetings",
+      "description": "查询用户会议列表",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_id": {"type": "string", "description": "用户ID"},
+          "start_time": {"type": "string", "description": "查询开始时间（可选）"},
+          "end_time": {"type": "string", "description": "查询结束时间（可选）"}
+        },
+        "required": ["user_id"]
+      }
+    },
+    {
+      "name": "cancel_meeting",
+      "description": "取消腾讯会议",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "meeting_id": {"type": "string", "description": "会议ID"},
+          "user_id": {"type": "string", "description": "用户ID"},
+          "reason": {"type": "string", "description": "取消原因（可选）"}
+        },
+        "required": ["meeting_id", "user_id"]
+      }
+    }
+  ]
+}

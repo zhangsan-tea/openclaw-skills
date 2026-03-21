@@ -1,0 +1,54 @@
+# ===== OpenClaw 配置版本管理 =====
+# 只追踪"配置文件"，忽略运行时数据和大型二进制
+
+# 大型目录
+/browser/
+/extensions/
+/logs/
+/delivery-queue/
+/devices/
+/completions/
+/media/
+/canvas/
+/subagents/
+/archived/
+/cron/
+/telegram/
+/wecom/
+/memory/
+/workspace/
+
+# 会话数据
+**/sessions/
+**/*.jsonl
+**/*.jsonl.*
+
+# node_modules
+**/node_modules/
+
+# 幻灯片生成产物
+**/slide-deck/
+
+# 工作区状态
+**/workspace-state.json
+
+# 旧备份文件（有 git 后不需要）
+*.bak
+*.bak.*
+*.bak_*
+*.backup
+*.backup.*
+*_binding_template.json
+*_config_template.json
+correct_*.json
+**/backup_before_migration/
+**/*_bak_*/
+
+# 锁文件
+**/*.lock
+
+# 系统
+.DS_Store
+*.pid
+bridge.log
+update-check.json

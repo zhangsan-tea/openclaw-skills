@@ -1,0 +1,24 @@
+{
+  "rules": [
+    {
+      "trigger": "@数字幕僚",
+      "action": "forward",
+      "targetAgent": "digital-secretary"
+    },
+    {
+      "trigger": "@DS",
+      "action": "forward", 
+      "targetAgent": "digital-secretary"
+    },
+    {
+      "trigger": "数据分析",
+      "action": "forward",
+      "targetAgent": "digital-secretary"
+    },
+    {
+      "trigger": "工作跟踪",
+      "action": "forward",
+      "targetAgent": "digital-secretary"
+    }
+  ]
+}

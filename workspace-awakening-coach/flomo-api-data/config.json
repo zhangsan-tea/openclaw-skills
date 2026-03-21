@@ -1,0 +1,9 @@
+{
+  "api_key": "b75e4d21b3f3fda220395232b1879589",
+  "base_url": "https://flomoapp.com/api/v1",
+  "output_dir": "/Users/lee/.openclaw/workspace-awakening-coach/flomo-api-data/notes",
+  "metadata_dir": "/Users/lee/.openclaw/workspace-awakening-coach/flomo-api-data/metadata",
+  "logs_dir": "/Users/lee/.openclaw/workspace-awakening-coach/flomo-api-data/logs",
+  "batch_size": 50,
+  "format": "markdown"
+}

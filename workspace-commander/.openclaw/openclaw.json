@@ -1,0 +1,18 @@
+{
+  "agent": {
+    "name": "commander",
+    "model": "coding-plan/qwen3-max-2026-01-23",
+    "tools": ["filesystem", "exec", "web_search", "web_fetch", "wecom_mcp"]
+  },
+  "mcp": {
+    "servers": {
+      "flomo": {
+        "baseUrl": "https://flomoapp.com/mcp",
+        "transport": "streamable-http",
+        "headers": {
+          "Authorization": "Bearer fmcp_I6d8jn18Y9kAZn4xJ_Y-aWWhlyOnuhRWF-oQ8PSM05g"
+        }
+      }
+    }
+  }
+}

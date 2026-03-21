@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "accountId": "default",
+  "channel": "wecom",
+  "provider": "wecom",
+  "features": {
+    "receiveMessages": true,
+    "sendMessages": true,
+    "monitorGroups": true,
+    "processCommands": true
+  },
+  "permissions": {
+    "directMessages": true,
+    "groupMessages": true,
+    "mentions": true
+  }
+}
