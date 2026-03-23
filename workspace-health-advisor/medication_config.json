@@ -1,0 +1,22 @@
+{
+  "reminder_settings": {
+    "check_frequency": "weekly",
+    "check_day": "sunday",
+    "advance_days": [7, 0],
+    "enabled": true
+  },
+  "storage": {
+    "csv_path": "medications/medications.csv",
+    "photos_dir": "medications/photos"
+  },
+  "recognition": {
+    "enable_barcode": false,
+    "enable_photo_ocr": true,
+    "manual_fallback": true,
+    "photo_pair_mode": true
+  },
+  "multi_user": {
+    "enabled": false,
+    "version": "2.0"
+  }
+}

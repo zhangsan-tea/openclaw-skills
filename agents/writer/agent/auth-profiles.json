@@ -40,8 +40,8 @@
       "failureCounts": {
         "auth": 1
       },
-      "lastFailureAt": 1774096299329,
-      "cooldownUntil": 1774096359329
+      "lastFailureAt": 1774190542998,
+      "cooldownUntil": 1774190602998
     }
   }
 }

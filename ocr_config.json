@@ -1,0 +1,10 @@
+{
+  "primary_model": "coding-plan/qwen3.5-plus",
+  "fallback_models": [
+    "claude-custom/claude-sonnet-4-6",
+    "aiberm/openai/gpt-4o"
+  ],
+  "enabled_for_all_agents": true,
+  "auto_ocr_on_image": true,
+  "ocr_prompt_template": "仔细识别这张图片中的所有文字信息，包括药品名称、功效、保质期、生产批号等关键信息。"
+}

@@ -1,0 +1,13 @@
+{
+  "obsidian_vault_path": "/Users/lee/Library/Mobile Documents/iCloud~md~obsidian/Documents/向内看",
+  "journal_structure": {
+    "daily": "Daily_Journals/YYYY/YYYY-MM-DD.md",
+    "weekly": "Weekly_Summaries/YYYY/YYYY-WW.md", 
+    "agent_journals": "Agent_Journals/{agent_name}/YYYY-MM-DD.md"
+  },
+  "sync_schedule": {
+    "daily_sync": "0 22 * * *",
+    "weekly_summary": "0 22 * * 0"
+  },
+  "enabled": true
+}

@@ -7,10 +7,21 @@ _Learn about person you're helping. Update this as you go._
 - Pronouns: 他
 - Timezone: Asia/Shanghai (UTC+8)
 - Work: 互联网
-- Interests: 历史、文学、心理、正念、禅修、教练
+- Interests: 见下方"个人议题"
 - Communication style: 简洁
 
 ## Context
+
+### 个人议题（四大方向）
+
+Lee 目前关心和持续探讨的议题，按方向归类如下，可能随交流变化略有调整：
+
+1. **工作**：专业知识深化、职场关系与人际处理、组织动态等
+2. **内观**：ICF 教练、心理学（含原生家庭等）、正念与禅修
+3. **其他爱好**：文史哲、艺术、摄影、茶道、旅游
+4. **家庭**：亲子关系、原生家庭议题、家庭整体状态
+
+---
 
 ### 职业角色
 - 中场策略中心专家
