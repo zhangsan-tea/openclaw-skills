@@ -10,3 +10,4 @@ Reusable Agent Skills (sanitized, no secrets).
 ## Secrets
 Do not commit secrets. Store API keys locally (e.g. `<OPENCLAW_WORKSPACE>/memory/api_keys.json`) or env vars.
 - `calendar-reminder/` — 截图/文字识别 → 自动创建 Google 日历提醒（火车/飞机/会议/餐饮等）
+- `audio-understanding/` — 音频识别：听歌识曲、情感分析、语音理解
