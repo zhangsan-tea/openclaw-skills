@@ -6,14 +6,16 @@ cd /Users/lee/.openclaw
 
 DATE=$(date '+%Y-%m-%d %H:%M')
 LOG_FILE="/Users/lee/.openclaw/logs/backup.log"
+BOT_TOKEN="8536197347:AAEgILrmXFbPe7YCc-aNjxbzhsxWbcWpx_w"
+CHAT_ID="8051279955"
 
 # 检查是否有更改
 CHANGES=$(git status --porcelain)
 
 if [ -z "$CHANGES" ]; then
     MSG="ℹ️ OpenClaw 配置无变更 ($DATE)"
-    curl -s -X POST "https://api.telegram.org/bot8105171404:AAFef-9ixQJ6exQKlqj2P_INkFTW-JkVfO0/sendMessage" \
-        -d chat_id="8051279955" \
+    curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+        -d chat_id="$CHAT_ID" \
         -d text="$MSG" > /dev/null 2>&1
     exit 0
 fi
@@ -29,8 +31,8 @@ if [ -n "$NEW_SKILLS" ]; then
     done
 fi
 
-# 2. 检查新增的 agent
-NEW_AGENTS=$(echo "$CHANGES" | grep "^?? agents/" | awk '{print $2}' | sed 's|agents/||' | sed 's|/.*||')
+# 2. 检查新增的 agent workspace
+NEW_AGENTS=$(echo "$CHANGES" | grep "^?? workspace-" | awk '{print $2}' | sed 's|workspace-||' | sed 's|/.*||')
 if [ -n "$NEW_AGENTS" ]; then
     for agent in $NEW_AGENTS; do
         CHANGE_NOTES="${CHANGE_NOTES}🤖 新增 Agent: $agent\n"
@@ -39,25 +41,26 @@ fi
 
 # 3. 检查 openclaw.json 主配置变更
 if echo "$CHANGES" | grep -q "openclaw.json"; then
-    # 尝试提取具体变更
     CONFIG_CHANGES=""
     
-    # 检查是否有新增 telegram 账户
-    NEW_TG=$(git diff openclaw.json 2>/dev/null | grep -E '^\+.*"name".*行政|助理|顾问' | head -2)
-    if [ -n "$NEW_TG" ]; then
+    # 检查新增 telegram 账户
+    if git diff openclaw.json 2>/dev/null | grep -qE '^\+.*"accounts".*\{'; then
         CONFIG_CHANGES="${CONFIG_CHANGES}• 新增 Bot 账户\n"
     fi
     
-    # 检查是否有新增 cron 任务
-    NEW_CRON=$(git diff openclaw.json 2>/dev/null | grep -E '^\+.*"name".*备份|提醒|检查' | head -2)
-    if [ -n "$NEW_CRON" ]; then
+    # 检查新增 cron 任务
+    if git diff openclaw.json 2>/dev/null | grep -qE '^\+.*"cron"'; then
         CONFIG_CHANGES="${CONFIG_CHANGES}• 新增定时任务\n"
     fi
     
     # 检查模型变更
-    MODEL_CHANGE=$(git diff openclaw.json 2>/dev/null | grep -E '^\+.*"primary".*claude|gpt|gemini' | head -1)
-    if [ -n "$MODEL_CHANGE" ]; then
+    if git diff openclaw.json 2>/dev/null | grep -qE '^\+.*"primary".*claude|gpt|gemini'; then
         CONFIG_CHANGES="${CONFIG_CHANGES}• 调整模型配置\n"
+    fi
+    
+    # 检查路由绑定变更
+    if git diff openclaw.json 2>/dev/null | grep -qE '^\+.*"bindings"'; then
+        CONFIG_CHANGES="${CONFIG_CHANGES}• 新增路由绑定\n"
     fi
     
     if [ -n "$CONFIG_CHANGES" ]; then
@@ -75,7 +78,7 @@ if [ -n "$MODIFIED_SKILLS" ]; then
     done
 fi
 
-# 5. 检查 agent 配置变更
+# 5. 检查 agent 配置变更 (SOUL.md, AGENTS.md, USER.md)
 MODIFIED_AGENTS=$(echo "$CHANGES" | grep -E "workspace-.*/(SOUL|AGENTS|USER).md" | awk '{print $2}' | sed 's|workspace-||' | sed 's|/.*||' | sort -u)
 if [ -n "$MODIFIED_AGENTS" ]; then
     for agent in $MODIFIED_AGENTS; do
@@ -84,9 +87,15 @@ if [ -n "$MODIFIED_AGENTS" ]; then
 fi
 
 # 6. 检查脚本变更
-NEW_SCRIPTS=$(echo "$CHANGES" | grep "scripts/" | awk '{print $2}' | sed 's|scripts/||')
-if [ -n "$NEW_SCRIPTS" ]; then
-    CHANGE_NOTES="${CHANGE_NOTES}📜 脚本变更: $NEW_SCRIPTS\n"
+SCRIPT_CHANGES=$(echo "$CHANGES" | grep "scripts/" | awk '{print $2}' | sed 's|scripts/||')
+if [ -n "$SCRIPT_CHANGES" ]; then
+    CHANGE_NOTES="${CHANGE_NOTES}📜 脚本变更: $SCRIPT_CHANGES\n"
+fi
+
+# 7. 检查 memory 文件变更（健康档案等）
+MEMORY_CHANGES=$(echo "$CHANGES" | grep "memory/.*\.md" | awk '{print $2}' | sed 's|.*/||' | head -3)
+if [ -n "$MEMORY_CHANGES" ]; then
+    CHANGE_NOTES="${CHANGE_NOTES}🧠 记忆文件更新\n"
 fi
 
 # 如果没有识别出具体变更，列出变更文件
@@ -112,8 +121,8 @@ $(echo -e "$CHANGE_NOTES")
 🔗 https://github.com/zhangsan-tea/openclaw-bak"
 
 # 发送消息
-curl -s -X POST "https://api.telegram.org/bot8105171404:AAFef-9ixQJ6exQKlqj2P_INkFTW-JkVfO0/sendMessage" \
-    -d chat_id="8051279955" \
+curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+    -d chat_id="$CHAT_ID" \
     -d text="$MSG" > /dev/null 2>&1
 
 # 记录日志
