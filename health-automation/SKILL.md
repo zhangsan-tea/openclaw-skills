@@ -1,6 +1,6 @@
 ---
 name: health-automation
-description: 健康数据自动化管理。属于【健康管理系列】。。当用户需要设置 Apple Health 数据自动导出、Google Drive 同步、每周健康分析报告、睡前运动提醒、药品检查等健康管理功能时使用。
+description: 健康数据自动化管理。属于【健康管理系列】。当用户需要设置 Apple Health 数据自动导出、Google Drive 同步、每周健康分析报告、睡前运动提醒、药品检查等健康管理功能时使用。
 ---
 
 # 健康数据自动化管理 Skill
