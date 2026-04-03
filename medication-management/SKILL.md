@@ -446,7 +446,7 @@ openclaw gateway status
 
 3. 查看错误日志
 ```bash
-cat ~/.openclaw/logs/cron.log | grep 药品
+cat <OPENCLAW_WORKSPACE>/logs/cron.log | grep 药品
 ```
 
 **解决方案**：

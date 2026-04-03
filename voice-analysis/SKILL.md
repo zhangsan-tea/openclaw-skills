@@ -113,7 +113,7 @@ print(resp.json()['choices'][0]['message']['content'])
 
 ### Gemini via aiberm（情感分析）
 - **Base URL**：`https://aiberm.com/v1`
-- **API Key**：存于 `/Users/lee/.openclaw/openclaw.json`（providers.aiberm.apiKey）
+- **API Key**：存于 `<OPENCLAW_WORKSPACE>/openclaw.json`（providers.aiberm.apiKey）
 - **模型**：`google/gemini-2.5-flash`（日常），`google/gemini-2.5-pro`（深度）
 - **注意**：直连有时不稳定，超时设为 120s，verify=False
 
