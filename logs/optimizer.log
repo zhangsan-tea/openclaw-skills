@@ -1,0 +1,473 @@
+2026-03-30 00:02:36,377 - INFO - === Starting Automated Token Optimizer (L3) ===
+2026-03-30 00:02:36,378 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-presenter
+2026-03-30 00:02:36,378 - INFO - No files to clean in /Users/lee/.openclaw/workspace-presenter
+2026-03-30 00:02:36,378 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-evolver
+2026-03-30 00:02:36,379 - INFO - Archived: /Users/lee/.openclaw/workspace-evolver/.DS_Store -> /Users/lee/.openclaw/workspace-evolver/archive
+2026-03-30 00:02:36,380 - INFO - Archived: /Users/lee/.openclaw/workspace-evolver/package-lock.json -> /Users/lee/.openclaw/workspace-evolver/archive
+2026-03-30 00:02:36,380 - INFO - Archived: /Users/lee/.openclaw/workspace-evolver/package.json -> /Users/lee/.openclaw/workspace-evolver/archive
+2026-03-30 00:02:36,380 - INFO - Cleanup completed for /Users/lee/.openclaw/workspace-evolver. Archived: ['.DS_Store', 'package-lock.json', 'package.json']
+2026-03-30 00:02:36,380 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-admin-assistant
+2026-03-30 00:02:36,381 - INFO - No files to clean in /Users/lee/.openclaw/workspace-admin-assistant
+2026-03-30 00:02:36,381 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-main
+2026-03-30 00:02:36,382 - INFO - Archived: /Users/lee/.openclaw/workspace-main/.DS_Store -> /Users/lee/.openclaw/workspace-main/archive
+2026-03-30 00:02:36,382 - INFO - Cleanup completed for /Users/lee/.openclaw/workspace-main. Archived: ['.DS_Store']
+2026-03-30 00:02:36,382 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-awakening-coach
+2026-03-30 00:02:36,382 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.txt
+2026-03-30 00:02:36,382 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/.DS_Store
+2026-03-30 00:02:36,382 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.vtt
+2026-03-30 00:02:36,382 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.vtt
+2026-03-30 00:02:36,382 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.txt
+2026-03-30 00:02:36,382 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.tsv
+2026-03-30 00:02:36,382 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.tsv
+2026-03-30 00:02:36,382 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.srt
+2026-03-30 00:02:36,382 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.srt
+2026-03-30 00:02:36,382 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.json
+2026-03-30 00:02:36,382 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.json
+2026-03-30 00:02:36,382 - INFO - No files to clean in /Users/lee/.openclaw/workspace-awakening-coach
+2026-03-30 00:02:36,382 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-digital-secretary
+2026-03-30 00:02:36,383 - INFO - No files to clean in /Users/lee/.openclaw/workspace-digital-secretary
+2026-03-30 00:02:36,383 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-commander
+2026-03-30 00:02:36,383 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/.DS_Store
+2026-03-30 00:02:36,383 - INFO - No files to clean in /Users/lee/.openclaw/workspace-commander
+2026-03-30 00:02:36,383 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-writer
+2026-03-30 00:02:36,383 - INFO - No files to clean in /Users/lee/.openclaw/workspace-writer
+2026-03-30 00:02:36,383 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-scholar
+2026-03-30 00:02:36,383 - INFO - No files to clean in /Users/lee/.openclaw/workspace-scholar
+2026-03-30 00:02:36,383 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-health-advisor
+2026-03-30 00:02:36,384 - INFO - Archived: /Users/lee/.openclaw/workspace-health-advisor/.DS_Store -> /Users/lee/.openclaw/workspace-health-advisor/archive
+2026-03-30 00:02:36,384 - INFO - Cleanup completed for /Users/lee/.openclaw/workspace-health-advisor. Archived: ['.DS_Store']
+2026-03-30 00:02:36,384 - INFO - === Automated Token Optimizer finished ===
+2026-03-30 15:54:55,013 - INFO - === Starting Automated Token Optimizer (L3) ===
+2026-03-30 15:54:55,013 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-presenter
+2026-03-30 15:54:55,013 - INFO - No files to clean in /Users/lee/.openclaw/workspace-presenter
+2026-03-30 15:54:55,013 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-evolver
+2026-03-30 15:54:55,013 - INFO - No files to clean in /Users/lee/.openclaw/workspace-evolver
+2026-03-30 15:54:55,013 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-admin-assistant
+2026-03-30 15:54:55,013 - INFO - No files to clean in /Users/lee/.openclaw/workspace-admin-assistant
+2026-03-30 15:54:55,013 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-main
+2026-03-30 15:54:55,014 - INFO - No files to clean in /Users/lee/.openclaw/workspace-main
+2026-03-30 15:54:55,014 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-awakening-coach
+2026-03-30 15:54:55,014 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.txt
+2026-03-30 15:54:55,014 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/.DS_Store
+2026-03-30 15:54:55,014 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.vtt
+2026-03-30 15:54:55,014 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.vtt
+2026-03-30 15:54:55,014 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.txt
+2026-03-30 15:54:55,014 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.tsv
+2026-03-30 15:54:55,014 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.tsv
+2026-03-30 15:54:55,014 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.srt
+2026-03-30 15:54:55,014 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.srt
+2026-03-30 15:54:55,014 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.json
+2026-03-30 15:54:55,014 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.json
+2026-03-30 15:54:55,014 - INFO - No files to clean in /Users/lee/.openclaw/workspace-awakening-coach
+2026-03-30 15:54:55,014 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-digital-secretary
+2026-03-30 15:54:55,014 - INFO - No files to clean in /Users/lee/.openclaw/workspace-digital-secretary
+2026-03-30 15:54:55,014 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-commander
+2026-03-30 15:54:55,015 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/.DS_Store
+2026-03-30 15:54:55,015 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾心得-2026-03-30.md
+2026-03-30 15:54:55,015 - INFO - No files to clean in /Users/lee/.openclaw/workspace-commander
+2026-03-30 15:54:55,015 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-writer
+2026-03-30 15:54:55,015 - INFO - No files to clean in /Users/lee/.openclaw/workspace-writer
+2026-03-30 15:54:55,015 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-scholar
+2026-03-30 15:54:55,015 - INFO - No files to clean in /Users/lee/.openclaw/workspace-scholar
+2026-03-30 15:54:55,015 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-health-advisor
+2026-03-30 15:54:55,015 - INFO - No files to clean in /Users/lee/.openclaw/workspace-health-advisor
+2026-03-30 15:54:55,015 - INFO - === Automated Token Optimizer finished ===
+2026-03-30 16:00:00,874 - INFO - === Starting Automated Token Optimizer (L3) ===
+2026-03-30 16:00:00,874 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-presenter
+2026-03-30 16:00:00,874 - INFO - No files to clean in /Users/lee/.openclaw/workspace-presenter
+2026-03-30 16:00:00,874 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-evolver
+2026-03-30 16:00:00,874 - INFO - No files to clean in /Users/lee/.openclaw/workspace-evolver
+2026-03-30 16:00:00,874 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-admin-assistant
+2026-03-30 16:00:00,875 - INFO - No files to clean in /Users/lee/.openclaw/workspace-admin-assistant
+2026-03-30 16:00:00,875 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-main
+2026-03-30 16:00:00,875 - INFO - No files to clean in /Users/lee/.openclaw/workspace-main
+2026-03-30 16:00:00,875 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-awakening-coach
+2026-03-30 16:00:00,875 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.txt
+2026-03-30 16:00:00,875 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/.DS_Store
+2026-03-30 16:00:00,875 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.vtt
+2026-03-30 16:00:00,875 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.vtt
+2026-03-30 16:00:00,875 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.txt
+2026-03-30 16:00:00,875 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.tsv
+2026-03-30 16:00:00,875 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.tsv
+2026-03-30 16:00:00,875 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.srt
+2026-03-30 16:00:00,875 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.srt
+2026-03-30 16:00:00,875 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.json
+2026-03-30 16:00:00,875 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.json
+2026-03-30 16:00:00,875 - INFO - No files to clean in /Users/lee/.openclaw/workspace-awakening-coach
+2026-03-30 16:00:00,875 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-digital-secretary
+2026-03-30 16:00:00,875 - INFO - No files to clean in /Users/lee/.openclaw/workspace-digital-secretary
+2026-03-30 16:00:00,875 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-commander
+2026-03-30 16:00:00,875 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/.DS_Store
+2026-03-30 16:00:00,875 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾心得-2026-03-30.md
+2026-03-30 16:00:00,875 - INFO - No files to clean in /Users/lee/.openclaw/workspace-commander
+2026-03-30 16:00:00,875 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-writer
+2026-03-30 16:00:00,875 - INFO - No files to clean in /Users/lee/.openclaw/workspace-writer
+2026-03-30 16:00:00,875 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-scholar
+2026-03-30 16:00:00,875 - INFO - No files to clean in /Users/lee/.openclaw/workspace-scholar
+2026-03-30 16:00:00,875 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-health-advisor
+2026-03-30 16:00:00,875 - INFO - No files to clean in /Users/lee/.openclaw/workspace-health-advisor
+2026-03-30 16:00:00,875 - INFO - === Automated Token Optimizer finished ===
+2026-03-31 00:02:07,236 - INFO - === Starting Automated Token Optimizer (L3) ===
+2026-03-31 00:02:07,236 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-presenter
+2026-03-31 00:02:07,236 - INFO - No files to clean in /Users/lee/.openclaw/workspace-presenter
+2026-03-31 00:02:07,237 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-evolver
+2026-03-31 00:02:07,237 - INFO - No files to clean in /Users/lee/.openclaw/workspace-evolver
+2026-03-31 00:02:07,237 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-admin-assistant
+2026-03-31 00:02:07,237 - INFO - No files to clean in /Users/lee/.openclaw/workspace-admin-assistant
+2026-03-31 00:02:07,237 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-main
+2026-03-31 00:02:07,237 - INFO - No files to clean in /Users/lee/.openclaw/workspace-main
+2026-03-31 00:02:07,237 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-awakening-coach
+2026-03-31 00:02:07,238 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.txt
+2026-03-31 00:02:07,238 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/.DS_Store
+2026-03-31 00:02:07,238 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.vtt
+2026-03-31 00:02:07,238 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.vtt
+2026-03-31 00:02:07,238 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.txt
+2026-03-31 00:02:07,238 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.tsv
+2026-03-31 00:02:07,238 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.tsv
+2026-03-31 00:02:07,238 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.srt
+2026-03-31 00:02:07,238 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.srt
+2026-03-31 00:02:07,238 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.json
+2026-03-31 00:02:07,238 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.json
+2026-03-31 00:02:07,238 - INFO - No files to clean in /Users/lee/.openclaw/workspace-awakening-coach
+2026-03-31 00:02:07,238 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-digital-secretary
+2026-03-31 00:02:07,238 - INFO - No files to clean in /Users/lee/.openclaw/workspace-digital-secretary
+2026-03-31 00:02:07,238 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-commander
+2026-03-31 00:02:07,238 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/.DS_Store
+2026-03-31 00:02:07,238 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾心得-2026-03-30.md
+2026-03-31 00:02:07,238 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记-OpenClaw系统指南.md
+2026-03-31 00:02:07,238 - INFO - No files to clean in /Users/lee/.openclaw/workspace-commander
+2026-03-31 00:02:07,238 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-writer
+2026-03-31 00:02:07,238 - INFO - No files to clean in /Users/lee/.openclaw/workspace-writer
+2026-03-31 00:02:07,238 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-scholar
+2026-03-31 00:02:07,238 - INFO - No files to clean in /Users/lee/.openclaw/workspace-scholar
+2026-03-31 00:02:07,238 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-health-advisor
+2026-03-31 00:02:07,239 - INFO - No files to clean in /Users/lee/.openclaw/workspace-health-advisor
+2026-03-31 00:02:07,239 - INFO - === Automated Token Optimizer finished ===
+2026-03-31 02:00:21,696 - INFO - === Starting Automated Token Optimizer (L3) ===
+2026-03-31 02:00:21,696 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-presenter
+2026-03-31 02:00:21,696 - INFO - No files to clean in /Users/lee/.openclaw/workspace-presenter
+2026-03-31 02:00:21,696 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-evolver
+2026-03-31 02:00:21,696 - INFO - No files to clean in /Users/lee/.openclaw/workspace-evolver
+2026-03-31 02:00:21,696 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-admin-assistant
+2026-03-31 02:00:21,696 - INFO - No files to clean in /Users/lee/.openclaw/workspace-admin-assistant
+2026-03-31 02:00:21,696 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-main
+2026-03-31 02:00:21,697 - INFO - No files to clean in /Users/lee/.openclaw/workspace-main
+2026-03-31 02:00:21,697 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-awakening-coach
+2026-03-31 02:00:21,697 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.txt
+2026-03-31 02:00:21,697 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/.DS_Store
+2026-03-31 02:00:21,697 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.vtt
+2026-03-31 02:00:21,697 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.vtt
+2026-03-31 02:00:21,697 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.txt
+2026-03-31 02:00:21,697 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.tsv
+2026-03-31 02:00:21,697 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.tsv
+2026-03-31 02:00:21,697 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.srt
+2026-03-31 02:00:21,697 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.srt
+2026-03-31 02:00:21,697 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.json
+2026-03-31 02:00:21,697 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.json
+2026-03-31 02:00:21,697 - INFO - No files to clean in /Users/lee/.openclaw/workspace-awakening-coach
+2026-03-31 02:00:21,697 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-digital-secretary
+2026-03-31 02:00:21,697 - INFO - No files to clean in /Users/lee/.openclaw/workspace-digital-secretary
+2026-03-31 02:00:21,697 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-commander
+2026-03-31 02:00:21,697 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/.DS_Store
+2026-03-31 02:00:21,697 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾心得-2026-03-30.md
+2026-03-31 02:00:21,697 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记-OpenClaw系统指南.md
+2026-03-31 02:00:21,697 - INFO - No files to clean in /Users/lee/.openclaw/workspace-commander
+2026-03-31 02:00:21,697 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-writer
+2026-03-31 02:00:21,697 - INFO - No files to clean in /Users/lee/.openclaw/workspace-writer
+2026-03-31 02:00:21,697 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-scholar
+2026-03-31 02:00:21,697 - INFO - No files to clean in /Users/lee/.openclaw/workspace-scholar
+2026-03-31 02:00:21,697 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-health-advisor
+2026-03-31 02:00:21,697 - INFO - No files to clean in /Users/lee/.openclaw/workspace-health-advisor
+2026-03-31 02:00:21,697 - INFO - === Automated Token Optimizer finished ===
+2026-04-01 00:02:06,054 - INFO - === Starting Automated Token Optimizer (L3) ===
+2026-04-01 00:02:06,055 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-presenter
+2026-04-01 00:02:06,055 - INFO - No files to clean in /Users/lee/.openclaw/workspace-presenter
+2026-04-01 00:02:06,055 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-evolver
+2026-04-01 00:02:06,055 - INFO - No files to clean in /Users/lee/.openclaw/workspace-evolver
+2026-04-01 00:02:06,055 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-01 00:02:06,056 - INFO - No files to clean in /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-01 00:02:06,056 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-main
+2026-04-01 00:02:06,056 - INFO - No files to clean in /Users/lee/.openclaw/workspace-main
+2026-04-01 00:02:06,056 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-01 00:02:06,056 - INFO - Archived: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.txt -> /Users/lee/.openclaw/workspace-awakening-coach/archive
+2026-04-01 00:02:06,056 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-awakening-coach/.DS_Store
+2026-04-01 00:02:06,057 - INFO - Archived: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.vtt -> /Users/lee/.openclaw/workspace-awakening-coach/archive
+2026-04-01 00:02:06,057 - INFO - Archived: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.vtt -> /Users/lee/.openclaw/workspace-awakening-coach/archive
+2026-04-01 00:02:06,057 - INFO - Archived: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.txt -> /Users/lee/.openclaw/workspace-awakening-coach/archive
+2026-04-01 00:02:06,057 - INFO - Archived: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.tsv -> /Users/lee/.openclaw/workspace-awakening-coach/archive
+2026-04-01 00:02:06,057 - INFO - Archived: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.tsv -> /Users/lee/.openclaw/workspace-awakening-coach/archive
+2026-04-01 00:02:06,058 - INFO - Archived: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.srt -> /Users/lee/.openclaw/workspace-awakening-coach/archive
+2026-04-01 00:02:06,058 - INFO - Archived: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.srt -> /Users/lee/.openclaw/workspace-awakening-coach/archive
+2026-04-01 00:02:06,058 - INFO - Archived: /Users/lee/.openclaw/workspace-awakening-coach/file_19---1f1fe234-880e-497d-9f6c-c67e88738193.json -> /Users/lee/.openclaw/workspace-awakening-coach/archive
+2026-04-01 00:02:06,058 - INFO - Archived: /Users/lee/.openclaw/workspace-awakening-coach/file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.json -> /Users/lee/.openclaw/workspace-awakening-coach/archive
+2026-04-01 00:02:06,058 - INFO - Cleanup completed for /Users/lee/.openclaw/workspace-awakening-coach. Archived: ['file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.txt', 'file_19---1f1fe234-880e-497d-9f6c-c67e88738193.vtt', 'file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.vtt', 'file_19---1f1fe234-880e-497d-9f6c-c67e88738193.txt', 'file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.tsv', 'file_19---1f1fe234-880e-497d-9f6c-c67e88738193.tsv', 'file_19---1f1fe234-880e-497d-9f6c-c67e88738193.srt', 'file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.srt', 'file_19---1f1fe234-880e-497d-9f6c-c67e88738193.json', 'file_19---21cc74c1-767b-427b-bef5-97bfcf8cedc0.json']
+2026-04-01 00:02:06,058 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-01 00:02:06,058 - INFO - No files to clean in /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-01 00:02:06,058 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-commander
+2026-04-01 00:02:06,058 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/index.html
+2026-04-01 00:02:06,058 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/.DS_Store
+2026-04-01 00:02:06,058 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾心得-2026-03-30.md
+2026-04-01 00:02:06,058 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/chapter1.html
+2026-04-01 00:02:06,058 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2完整.md
+2026-04-01 00:02:06,058 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记网站.html
+2026-04-01 00:02:06,058 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记-OpenClaw系统指南.md
+2026-04-01 00:02:06,058 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2.md
+2026-04-01 00:02:06,058 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记_v2.1完整版.md
+2026-04-01 00:02:06,058 - INFO - No files to clean in /Users/lee/.openclaw/workspace-commander
+2026-04-01 00:02:06,058 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-writer
+2026-04-01 00:02:06,058 - INFO - No files to clean in /Users/lee/.openclaw/workspace-writer
+2026-04-01 00:02:06,058 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-scholar
+2026-04-01 00:02:06,059 - INFO - No files to clean in /Users/lee/.openclaw/workspace-scholar
+2026-04-01 00:02:06,059 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-health-advisor
+2026-04-01 00:02:06,059 - INFO - No files to clean in /Users/lee/.openclaw/workspace-health-advisor
+2026-04-01 00:02:06,059 - INFO - === Automated Token Optimizer finished ===
+2026-04-01 02:00:23,323 - INFO - === Starting Automated Token Optimizer (L3) ===
+2026-04-01 02:00:23,324 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-presenter
+2026-04-01 02:00:23,324 - INFO - No files to clean in /Users/lee/.openclaw/workspace-presenter
+2026-04-01 02:00:23,324 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-evolver
+2026-04-01 02:00:23,324 - INFO - No files to clean in /Users/lee/.openclaw/workspace-evolver
+2026-04-01 02:00:23,324 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-01 02:00:23,324 - INFO - No files to clean in /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-01 02:00:23,324 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-main
+2026-04-01 02:00:23,324 - INFO - No files to clean in /Users/lee/.openclaw/workspace-main
+2026-04-01 02:00:23,324 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-01 02:00:23,324 - INFO - Archived: /Users/lee/.openclaw/workspace-awakening-coach/.DS_Store -> /Users/lee/.openclaw/workspace-awakening-coach/archive
+2026-04-01 02:00:23,324 - INFO - Cleanup completed for /Users/lee/.openclaw/workspace-awakening-coach. Archived: ['.DS_Store']
+2026-04-01 02:00:23,324 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-01 02:00:23,324 - INFO - No files to clean in /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-01 02:00:23,324 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-commander
+2026-04-01 02:00:23,324 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/index.html
+2026-04-01 02:00:23,324 - INFO - Archived: /Users/lee/.openclaw/workspace-commander/.DS_Store -> /Users/lee/.openclaw/workspace-commander/archive
+2026-04-01 02:00:23,324 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾心得-2026-03-30.md
+2026-04-01 02:00:23,325 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/chapter1.html
+2026-04-01 02:00:23,325 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2完整.md
+2026-04-01 02:00:23,325 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记网站.html
+2026-04-01 02:00:23,325 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记-OpenClaw系统指南.md
+2026-04-01 02:00:23,325 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/notes-website.zip
+2026-04-01 02:00:23,325 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2.md
+2026-04-01 02:00:23,325 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记_v2.1完整版.md
+2026-04-01 02:00:23,325 - INFO - Cleanup completed for /Users/lee/.openclaw/workspace-commander. Archived: ['.DS_Store']
+2026-04-01 02:00:23,325 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-writer
+2026-04-01 02:00:23,325 - INFO - No files to clean in /Users/lee/.openclaw/workspace-writer
+2026-04-01 02:00:23,325 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-scholar
+2026-04-01 02:00:23,325 - INFO - No files to clean in /Users/lee/.openclaw/workspace-scholar
+2026-04-01 02:00:23,325 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-health-advisor
+2026-04-01 02:00:23,325 - INFO - No files to clean in /Users/lee/.openclaw/workspace-health-advisor
+2026-04-01 02:00:23,325 - INFO - === Automated Token Optimizer finished ===
+2026-04-01 02:01:10,512 - INFO - === Starting Automated Token Optimizer (L3) ===
+2026-04-01 02:01:10,512 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-presenter
+2026-04-01 02:01:10,512 - INFO - No files to clean in /Users/lee/.openclaw/workspace-presenter
+2026-04-01 02:01:10,512 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-evolver
+2026-04-01 02:01:10,512 - INFO - No files to clean in /Users/lee/.openclaw/workspace-evolver
+2026-04-01 02:01:10,512 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-01 02:01:10,512 - INFO - No files to clean in /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-01 02:01:10,512 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-main
+2026-04-01 02:01:10,512 - INFO - No files to clean in /Users/lee/.openclaw/workspace-main
+2026-04-01 02:01:10,512 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-01 02:01:10,512 - INFO - No files to clean in /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-01 02:01:10,512 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-01 02:01:10,512 - INFO - No files to clean in /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-01 02:01:10,512 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-commander
+2026-04-01 02:01:10,513 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/index.html
+2026-04-01 02:01:10,513 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾心得-2026-03-30.md
+2026-04-01 02:01:10,513 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/chapter1.html
+2026-04-01 02:01:10,513 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2完整.md
+2026-04-01 02:01:10,513 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记网站.html
+2026-04-01 02:01:10,513 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记-OpenClaw系统指南.md
+2026-04-01 02:01:10,513 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/notes-website.zip
+2026-04-01 02:01:10,513 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2.md
+2026-04-01 02:01:10,513 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记_v2.1完整版.md
+2026-04-01 02:01:10,513 - INFO - No files to clean in /Users/lee/.openclaw/workspace-commander
+2026-04-01 02:01:10,513 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-writer
+2026-04-01 02:01:10,513 - INFO - No files to clean in /Users/lee/.openclaw/workspace-writer
+2026-04-01 02:01:10,513 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-scholar
+2026-04-01 02:01:10,513 - INFO - No files to clean in /Users/lee/.openclaw/workspace-scholar
+2026-04-01 02:01:10,513 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-health-advisor
+2026-04-01 02:01:10,513 - INFO - No files to clean in /Users/lee/.openclaw/workspace-health-advisor
+2026-04-01 02:01:10,513 - INFO - === Automated Token Optimizer finished ===
+2026-04-02 00:02:16,571 - INFO - === Starting Automated Token Optimizer (L3) ===
+2026-04-02 00:02:16,572 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-presenter
+2026-04-02 00:02:16,573 - INFO - No files to clean in /Users/lee/.openclaw/workspace-presenter
+2026-04-02 00:02:16,573 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-evolver
+2026-04-02 00:02:16,573 - INFO - No files to clean in /Users/lee/.openclaw/workspace-evolver
+2026-04-02 00:02:16,573 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-02 00:02:16,574 - INFO - No files to clean in /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-02 00:02:16,574 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-main
+2026-04-02 00:02:16,574 - INFO - No files to clean in /Users/lee/.openclaw/workspace-main
+2026-04-02 00:02:16,574 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-02 00:02:16,575 - INFO - No files to clean in /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-02 00:02:16,575 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-02 00:02:16,575 - INFO - No files to clean in /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-02 00:02:16,575 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-commander
+2026-04-02 00:02:16,576 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/index.html
+2026-04-02 00:02:16,576 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾心得-2026-03-30.md
+2026-04-02 00:02:16,576 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/chapter1.html
+2026-04-02 00:02:16,576 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2完整.md
+2026-04-02 00:02:16,576 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记网站.html
+2026-04-02 00:02:16,577 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记-OpenClaw系统指南.md
+2026-04-02 00:02:16,577 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/notes-website.zip
+2026-04-02 00:02:16,577 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2.md
+2026-04-02 00:02:16,577 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记_v2.1完整版.md
+2026-04-02 00:02:16,577 - INFO - No files to clean in /Users/lee/.openclaw/workspace-commander
+2026-04-02 00:02:16,577 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-writer
+2026-04-02 00:02:16,578 - INFO - No files to clean in /Users/lee/.openclaw/workspace-writer
+2026-04-02 00:02:16,579 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-scholar
+2026-04-02 00:02:16,580 - INFO - No files to clean in /Users/lee/.openclaw/workspace-scholar
+2026-04-02 00:02:16,581 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-health-advisor
+2026-04-02 00:02:16,583 - INFO - No files to clean in /Users/lee/.openclaw/workspace-health-advisor
+2026-04-02 00:02:16,584 - INFO - === Automated Token Optimizer finished ===
+2026-04-02 02:03:43,632 - INFO - === Starting Automated Token Optimizer (L3) ===
+2026-04-02 02:03:43,633 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-presenter
+2026-04-02 02:03:43,634 - INFO - No files to clean in /Users/lee/.openclaw/workspace-presenter
+2026-04-02 02:03:43,634 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-evolver
+2026-04-02 02:03:43,634 - INFO - No files to clean in /Users/lee/.openclaw/workspace-evolver
+2026-04-02 02:03:43,634 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-02 02:03:43,634 - INFO - No files to clean in /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-02 02:03:43,634 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-main
+2026-04-02 02:03:43,634 - INFO - No files to clean in /Users/lee/.openclaw/workspace-main
+2026-04-02 02:03:43,634 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-02 02:03:43,635 - INFO - No files to clean in /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-02 02:03:43,635 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-02 02:03:43,635 - INFO - No files to clean in /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-02 02:03:43,635 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-commander
+2026-04-02 02:03:43,635 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/index.html
+2026-04-02 02:03:43,635 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾心得-2026-03-30.md
+2026-04-02 02:03:43,635 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/chapter1.html
+2026-04-02 02:03:43,635 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2完整.md
+2026-04-02 02:03:43,635 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记网站.html
+2026-04-02 02:03:43,635 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记-OpenClaw系统指南.md
+2026-04-02 02:03:43,635 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/notes-website.zip
+2026-04-02 02:03:43,636 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2.md
+2026-04-02 02:03:43,636 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记_v2.1完整版.md
+2026-04-02 02:03:43,636 - INFO - No files to clean in /Users/lee/.openclaw/workspace-commander
+2026-04-02 02:03:43,636 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-writer
+2026-04-02 02:03:43,636 - INFO - No files to clean in /Users/lee/.openclaw/workspace-writer
+2026-04-02 02:03:43,636 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-scholar
+2026-04-02 02:03:43,636 - INFO - No files to clean in /Users/lee/.openclaw/workspace-scholar
+2026-04-02 02:03:43,636 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-health-advisor
+2026-04-02 02:03:43,637 - INFO - No files to clean in /Users/lee/.openclaw/workspace-health-advisor
+2026-04-02 02:03:43,637 - INFO - === Automated Token Optimizer finished ===
+2026-04-03 00:02:05,839 - INFO - === Starting Automated Token Optimizer (L3) ===
+2026-04-03 00:02:05,839 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-presenter
+2026-04-03 00:02:05,839 - INFO - No files to clean in /Users/lee/.openclaw/workspace-presenter
+2026-04-03 00:02:05,839 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-evolver
+2026-04-03 00:02:05,839 - INFO - No files to clean in /Users/lee/.openclaw/workspace-evolver
+2026-04-03 00:02:05,839 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-03 00:02:05,840 - INFO - No files to clean in /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-03 00:02:05,840 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-main
+2026-04-03 00:02:05,840 - INFO - No files to clean in /Users/lee/.openclaw/workspace-main
+2026-04-03 00:02:05,840 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-03 00:02:05,840 - INFO - No files to clean in /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-03 00:02:05,840 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-03 00:02:05,840 - INFO - No files to clean in /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-03 00:02:05,840 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-commander
+2026-04-03 00:02:05,840 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/index.html
+2026-04-03 00:02:05,840 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾心得-2026-03-30.md
+2026-04-03 00:02:05,840 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/chapter1.html
+2026-04-03 00:02:05,840 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2完整.md
+2026-04-03 00:02:05,840 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记网站.html
+2026-04-03 00:02:05,840 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记-OpenClaw系统指南.md
+2026-04-03 00:02:05,840 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/notes-website.zip
+2026-04-03 00:02:05,840 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2.md
+2026-04-03 00:02:05,840 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记_v2.1完整版.md
+2026-04-03 00:02:05,840 - INFO - No files to clean in /Users/lee/.openclaw/workspace-commander
+2026-04-03 00:02:05,840 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-writer
+2026-04-03 00:02:05,840 - INFO - No files to clean in /Users/lee/.openclaw/workspace-writer
+2026-04-03 00:02:05,840 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-scholar
+2026-04-03 00:02:05,840 - INFO - No files to clean in /Users/lee/.openclaw/workspace-scholar
+2026-04-03 00:02:05,840 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-health-advisor
+2026-04-03 00:02:05,840 - INFO - No files to clean in /Users/lee/.openclaw/workspace-health-advisor
+2026-04-03 00:02:05,840 - INFO - === Automated Token Optimizer finished ===
+2026-04-03 02:00:10,328 - INFO - === Starting Automated Token Optimizer (L3) ===
+2026-04-03 02:00:10,328 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-presenter
+2026-04-03 02:00:10,328 - INFO - No files to clean in /Users/lee/.openclaw/workspace-presenter
+2026-04-03 02:00:10,328 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-evolver
+2026-04-03 02:00:10,328 - INFO - No files to clean in /Users/lee/.openclaw/workspace-evolver
+2026-04-03 02:00:10,328 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-03 02:00:10,328 - INFO - No files to clean in /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-03 02:00:10,328 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-main
+2026-04-03 02:00:10,328 - INFO - No files to clean in /Users/lee/.openclaw/workspace-main
+2026-04-03 02:00:10,328 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-03 02:00:10,328 - INFO - No files to clean in /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-03 02:00:10,328 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-03 02:00:10,329 - INFO - No files to clean in /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-03 02:00:10,329 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-commander
+2026-04-03 02:00:10,329 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/index.html
+2026-04-03 02:00:10,329 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾心得-2026-03-30.md
+2026-04-03 02:00:10,329 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/chapter1.html
+2026-04-03 02:00:10,329 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2完整.md
+2026-04-03 02:00:10,329 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记网站.html
+2026-04-03 02:00:10,329 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记-OpenClaw系统指南.md
+2026-04-03 02:00:10,329 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/notes-website.zip
+2026-04-03 02:00:10,329 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2.md
+2026-04-03 02:00:10,329 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记_v2.1完整版.md
+2026-04-03 02:00:10,329 - INFO - No files to clean in /Users/lee/.openclaw/workspace-commander
+2026-04-03 02:00:10,329 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-writer
+2026-04-03 02:00:10,329 - INFO - No files to clean in /Users/lee/.openclaw/workspace-writer
+2026-04-03 02:00:10,329 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-scholar
+2026-04-03 02:00:10,329 - INFO - No files to clean in /Users/lee/.openclaw/workspace-scholar
+2026-04-03 02:00:10,329 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-health-advisor
+2026-04-03 02:00:10,329 - INFO - No files to clean in /Users/lee/.openclaw/workspace-health-advisor
+2026-04-03 02:00:10,329 - INFO - === Automated Token Optimizer finished ===
+2026-04-03 14:06:02,283 - INFO - === Starting Automated Token Optimizer (L3) ===
+2026-04-03 14:06:02,284 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-presenter
+2026-04-03 14:06:02,284 - INFO - No files to clean in /Users/lee/.openclaw/workspace-presenter
+2026-04-03 14:06:02,284 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-evolver
+2026-04-03 14:06:02,284 - INFO - No files to clean in /Users/lee/.openclaw/workspace-evolver
+2026-04-03 14:06:02,284 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-03 14:06:02,284 - INFO - No files to clean in /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-03 14:06:02,284 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-main
+2026-04-03 14:06:02,284 - INFO - No files to clean in /Users/lee/.openclaw/workspace-main
+2026-04-03 14:06:02,284 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-03 14:06:02,284 - INFO - No files to clean in /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-03 14:06:02,284 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-03 14:06:02,284 - INFO - No files to clean in /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-03 14:06:02,284 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-commander
+2026-04-03 14:06:02,284 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/index.html
+2026-04-03 14:06:02,284 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾心得-2026-03-30.md
+2026-04-03 14:06:02,284 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/chapter1.html
+2026-04-03 14:06:02,284 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2完整.md
+2026-04-03 14:06:02,284 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记网站.html
+2026-04-03 14:06:02,284 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记-OpenClaw系统指南.md
+2026-04-03 14:06:02,284 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/notes-website.zip
+2026-04-03 14:06:02,284 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2.md
+2026-04-03 14:06:02,285 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记_v2.1完整版.md
+2026-04-03 14:06:02,285 - INFO - No files to clean in /Users/lee/.openclaw/workspace-commander
+2026-04-03 14:06:02,285 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-writer
+2026-04-03 14:06:02,285 - INFO - No files to clean in /Users/lee/.openclaw/workspace-writer
+2026-04-03 14:06:02,285 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-scholar
+2026-04-03 14:06:02,285 - INFO - No files to clean in /Users/lee/.openclaw/workspace-scholar
+2026-04-03 14:06:02,285 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-health-advisor
+2026-04-03 14:06:02,285 - INFO - No files to clean in /Users/lee/.openclaw/workspace-health-advisor
+2026-04-03 14:06:02,285 - INFO - === Automated Token Optimizer finished ===
+2026-04-03 14:19:29,992 - INFO - === Starting Automated Token Optimizer (L3) ===
+2026-04-03 14:19:29,992 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-presenter
+2026-04-03 14:19:29,992 - INFO - No files to clean in /Users/lee/.openclaw/workspace-presenter
+2026-04-03 14:19:29,992 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-evolver
+2026-04-03 14:19:29,992 - INFO - No files to clean in /Users/lee/.openclaw/workspace-evolver
+2026-04-03 14:19:29,992 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-03 14:19:29,993 - INFO - No files to clean in /Users/lee/.openclaw/workspace-admin-assistant
+2026-04-03 14:19:29,993 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-main
+2026-04-03 14:19:29,994 - INFO - No files to clean in /Users/lee/.openclaw/workspace-main
+2026-04-03 14:19:29,994 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-03 14:19:29,994 - INFO - No files to clean in /Users/lee/.openclaw/workspace-awakening-coach
+2026-04-03 14:19:29,994 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-03 14:19:29,994 - INFO - No files to clean in /Users/lee/.openclaw/workspace-digital-secretary
+2026-04-03 14:19:29,994 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-commander
+2026-04-03 14:19:29,994 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/index.html
+2026-04-03 14:19:29,994 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾心得-2026-03-30.md
+2026-04-03 14:19:29,994 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/chapter1.html
+2026-04-03 14:19:29,994 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2完整.md
+2026-04-03 14:19:29,994 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记网站.html
+2026-04-03 14:19:29,994 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记-OpenClaw系统指南.md
+2026-04-03 14:19:29,994 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/notes-website.zip
+2026-04-03 14:19:29,994 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/养虾笔记_v2.2.md
+2026-04-03 14:19:29,994 - INFO - Skipped recent file: /Users/lee/.openclaw/workspace-commander/龙虾笔记_v2.1完整版.md
+2026-04-03 14:19:29,994 - INFO - No files to clean in /Users/lee/.openclaw/workspace-commander
+2026-04-03 14:19:29,994 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-writer
+2026-04-03 14:19:29,994 - INFO - No files to clean in /Users/lee/.openclaw/workspace-writer
+2026-04-03 14:19:29,994 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-scholar
+2026-04-03 14:19:29,994 - INFO - No files to clean in /Users/lee/.openclaw/workspace-scholar
+2026-04-03 14:19:29,994 - INFO - Starting cleanup for /Users/lee/.openclaw/workspace-health-advisor
+2026-04-03 14:19:29,994 - INFO - No files to clean in /Users/lee/.openclaw/workspace-health-advisor
+2026-04-03 14:19:29,994 - INFO - === Automated Token Optimizer finished ===

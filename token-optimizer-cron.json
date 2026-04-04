@@ -1,0 +1,16 @@
+{
+  "name": "Token Optimizer - 每日凌晨自动清理",
+  "schedule": {
+    "kind": "cron",
+    "expr": "0 2 * * *",
+    "tz": "Asia/Shanghai"
+  },
+  "payload": {
+    "kind": "systemEvent",
+    "text": "执行 Token 优化器 L3 自动化清理任务"
+  },
+  "sessionTarget": "main",
+  "delivery": {
+    "mode": "none"
+  }
+}
