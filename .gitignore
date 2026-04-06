@@ -1,0 +1,51 @@
+# 日志文件
+logs/
+*.log
+
+# 临时文件
+*.tmp
+*.bak
+*.backup
+*.backup.*
+
+# 备份文件
+backup-*.tar.gz
+backup_*/
+archived/
+
+# 系统文件
+.DS_Store
+*.swp
+*.swo
+
+# Node modules
+node_modules/
+
+# 敏感配置（不提交到 GitHub）
+openclaw.json
+clawdbot.json
+*.pem
+*.key
+
+# 临时目录
+browser/
+canvas/
+completions/
+cron/
+devices/
+media/
+memory/
+memory-tdai/
+telegram/
+wecom/
+bridge.log
+bridge.pid
+
+# 本地扩展（可能包含敏感信息）
+extensions/
+
+# 归档目录
+identity/
+subagents/
+templates/
+workspace/
