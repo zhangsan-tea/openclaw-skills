@@ -28,12 +28,7 @@ import urllib3; urllib3.disable_warnings()
 audio_path = "<AUDIO_FILE_PATH>"
 
 # ====== 第一步：ACRCloud 哼唱识曲 ======
-# 从 OpenClaw workspace 的 memory 目录读取 API keys
-import os
-workspace_path = os.environ.get('OPENCLAW_WORKSPACE', os.path.expanduser('~/.openclaw/workspace-commander'))
-api_keys_path = os.path.join(workspace_path, 'memory', 'api_keys.json')
-
-with open(api_keys_path) as f:
+with open('<OPENCLAW_WORKSPACE>/memory/api_keys.json') as f:
     keys = json.load(f)['acrcloud']
 
 access_key = keys['access_key']
@@ -110,7 +105,7 @@ print(resp.json()['choices'][0]['message']['content'])
 ## API 配置
 
 ### ACRCloud（哼唱识曲）
-- **配置文件**：`$OPENCLAW_WORKSPACE/memory/api_keys.json`（默认为 `~/.openclaw/workspace-commander/memory/api_keys.json`）
+- **配置文件**：`<OPENCLAW_WORKSPACE>/memory/api_keys.json`
 - **Host**：`<YOUR_ACRCLOUD_HOST>`
 - **Access Key**：`<KEY_32_HEX>`
 - **注册**：[console.acrcloud.com](https://console.acrcloud.com)（当前为免费试用，14天）
@@ -118,7 +113,7 @@ print(resp.json()['choices'][0]['message']['content'])
 
 ### Gemini via aiberm（情感分析）
 - **Base URL**：`https://aiberm.com/v1`
-- **API Key**：存于 OpenClaw 配置文件中（providers.aiberm.apiKey）
+- **API Key**：存于 `<OPENCLAW_WORKSPACE>/openclaw.json`（providers.aiberm.apiKey）
 - **模型**：`google/gemini-2.5-flash`（日常），`google/gemini-2.5-pro`（深度）
 - **注意**：直连有时不稳定，超时设为 120s，verify=False
 
@@ -178,4 +173,4 @@ print(resp.json()['choices'][0]['message']['content'])
 3. ACRCloud 配置文件路径固定，无需修改
 4. 将识别结果追加到对应的歌曲日记或用户档案
 
-**歌曲日记路径**：`$OPENCLAW_WORKSPACE/memory/songs/歌曲日记.md`
+**歌曲日记路径**：`<OPENCLAW_WORKSPACE>/memory/songs/歌曲日记.md`
