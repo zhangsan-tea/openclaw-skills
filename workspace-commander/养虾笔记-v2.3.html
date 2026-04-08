@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>养虾笔记 v2.3</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size: 2.2em;
+        }
+        h2 {
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            font-size: 1.8em;
+            margin-top: 40px;
+        }
+        h3 {
+            font-size: 1.4em;
+            color: #34495e;
+        }
+        h4 {
+            font-size: 1.2em;
+            color: #555;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        blockquote {
+            border-left: 4px solid #3498db;
+            margin: 20px 0;
+            padding-left: 20px;
+            color: #555;
+            font-style: italic;
+        }
+        .toc {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border: 1px solid #e9ecef;
+        }
+        .toc h2 {
+            margin-top: 0;
+            border: none;
+            padding: 0;
+            font-size: 1.5em;
+        }
+        .toc ul {
+            padding-left: 20px;
+        }
+        .toc li {
+            margin-bottom: 8px;
+        }
+        .toc a {
+            text-decoration: none;
+            color: #3498db;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        .note {
+            background-color: #e7f3ff;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #777;
+            font-size: 0.9em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>养虾笔记 v2.3</h1>
+        
+        <div class="toc">
+            <h2>目录</h2>
+            <ul>
+                <li><a href="#版本迭代说明">版本迭代说明</a></li>
+                <li><a href="#第一部分：龙虾本质认知">第一部分：龙虾本质认知</a>
+                    <ul>
+                        <li><a href="#11-为什么说龙虾更像一个人">1.1 为什么说"龙虾更像一个人"</a></li>
+                        <li><a href="#12-各方养虾经验">1.2 各方养虾经验</a></li>
+                        <li><a href="#13-基本驱动规律">1.3 基本驱动规律</a></li>
+                    </ul>
+                </li>
+                <li><a href="#第二部分：工具选择">第二部分：工具选择</a>
+                    <ul>
+                        <li><a href="#21-工具选型的核心原则">2.1 工具选型的核心原则</a></li>
+                        <li><a href="#22-产品选择与决策因素">2.2 产品选择与决策因素</a></li>
+                        <li><a href="#23-实用配置与工具">2.3 实用配置与工具</a></li>
+                    </ul>
+                </li>
+                <li><a href="#第三部分：安全问题">第三部分：安全问题</a>
+                    <ul>
+                        <li><a href="#31-安全操作原则">3.1 安全操作原则</a></li>
+                        <li><a href="#32-自研与重点加载的技能清单">3.2 自研与重点加载的技能清单</a></li>
+                    </ul>
+                </li>
+                <li><a href="#第四部分：token消耗">第四部分：Token消耗</a>
+                    <ul>
+                        <li><a href="#41-成本控制的核心策略">4.1 成本控制的核心策略</a></li>
+                        <li><a href="#42-善用系统命令">4.2 善用系统命令</a></li>
+                        <li><a href="#43-模型选择策略">4.3 模型选择策略</a></li>
+                    </ul>
+                </li>
+                <li><a href="#第五部分：使用场景">第五部分：使用场景</a>
+                    <ul>
+                        <li><a href="#51-主要使用场景">5.1 主要使用场景</a></li>
+                        <li><a href="#52-多agent分工策略">5.2 多Agent分工策略</a></li>
+                        <li><a href="#53-知识管理">5.3 知识管理</a></li>
+                        <li><a href="#54-聊天软件">5.4 聊天软件</a></li>
+                        <li><a href="#55-健康顾问深度实践">5.5 健康顾问深度实践</a></li>
+                        <li><a href="#56-语音输入">5.6 语音输入</a></li>
+                    </ul>
+                </li>
+                <li><a href="#第六部分：待探索方向">第六部分：待探索方向</a>
+                    <ul>
+                        <li><a href="#61-近期待探索">6.1 近期待探索</a></li>
+                        <li><a href="#62-长期愿景">6.2 长期愿景</a></li>
+                    </ul>
+                </li>
+                <li><a href="#第七部分：ai-使用基本原则汇总">第七部分：AI 使用基本原则汇总</a>
+                    <ul>
+                        <li><a href="#71-使用ai需要有往后退一步的意识">7.1 使用AI需要有"往后退一步"的意识</a></li>
+                        <li><a href="#72-人的价值重新定位">7.2 人的价值重新定位</a></li>
+                        <li><a href="#73-核心方法论摘要">7.3 核心方法论摘要</a></li>
+                    </ul>
+                </li>
+                <li><a href="#附录：用户深层感受">附录：用户深层感受</a></li>
+                <li><a href="#结语">结语</a></li>
+            </ul>
+        </div>
+
+        <p><strong>备注</strong>：lyndon个人视角的学习笔记和养虾心得。涉及安装、配置、API接入等基操略过，网上有现成攻略。<strong>更新时间</strong>：2026年4月6日</p>
+
+        <h2 id="版本迭代说明">版本迭代说明</h2>
+        <p><strong>v2.3 相比 v2.2 主要变更（2026-04-06）：</strong></p>
+        <ul>
+            <li><strong>结构调整</strong>：重组原有十二章结构</li>
+            <li><strong>第三部分（安全）扩展</strong>：补入风险评估先行原则；安全建议更详细（硬隔离、限制高危权限）</li>
+            <li><strong>第四部分（Token）扩展</strong>：补入工作区大扫除的机制解释和真实教训；新增模型选择策略和模型能力对照表</li>
+        </ul>
+
+        <h2 id="第一部分：龙虾本质认知">第一部分：龙虾本质认知</h2>
+
+        <h3 id="11-为什么说龙虾更像一个人">1.1 为什么说"龙虾更像一个人"</h3>
+        <p>核心：常规AI更像一个入口或工具，龙虾更像一个人。</p>
+        <p><strong>核心能力对比</strong>（v2.3新增）：</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>核心能力</th>
+                    <th>具体表现</th>
+                    <th>我的理解</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>电脑权限</strong></td>
+                    <td>浏览器、硬盘、网络、API</td>
+                    <td>不只是聊天，而是真的能接触电脑和外部工具，能读文件、调接口、调用网页能力</td>
+                </tr>
+                <tr>
+                    <td><strong>记忆系统</strong></td>
+                    <td>长期记忆、任务清单、上下文追踪</td>
+                    <td>不是一次性问答，而是能逐步理解你、积累经验、延续任务</td>
+                </tr>
+                <tr>
+                    <td><strong>持续执行</strong></td>
+                    <td>定时任务、自动巡检、主动提醒</td>
+                    <td>不用每次都等你重新下指令，可持续跑、持续盯、持续提醒</td>
+                </tr>
+                <tr>
+                    <td><strong>远程操控</strong></td>
+                    <td>通过 Telegram / 企微 等聊天软件沟通</td>
+                    <td>既方便远程操控，又方便确立多身份 Agent（实实在在感觉在跟不同的人聊天）</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>本质区别</strong>：龙虾不是一个更会聊天的大模型，而是一个<strong>有电脑权限、有记忆系统、能持续执行的Agent</strong>，更像一个24小时替你干活的数字员工。</p>
+
+        <h3 id="12-各方养虾经验">1.2 各方养虾经验</h3>
+
+        <h4>傅盛的两个关键判断</h4>
+        <ul>
+            <li><strong>龙虾特别适合给老板用</strong>——本来就是指挥和训练员工的事</li>
+            <li><strong>特别适合眼高手低的人</strong>——有想法有思路，但有些活干不了，让龙虾来干</li>
+        </ul>
+
+        <h4>李诞：养虾经验</h4>
+        <ul>
+            <li><strong>死了不要挫败</strong>。养虾一定会遇到挂掉的情况，这是正常的，不要把它当失败。类比传统互联网的 Ctrl+S 习惯——要有意识地保存。（v2.3补充）</li>
+            <li><strong>明确存储，不要指望它自己记</strong>。重要内容要主动说"存到Memory里"或"形成skill"，不然上下文一丢就没了。</li>
+            <li><strong>它真的能用</strong>。龙虾真的能改善工作生活，这点区别于其他只带来震撼感的AI产品。</li>
+            <li><strong>通过持续对话塑造性格</strong>。不是一次设置好就完事，而是在对话过程中慢慢建立行为边界。他的原则是"实事求是大于挣钱"——这个边界是喂出来的，不是配出来的。（v2.3补充）</li>
+            <li><strong>无需技术背景，会说话就能养</strong>。入门门槛不高，别被技术词汇吓到。</li>
+            <li><strong>"请神上身"技巧</strong>。让龙虾扮演某个人的视角来思考问题，比如"乔布斯会怎么看这个？"——换一个框架，往往能打开新思路。</li>
+        </ul>
+
+        <h3 id="13-基本驱动规律">1.3 基本驱动规律</h3>
+        <ul>
+            <li><strong>需求驱动</strong>——大量重复性工作、人力消耗大但缺乏创造性</li>
+            <li><strong>好奇驱动</strong>——探索新可能，试探工具能力边界</li>
+            <li>不建议<strong>系统学习</strong>：专业深、迭代快、难坚持</li>
+        </ul>
+
+        <h2 id="第二部分：工具选择">第二部分：工具选择</h2>
+        <p><strong>总原则</strong>：如果有省事的办法，就不要用复杂的办法。当然前提是对安全性有一定了解。</p>
+
+        <h3 id="21-工具选型的核心原则">2.1 工具选型的核心原则</h3>
+        <p><strong>核心落地三要素</strong>（v1.9新增）：</p>
+        <ul>
+            <li><strong>安全（能不能进门？）</strong>：数据隐私、操作权限、边界控制</li>
+            <li><strong>费用（能不能活下去？）</strong>：Token消耗失控是劝退新手的最大障碍</li>
+            <li><strong>能干什么（值不值得折腾？）</strong>：找到真正的业务自动化杠杆</li>
+        </ul>
+
+        <h3 id="22-产品选择与决策因素">2.2 产品选择与决策因素</h3>
+        <p><strong>产品选择过程</strong>：开源版OpenClaw → EasyClaw（一键安装但成本失控，每天20美金）→ 开源版OpenClaw回归</p>
+
+        <p><strong>本机 vs 云端</strong>（v2.3新增）：云端产品（如部分内网/外网一键封装版）拥有相对的安全性保障，免去了配置烦恼；但代价是享受不了本地安装那种对权限随心所欲的修改和调整。这是便利性与可控性之间的必然取舍。</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>类型</th>
+                    <th>产品</th>
+                    <th>特点</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>本地电脑 + 开源 OpenClaw</td>
+                    <td>OpenClaw（开源版）</td>
+                    <td>数据本地可控，可深度定制，权限全开放；需要一定调试能力</td>
+                </tr>
+                <tr>
+                    <td>本地电脑 + 一键封装版</td>
+                    <td>EasyClaw、腾讯 QClaw、box、workbuddy 等</td>
+                    <td>一键安装，界面友好，封装模型，计费方式统一；省去安装调试心力；安全性相对较好</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>外网 vs 内网</strong>（v2.3新增）：</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>类型</th>
+                    <th>产品</th>
+                    <th>说明</th>
+                    <th>特点</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>内网</td>
+                    <td>OpenClaw 内网版</td>
+                    <td>MC0 上长期稳定运行</td>
+                    <td>与 IWiki、KM、KNOT、Tapd 等打通方便；与互联网相对隔绝，安全性好；缺点：很多命令行不支持执行，多 Agent 配置受限</td>
+                </tr>
+                <tr>
+                    <td>内网</td>
+                    <td>Workbuddy（强推荐）</td>
+                    <td>Codebuddy 的龙虾版，openclaw 高仿版，闭源产品</td>
+                    <td>AICoding 能力强，对本地操控能力强；权限隔离好，安全性好；token 供应充足；有本地部署模型；涉敏感信息和复杂任务优先推荐；要求电脑常年开机，可通过企微远程操控</td>
+                </tr>
+                <tr>
+                    <td>内网</td>
+                    <td>KNOT CLAW</td>
+                    <td>http://knot.woa.com/</td>
+                    <td>怀疑不是龙虾产品，而是智能体；与企微结合非常方便；背后可结合知识库（知识库里可以有代码，也可以接 Tapd）</td>
+                </tr>
+                <tr>
+                    <td>内网</td>
+                    <td>Box（强推荐）</td>
+                    <td>https://box-ai.woa.com</td>
+                    <td>PCG 产品；能连通外网和内网；可方便检索浏览内网 IVK、KM、KNOT 知识库；相对安全性更可靠；浏览器操控能力强，包括下载腾讯文档文件；与企微连接很好</td>
+                </tr>
+                <tr>
+                    <td>外网</td>
+                    <td>开源 OpenClaw</td>
+                    <td>github.com</td>
+                    <td>完全开源，可深度定制</td>
+                </tr>
+                <tr>
+                    <td>外网</td>
+                    <td>EasyClaw 等一键封装产品</td>
+                    <td>—</td>
+                    <td>省去安装调试心力，界面友好</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>当前使用组合</strong>：</p>
+        <ul>
+            <li>开源版龙虾 + macmini</li>
+            <li>内网工具：workbuddy、box、openclaw内网版、knot、企微智能机器人、vidas 机器人</li>
+        </ul>
+
+        <p><strong>工具选择五因素</strong>（按优先级）：</p>
+        <ol>
+            <li><strong>安全性</strong>——数据隐私、权限控制</li>
+            <li><strong>可探索空间</strong>——权限开放度，能自定义多少</li>
+            <li><strong>多Agent设置便捷性</strong>——角色隔离、独立记忆</li>
+            <li><strong>聊天软件选择</strong>——可用性、权限、连通性</li>
+            <li><strong>Token费用</strong>——模型调用自由度</li>
+        </ol>
+
+        <p><strong>平台迁移教训</strong>（v2.3新增）：</p>
+        <ul>
+            <li>尽量不要跨平台迁移</li>
+            <li>必须迁的话，提早备份，迁移后预留足够的重新配置时间</li>
+            <li>改名也会带来麻烦</li>
+        </ul>
+
+        <h3 id="23-实用配置与工具">2.3 实用配置与工具</h3>
+
+        <p><strong>Codebuddy / Workbuddy：急救医生</strong>（v2.3新增）：</p>
+        <ul>
+            <li>龙虾出了问题，发给Codebuddy直接改配置</li>
+            <li>OpenClaw挂了，Codebuddy有底层权限修复</li>
+            <li>Workbuddy远程功能，手机上远程救治，很实用</li>
+            <li>基于 Codebuddy，编程能力很强，对本地电脑操控能力也很强</li>
+        </ul>
+
+        <p><strong>版本管理与设备防休眠</strong>（v2.3新增）：</p>
+        <ul>
+            <li><strong>内网环境</strong>：通过内网 Git 仓库备份配置文件、记忆文件、Soul/Identity 等纯文本</li>
+            <li><strong>外网/开发环境</strong>：通过 GitHub 私有仓库管理，出问题可回退版本，迁移时有据可查</li>
+            <li><strong>进阶用法</strong>：结合定时功能，每天提醒自己记录当日进展——"今天干了什么？学到了什么新技能？还有什么待办？"，作为每日日志的一部分</li>
+            <li><strong>防休眠设置（Mac为例）</strong>：
+                <ul>
+                    <li>终端运行命令：<code>caffeinate</code>（防止系统休眠）</li>
+                    <li>或在 Mac "系统设置 -> 显示器 -> 高级" 中开启"当显示器关闭时防止自动休眠"</li>
+                    <li>如果关闭屏幕也想正常运行的话，某宝购买"显卡诱骗器"</li>
+                </ul>
+            </li>
+            <li><strong>设备建议</strong>：闲置非工作电脑，优选 mac 系列，macmini 最佳</li>
+        </ul>
+
+        <p><strong>配置文件透明化</strong>：</p>
+        <p>SOUL.md、USER.md、IDENTITY.md 这些文件都是普通文本格式，不是黑箱，可以直接用编辑器打开修改。想调整语气、改规则、加记忆，直接编辑文件就行，不需要通过对话去"教"它——有时候直接改比反复说清楚快得多。</p>
+
+        <p><strong>关键文件一览表</strong>（v2.3新增）：</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>文件</th>
+                    <th>作用</th>
+                    <th>存放位置</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>SOUL.md</strong></td>
+                    <td>性格、语气、价值观、说话方式（灵魂）</td>
+                    <td><code>~/.openclaw/agents/&lt;agent&gt;/workspace/SOUL.md</code></td>
+                </tr>
+                <tr>
+                    <td><strong>IDENTITY.md</strong></td>
+                    <td>角色定义、职责、工作规则（身份）</td>
+                    <td>同上 workspace 目录</td>
+                </tr>
+                <tr>
+                    <td><strong>USER.md</strong></td>
+                    <td>用户信息配置</td>
+                    <td>同上 workspace 目录</td>
+                </tr>
+                <tr>
+                    <td><strong>AGENTS.md</strong></td>
+                    <td>Agent 之间互相认识的配置</td>
+                    <td>同上 workspace 目录</td>
+                </tr>
+                <tr>
+                    <td><strong>MEMORY.md</strong></td>
+                    <td>长期记忆、待办事项</td>
+                    <td>同上 workspace 目录</td>
+                </tr>
+                <tr>
+                    <td><strong>models.json</strong></td>
+                    <td>模型配置（用哪个大脑）</td>
+                    <td>agent 配置目录</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>教训</strong>：SOUL.md在workspace里，不在agent配置目录里，一开始找错过位置。</p>
+
+        <h2 id="第三部分：安全问题">第三部分：安全问题</h2>
+
+        <h3 id="31-安全操作原则">3.1 安全操作原则</h3>
+        <p><strong>风险评估先行</strong>（v2.3新增，写入龙虾要求）：</p>
+        <ul>
+            <li>低风险高必要性→立即执行</li>
+            <li>高风险低必要性→暂缓或寻找替代</li>
+            <li>不可逆的操作，要多次确认</li>
+        </ul>
+
+        <p><strong>敏感信息种类与脱敏原则</strong>：敏感信息包括：认证凭据（Token/密码）、个人身份信息、联系方式、财务信息、工作敏感信息等。</p>
+
+        <p><strong>进阶安全建议</strong>（v2.3扩展）：</p>
+        <ol>
+            <li><strong>硬隔离</strong>（v2.3新增）：不在工作电脑上安装本地版 openclaw，尤其是司外产品；可选云端版，或workbuddy 等更安全的产品</li>
+            <li><strong>限制高危权限、限制文件夹访问</strong>（v2.3新增）：建议在OpenClaw配置中明确限制对敏感目录（如~/Documents、~/Desktop）的访问权限，只开放必要的工作目录。对于高危操作（如文件删除、系统命令执行），应设置显式确认机制，避免误操作造成数据损失。</li>
+            <li><strong>安全体检助手</strong>（v1.9新增）：定期用ClawScan工具扫描，工具地址：https://matrix.tencent.com/clawscan/；相关文章参考：<a href="https://mp.weixin.qq.com/s/LyB1O-9csSScKrhLu08VNg">《关于 OpenClaw 的10条安全红线》</a></li>
+            <li><strong>密钥物理隔离</strong>（v1.9新增）：不建议直接在OpenClaw日常对话框中发送密钥；可通过 Workbuddy 等专属环境操作敏感密钥</li>
+            <li><strong>Skill安全</strong>（v1.8新增）：避免安装来源不明的Skill/MCP；安全检测方法：1) 检查Skill源码是否开源透明；2) 验证Skill是否来自可信仓库；3) 在隔离环境中测试Skill行为；4) 检查Skill是否请求不必要的高危权限；尽量选择大厂安全的Skill库，或者根据需求自己手搓Skill</li>
+        </ol>
+
+        <p><strong>新判断</strong>：行业整体安全能力在提升——openclaw版本升级更多、一键封版更多安全检查的方法、安全的 skill 仓库在增多。</p>
+
+        <h3 id="32-自研与重点加载的技能清单">3.2 自研与重点加载的技能清单（v2.0更新）</h3>
+        <ul>
+            <li>ppt-to-text、voice-analysis、health-automation、medication-management</li>
+            <li>calendar-reminder、edgeone-clawscan、token-optimizer</li>
+            <li>weekly-report-editing、2month-report、audio-understanding</li>
+        </ul>
+
+        <h2 id="第四部分：token消耗">第四部分：Token消耗</h2>
+
+        <h3 id="41-成本控制的核心策略">4.1 成本控制的核心策略</h3>
+        <p><strong>定时统计</strong>：设置一个定时检查任务，比方说每天回顾过去24小时各个Agent所消耗的token量以及总token消耗量。</p>
+
+        <p><strong>工作区大扫除</strong>（v2.3补充机制解释）：</p>
+        <ul>
+            <li><strong>为什么会突然极度消耗 Token？</strong> OpenClaw 的机制是：只要你在这个助手的根目录（workspace-xxx/）放了 <code>.md</code> 文件，<strong>每次对话都会把它们当作系统背景塞给大模型</strong>。</li>
+            <li><strong>真实教训</strong>：如果在根目录堆积了大量的历史调研报告、草稿或开发文档，哪怕你只对助手说一句"你好"，它起步就可能耗掉几万个 Input Token。</li>
+            <li><strong>真实教训</strong>：为了确保长任务不中断，设置了每小时的自动检查，结果长任务和复杂任务并不多，检查意义不大，浪费大量 token。</li>
+            <li><strong>解决绝招</strong>：保持助手工作区根目录<strong>绝对干净</strong>（只留 <code>SOUL.md</code>、<code>IDENTITY.md</code>、<code>USER.md</code> 等核心预设）。其余所有过程文件、参考资料，<strong>统统新建一个 archive/（归档）或者 docs/ 文件夹塞进去</strong>。一旦移入子文件夹，OpenClaw 就不会默认硬塞进上下文了。</li>
+            <li>相关经验已总结成skill token-optimizer，仓库链接：<a href="https://github.com/zhangsan-tea/openclaw-skills/tree/main/token-optimizer">https://github.com/zhangsan-tea/openclaw-skills/tree/main/token-optimizer</a></li>
+        </ul>
+
+        <p><strong>理清再问</strong>：</p>
+        <ul>
+            <li>复杂的事情先拆成几个部分，理顺了再抛给龙虾</li>
+            <li>在传统AI对话框理顺后再抛给龙虾，不要一次性着急输出</li>
+        </ul>
+
+        <p><strong>术业有专攻</strong>：</p>
+        <ul>
+            <li>纯查询类简单信息，用传统AI对话框（ChatGPT/Gemini Web）效果更好且不费龙虾的 Token</li>
+            <li>复杂任务用龙虾，但编程建议用Codebuddy和Workbuddy</li>
+        </ul>
+
+        <h3 id="42-善用系统命令">4.2 善用系统命令</h3>
+        <ul>
+            <li><code>/new</code>：开启全新对话，彻底清空上下文，最省 Token</li>
+            <li><code>/reset</code>：保留记忆，清空短期上下文，适合换话题时用</li>
+            <li><code>/compact</code>：压缩当前会话，保留关键信息丢弃多余细节</li>
+            <li><code>/models</code>：查看和切换模型</li>
+            <li><code>/status</code>：查看当前状态</li>
+        </ul>
+
+        <h3 id="43-模型选择策略">4.3 模型选择策略（v2.3新增）</h3>
+        <ul>
+            <li>根据工作任务特点，配置不同的主模型和备用模型</li>
+            <li>Mac mini等设备可部署本地轻量级模型</li>
+            <li>不复杂的要求交给本地模型，省下巨额API费用</li>
+            <li><strong>基本原则</strong>：需求极其简单时随便用，严重依赖模型能力时用最好的。<strong>稍复杂一点的任务，真的是模型高一寸，工程胜一丈。</strong></li>
+        </ul>
+
+        <p><strong>模型能力对照表（参考，2026年3月）</strong>（v2.3新增）：</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>模型</th>
+                    <th>中文处理</th>
+                    <th>Deep Research</th>
+                    <th>超长上下文</th>
+                    <th>多模态识别</th>
+                    <th>编程能力</th>
+                    <th>费用</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GPT-5 系列</td>
+                    <td>★★★★</td>
+                    <td>★★★★★</td>
+                    <td>★★★★★</td>
+                    <td>★★★★★</td>
+                    <td>★★★★★</td>
+                    <td>高</td>
+                </tr>
+                <tr>
+                    <td>Claude Opus 4.6</td>
+                    <td>★★★★</td>
+                    <td>★★★★★</td>
+                    <td>★★★★★</td>
+                    <td>★★★★★</td>
+                    <td>★★★★★</td>
+                    <td>高（顶级性能）</td>
+                </tr>
+                <tr>
+                    <td>Claude Sonnet 4.6</td>
+                    <td>★★★★</td>
+                    <td>★★★★★</td>
+                    <td>★★★★★</td>
+                    <td>★★★★★</td>
+                    <td>★★★★★</td>
+                    <td>中高（性价比旗舰）</td>
+                </tr>
+                <tr>
+                    <td>Gemini 3 Pro</td>
+                    <td>★★★★</td>
+                    <td>★★★★★</td>
+                    <td>★★★★★</td>
+                    <td>★★★★★</td>
+                    <td>★★★★</td>
+                    <td>中高</td>
+                </tr>
+                <tr>
+                    <td>GLM-5 / Qwen3 Max</td>
+                    <td>★★★★</td>
+                    <td>★★★</td>
+                    <td>★★★</td>
+                    <td>★★★</td>
+                    <td>★★★★</td>
+                    <td>中</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 id="第五部分：使用场景">第五部分：使用场景</h2>
+        <p><strong>基本驱动规律</strong>：</p>
+        <ul>
+            <li><strong>需求驱动</strong>：重复性、消耗性且缺乏创造性的问题，传统方法搞不定的难题</li>
+            <li><strong>好奇驱动</strong>：探索新可能，试探工具能力边界</li>
+            <li>不建议<strong>系统学习</strong>：专业深、迭代快、难坚持</li>
+        </ul>
+
+        <h3 id="51-主要使用场景">5.1 主要使用场景（v2.3新增详细表格）</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>场景</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>改稿子</strong></td>
+                    <td>指挥龙虾反复修改稿件，像跟人说"这里再调一下、那里换个说法"，精准度比传统模型好。可读取本地文件夹，方便存储不同版本。<strong>经验可积累</strong>：把改稿规则逐步沉淀，它会记住。<strong>先让AI看规律，不着急先入为主</strong>：把自己发现的规律先不给，让AI先分析其中特征和规律，有新发现再叠加自己的想法。</td>
+                </tr>
+                <tr>
+                    <td><strong>标准细化与审核</strong></td>
+                    <td>对文字材料进行精细化处理和审核（探索中）</td>
+                </tr>
+                <tr>
+                    <td><strong>家庭药品管理</strong></td>
+                    <td>扫描识别录入→存量查询→过期提醒→推荐采购。涉及扫描识别→自动提醒→寻找采购全流程。（推进中）</td>
+                </tr>
+                <tr>
+                    <td><strong>周报传播与编辑</strong></td>
+                    <td>定期整理、编辑、传播周报</td>
+                </tr>
+                <tr>
+                    <td><strong>定时搜集与扫描</strong></td>
+                    <td>定时扫描文件夹、处理新文件、定时提醒</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 id="52-多agent分工策略">5.2 多Agent分工策略</h3>
+
+        <p><strong>多 Agent 的两种思路与现实边界</strong>（v1.8扩展）：</p>
+        <ul>
+            <li><strong>横向分工（按专业角色）</strong>：不同专业的事交给不同的 Agent，对话不混、文件不混、记忆不混。</li>
+            <li><strong>纵向分工（按流程环节）</strong>：同一个任务，有负责开发的、有负责监理的、有负责审核的。</li>
+        </ul>
+        <blockquote>
+            💡 <strong>现实观察：边界模糊是常态</strong>：实际跑下来发现，分工很难绝对明确。比如<strong>健康问题</strong>往往跟<strong>心理状态</strong>有关（跨了健康顾问和觉醒教练）；<strong>工作思考</strong>也常跟自己的<strong>行事模式</strong>有关（跨了数字幕僚和觉醒教练）。这非常正常，人本身就是一个整体。
+            目前倾向<strong>分开为主</strong>，但信息偶尔共享时用明文传递，避免黑箱。
+        </blockquote>
+
+        <p><strong>试验中的多Agent分工表</strong>（v2.3新增）：</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Agent</th>
+                    <th>角色与使用要点</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>弗洛一德</strong></td>
+                    <td>总指挥 / 养虾助理（承接模糊类需求）</td>
+                </tr>
+                <tr>
+                    <td><strong>写作助手</strong></td>
+                    <td>内容创作与润色。沉淀规则到企业文档，专业分工最后才打磨。（后来发现专业写作要先进入专业助手）</td>
+                </tr>
+                <tr>
+                    <td><strong>数字幕僚</strong></td>
+                    <td>工作类信息的辅助分析</td>
+                </tr>
+                <tr>
+                    <td><strong>健康顾问</strong></td>
+                    <td>健康评估与康复指导。💡 进度与激励：通过设立一些进度显示和激励措施，顺着人性做事。</td>
+                </tr>
+                <tr>
+                    <td><strong>觉醒教练</strong></td>
+                    <td>心理学+正念禅修+ICF-MCC教练。需要清晰提示词、足够上下文，通过日常互动积累默契，结合知识库深挖。</td>
+                </tr>
+                <tr>
+                    <td><strong>进化官</strong></td>
+                    <td>能力传承与技能推广。最高权限，负责能力学习、技能传导、故障诊断。强调<strong>明文优先</strong>。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>各Agent使用要点</strong>（v2.3新增）：</p>
+        <p><strong>觉醒教练：</strong></p>
+        <ul>
+            <li><strong>清晰的提示词和角色设定</strong>：设定为有心理学和正念禅修背景的 ICF MCC 教练，帮助发现潜能、盲区、模式，探索更多可能。这个设定是基础，决定了对话的深度和方向。</li>
+            <li><strong>足够的上下文和背景信息</strong>：主动提供个人相关情况，包括个人经历、对话记录等，帮助它往深处思考，而不是停留在表面。</li>
+            <li><strong>日常互动积累默契</strong>：通过持续对话，慢慢觉得它很懂你，你也越来越知道怎么用它——它对你的情况、特点、模式、盲区以及变化会越来越敏锐。这个在内观类应用上非常明显。</li>
+            <li><strong>与知识库结合</strong>：复杂文档可以放到知识库里，利用龙虾的整体分析能力来看情况；也可以利用定时能力，定时拉取新信息（如来自 flomo 的随手记），跟踪新议题和情况的变化。</li>
+        </ul>
+
+        <p><strong>进化官：</strong></p>
+        <ul>
+            <li>整个系统的"能力传导器"，拥有最高权限</li>
+            <li>具体做三件事：<strong>能力学习</strong>（负责升级系统、学习新技能）、<strong>技能传导</strong>（一个 Agent 学会的通用能力向其他 Agent 推广）、<strong>故障诊断</strong>（其他 Agent 出问题后帮诊断和修复）</li>
+            <li><strong>案例</strong>：某 Agent 学到了处理某类文件的能力 → 进化官验证可通用 → 推广到所有需要的 Agent</li>
+            <li><strong>明文优先</strong>：Agent 之间通过明文传递信息，不搞暗箱操作，避免变成自己都看不懂的系统</li>
+        </ul>
+
+        <h3 id="53-知识管理">5.3 知识管理</h3>
+
+        <p><strong>知识 vs 记忆</strong>：</p>
+        <ul>
+            <li><strong>知识</strong>：可复用、结构化、跨会话传递的公共信息</li>
+            <li><strong>记忆</strong>：个人化、情境化、随互动积累的私人信息</li>
+        </ul>
+
+        <p><strong>知识库打通</strong>（v2.3补充）：</p>
+        <ul>
+            <li>外部平台：Obsidian、NotebookLM、IMA</li>
+            <li>内网平台：KNOT、Box</li>
+            <li>批量处理：通过Codebuddy/Workbuddy批量处理</li>
+        </ul>
+
+        <p><strong>工具组合场景分工表</strong>（v2.3新增）：</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>场景</th>
+                    <th>工具</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>一般问询</td>
+                    <td>Gemini / ChatGPT（回答清晰，省 Token）</td>
+                </tr>
+                <tr>
+                    <td>复杂任务方案</td>
+                    <td>Gemini 先出方案 → 再抛给 Workbuddy 或龙虾</td>
+                </tr>
+                <tr>
+                    <td>程序开发</td>
+                    <td>Codebuddy / Workbuddy（不用龙虾）</td>
+                </tr>
+                <tr>
+                    <td>内网信息读取</td>
+                    <td>Box（IWiki/KM/KNOT）</td>
+                </tr>
+                <tr>
+                    <td>龙虾急救/调试</td>
+                    <td>Codebuddy / Workbuddy</td>
+                </tr>
+                <tr>
+                    <td>改稿子</td>
+                    <td>龙虾（通过聊天软件，持续对话，积累经验规则）</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 id="54-聊天软件">5.4 聊天软件</h3>
+        <p>试过飞书、企业微信、Discord、QQ，主战场落在Telegram。</p>
+        <p><strong>企业微信</strong>是理想选择，能内外网拉通，群消息读取和机器人互@还没完全配通，继续探索中。</p>
+
+        <p><strong>聊天软件对比表</strong>（v2.3新增）：</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>平台</th>
+                    <th>优点</th>
+                    <th>缺点</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Telegram</strong></td>
+                    <td>机器人创建极方便；单点沟通顺畅；安全性好</td>
+                    <td>需要梯子</td>
+                </tr>
+                <tr>
+                    <td><strong>飞书</strong></td>
+                    <td>与文档/日历集成好；拉群方便；有一键部署工具</td>
+                    <td>权限配置繁琐；附件读权限混乱</td>
+                </tr>
+                <tr>
+                    <td><strong>企业微信</strong></td>
+                    <td>内外网打通；安全可控；可与内网机器人协作</td>
+                    <td>权限严格；群消息读取受限</td>
+                </tr>
+                <tr>
+                    <td><strong>Discord</strong></td>
+                    <td>支持私信和服务器频道与 OpenClaw 对话</td>
+                    <td>回复延迟较长；国内访问相对稳定</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 id="55-健康顾问深度实践">5.5 健康顾问深度实践（v1.9新增）</h3>
+        <ul>
+            <li><strong>身份定位</strong>：做温暖实用的健康教练，而非医生。提供基于常识的生活方式指导，严格守住医疗边界。</li>
+            <li><strong>五大功能</strong>：
+                <ol>
+                    <li><strong>健康档案管理</strong>：结构化存储体检报告、影像检查等，并动态更新</li>
+                    <li><strong>症状跟踪与分析</strong>：整合 Apple Health 等多源数据，进行趋势和关联分析</li>
+                    <li><strong>康复指导</strong>：提供分阶段、动作分级的运动处方，安全第一</li>
+                    <li><strong>用药管理</strong>：维护药品清单、设置提醒、解释药物知识</li>
+                    <li><strong>定时提醒</strong>：同步健康数据、提醒运动和复查</li>
+                </ol>
+            </li>
+            <li><strong>交互原则</strong>：主动关怀但不打扰；渐进式收集信息；提供可操作的具体建议；建立正向激励机制</li>
+            <li><strong>风险管理</strong>：严守医疗边界、保护数据隐私、坚持安全第一</li>
+            <li><strong>重要感受</strong>：多给上下文，多交流多提醒</li>
+        </ul>
+
+        <h3 id="56-语音输入">5.6 语音输入</h3>
+        <p>工具谱系（还原度递减、加工度提升）：<strong>豆包输入法 → 微信输入法 → SaySo → Typeless</strong></p>
+        <p>越往后越"模糊智能"，对原话改动越多。大部分时候模糊输入就够了，它能理解。</p>
+        <p><strong>原则：不要在重复的事情上消耗心力，保持流畅。</strong></p>
+
+        <h2 id="第六部分：待探索方向">第六部分：待探索方向</h2>
+
+        <h3 id="61-近期待探索">6.1 近期待探索</h3>
+        <ul>
+            <li>企微多Agent配置的完整方案（多人群里与龙虾接口沟通、外网龙虾与内网龙虾在企微群里的原则性问答）</li>
+            <li>成本优化的具体执行方案（低成本本地模型替换计划）</li>
+            <li>团队协作场景的完整落地：多人群聊协同、内外网信息安全桥接</li>
+            <li>知识库API打通进度</li>
+            <li>多Agent助手互相直接对话、底层驱动干活</li>
+        </ul>
+
+        <h3 id="62-长期愿景">6.2 长期愿景（v2.3新增）</h3>
+        <ul>
+            <li>多Agent协同进化：自组织机制、Skill迁移与共享</li>
+            <li>个人能力的数字化延展：个人经验如何支持到团队</li>
+            <li>知识转化入库实战：ppt-to-text优化，视频+PPT知识提取</li>
+            <li>系统架构师视角：从工具使用者到体系架构师的完整转型路径</li>
+        </ul>
+
+        <h2 id="第七部分：ai-使用基本原则汇总">第七部分：ai 使用基本原则汇总（v1.8扩展）</h2>
+        <blockquote>
+            "很多时候不是做不到，而是想不到，或者说不敢想。多年的规训让我们的自我审查意识极强，甚至潜入到潜意识中间。"
+        </blockquote>
+
+        <h3 id="71-使用ai需要有往后退一步的意识">7.1 使用AI需要有"往后退一步"的意识</h3>
+        <p>放弃完美提问，不要想一次性说清楚。慢就是快。</p>
+        <ul>
+            <li><strong>方向不清时退一步</strong>：写文章没想明白路径时，先问 AI 出个框架建议，再多轮推敲；研究方法不清晰时，请它整理已有方式。</li>
+            <li><strong>遇到卡点时退一步</strong>：不知道用什么工具去问它，工具不会用去问它怎么用，卡住了问怎么解决。</li>
+            <li><strong>不知怎么提问时退一步</strong>：倒回去问"我该怎么提问？"，或者请它代写提示词（苏格拉底提问法很重要）。不知道该提供什么信息时，先讲大概情况，然后问"你还需要我提供什么？"，别着急让对方输出答案。</li>
+            <li><strong>已有框架时退一步</strong>：哪怕自己已经写了提纲，依然可以请它分析：这个框架的基本逻辑是什么？还要考虑哪些因素？</li>
+        </ul>
+
+        <p><strong>核心</strong>：退回到最初的原始意图，一点点把已知和确定的输入给它，同时让它了解你的"不确定"。AI 很强的一点，就是能把散乱的多轮对话最后结构化整理出来。</p>
+
+        <h3 id="72-人的价值重新定位">7.2 人的价值重新定位（v2.3新增）</h3>
+        <p>有了 AI 之后，<strong>学习依然重要，但要把人从繁琐的死记硬背中解放出来</strong>。人的价值更在于：发现需求、明确需求、承担责任，以及创造力、好奇心、审美等。</p>
+
+        <h3 id="73-核心方法论摘要">7.3 核心方法论摘要</h3>
+        <ul>
+            <li>需求和好奇是最基本的驱动力</li>
+            <li><strong>工具是助手，人承担最终决策权</strong>——责任不外包</li>
+            <li><strong>意图比流程重要</strong>——讲清楚要什么，而不是强加工作流</li>
+            <li><strong>上下文是核心资产</strong>——慢慢积累，重要信息主动存Memory</li>
+            <li><strong>敢于授权</strong>——"我授权你，自己想办法"</li>
+            <li><strong>用好模型</strong>——稍复杂任务，模型高一寸，工程胜一丈</li>
+            <li><strong>不要用自己的想法套住模型</strong>——先丢给 AI 看规律，有新发现再叠加（v2.3新增）</li>
+            <li><strong>结构壳也是能力</strong>——AI 能力的几个层次中，龙虾外面的结构壳（Harness）本身也是极强的能力扩展（v2.3新增）</li>
+        </ul>
+
+        <h2 id="附录：用户深层感受">附录：用户深层感受（v2.1新增，龙虾根据历史记录自己总结）</h2>
+        <ol>
+            <li><strong>Token消耗失控的焦虑与优化</strong>
+                <ul>
+                    <li>进化官单日消耗62万Token，成为系统最大负担</li>
+                    <li>根本原因是工作区根目录堆积了大量非必要文件，被OpenClaw自动加载为上下文</li>
+                    <li>通过建立<code>archive/</code>目录进行归档，配合<code>/new</code>命令有效控制了消耗</li>
+                    <li><strong>深层感受</strong>：Token不仅是费用问题，更是系统性能和可用性的核心指标。无节制的消耗会让整个系统变得笨重不堪。</li>
+                </ul>
+            </li>
+            <li><strong>多Agent角色边界模糊的困扰</strong>
+                <ul>
+                    <li><strong>深层感受</strong>：AI助手不是简单的功能模块，而是需要精心设计的"数字员工团队"，每个角色都需要清晰的行为边界而非功能列表。</li>
+                </ul>
+            </li>
+            <li><strong>知识库体系的碎片化痛苦</strong>
+                <ul>
+                    <li>同时在管理多个知识平台：内网（KNOT、IWiki、KM）、外网（Obsidian、NotebookLM）、本地（OpenClaw自带知识库）、GIT笔记、IMA等</li>
+                    <li><strong>深层感受</strong>：信息分散在不同平台，缺乏统一的输入输出标准，导致知识管理成本极高。渴望一个"分合一体"的框架——既能专业分工，又能全局洞察。</li>
+                </ul>
+            </li>
+            <li><strong>安全与便利的永恒博弈</strong></li>
+            <li><strong>从"功能导向"到"系统思维"的转变阵痛</strong>
+                <ul>
+                    <li><strong>深层感受</strong>：已经超越了技术实现层面，开始思考如何构建一个可维护、可扩展、可传承的AI工作体系。</li>
+                </ul>
+            </li>
+            <li><strong>"产品化思维"的觉醒</strong>
+                <ul>
+                    <li>将个人实践转化为可共享的产品；建立L1/L2/L3的用户能力分级；每个输出都是"说明书+工具"的完整组合</li>
+                    <li><strong>深层感受</strong>：真正的价值不在于自己用得多好，而在于能否降低他人的使用门槛，形成生态效应。</li>
+                </ul>
+            </li>
+        </ol>
+
+        <p><strong>这些感受都指向一个共同的主题：正在从一个AI工具使用者，转变为一个AI工作体系的架构师。</strong></p>
+
+        <p><strong>附：自研技能清单（v2.3更新）</strong></p>
+        <p>初步完善：</p>
+        <ul>
+            <li><strong>ppt-to-text</strong>：PPT文件转结构化文字解读（知识库管理的重要一环）</li>
+            <li><strong>token-optimizer</strong>：Token消耗优化与成本控制</li>
+            <li><strong>medication-management</strong>：家庭药品管理系统</li>
+            <li><strong>calendar-reminder</strong>：日程提醒助手</li>
+            <li>以上几项，附上github仓库链接：<a href="https://github.com/zhangsan-tea/openclaw-skills">https://github.com/zhangsan-tea/openclaw-skills</a></li>
+        </ul>
+
+        <p>仍在尝试中：</p>
+        <ul>
+            <li><strong>voice-analysis</strong>：语音内容分析（涉及外部能力）</li>
+            <li><strong>health-automation</strong>：健康数据自动化管理</li>
+            <li><strong>edgeone-clawscan</strong>：安全体检扫描助手</li>
+        </ul>
+
+        <p>附：系统学习资源</p>
+        <p><a href="H27Iw9ussiaYbokymhncExtjnAh">OpenClaw橙皮书：从入门到精通</a><br>
+        <a href="THLNw1vWCiXJD6kvomlcYpu5nRe">🐲🦞扫盲版-给不会使用的同学看</a></p>
+
+        <h2 id="结语">结语</h2>
+        <blockquote>
+            "人和龙虾的关系极其复杂，是老板与员工，是助手与主人，是老师与学生，是朋友，是对手，甚至是另一个分身。关系层层叠叠，说不清道不明，但归根到底，他们一个是虾，一个是养虾的人，是在共生。"— 李诞
+        </blockquote>
+        <p style="text-align: center; font-style: italic;">"一起探索：如何在安全边界内，最大化AI助手的价值"</p>
+
+        <div class="footer">
+            <p>养虾笔记 v2.3 | 更新时间：2026年4月6日</p>
+        </div>
+    </div>
+</body>
+</html>
