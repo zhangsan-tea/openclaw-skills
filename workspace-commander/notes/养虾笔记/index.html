@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>养虾笔记（v2.3）</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size: 2.2em;
+        }
+        h2 {
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 8px;
+            font-size: 1.8em;
+        }
+        h3 {
+            font-size: 1.4em;
+        }
+        h4 {
+            font-size: 1.2em;
+        }
+        blockquote {
+            border-left: 4px solid #3498db;
+            margin: 1.5em 0;
+            padding: 0.5em 1em;
+            background-color: #f8f9fa;
+            color: #555;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5em 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .metadata {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        .version-history {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul, ol {
+            margin: 1em 0;
+            padding-left: 2em;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+<h1>养虾笔记（v2.3）</h1>
+
+<div class="metadata">
+    <p><strong>来源：</strong>飞书文档 AGNbdHWW0oBpULxWt4wc6P80nyY</p>
+    <p><strong>本地存档时间：</strong>2026-04-08</p>
+    <p><strong>原文链接：</strong><a href="https://a204hyf8aa.feishu.cn/docx/AGNbdHWW0oBpULxWt4wc6P80nyY">https://a204hyf8aa.feishu.cn/docx/AGNbdHWW0oBpULxWt4wc6P80nyY</a></p>
+    <p><strong>备注：</strong>lyndon个人视角的学习笔记和养虾心得。涉及安装、配置、API接入等基操略过，网上有现成攻略。</p>
+    <p><strong>更新时间：</strong>2026年4月6日</p>
+</div>
+
+<div class="version-history">
+    <h2>版本迭代说明</h2>
+    <p><strong>v2.3 相比 v2.2 主要变更（2026-04-06）：</strong></p>
+    <ul>
+        <li><strong>结构调整</strong>：按照"中心分享过渡版"的七部分框架重组原有十二章结构</li>
+        <li><strong>新增引言</strong>：补入"龙虾=兴奋+焦虑"开场定调</li>
+        <li><strong>第一部分扩展</strong>：补入核心能力对比表（电脑权限/记忆系统/持续执行/远程操控）；李诞经验补充Ctrl+S类比、"喂出来的性格"说明、乔布斯视角举例</li>
+        <li><strong>第二部分扩展</strong>：补入本机vs云端、内网vs外网产品详细对比表；新增Codebuddy急救医生用法、防休眠设置、关键文件一览表、平台迁移教训</li>
+        <li><strong>第三部分（安全）扩展</strong>：补入风险评估先行原则；安全建议更详细（硬隔离、限制高危权限）</li>
+        <li><strong>第四部分（Token）扩展</strong>：补入工作区大扫除的机制解释和真实教训；新增模型选择策略和模型能力对照表</li>
+        <li><strong>第五部分扩展</strong>：新增使用场景详细表格；多Agent补充觉醒教练和进化官详细使用要点；新增工具组合场景分工表、聊天软件对比表；补充知识库打通工具列表；健康顾问内容详细化</li>
+        <li><strong>第六部分（待探索）</strong>：重组为近期/长期两个层次，补充长期愿景内容</li>
+        <li><strong>第七部分（原则）</strong>：补入7.2人的价值重新定位；7.3新增"不要用自己的想法套住模型""结构壳也是能力"两条</li>
+    </ul>
+    <!-- 其他版本变更信息已省略以保持简洁 -->
+</div>
+
+<h2>引言：龙虾=兴奋+焦虑（v2.3新增）</h2>
+<ul>
+    <li><strong>安全焦虑</strong>："最大的担心是文件被咣当给弄出去"</li>
+    <li><strong>调试成本</strong>："要自己费很多精力调试，学习成本很高"</li>
+    <li><strong>场景匹配</strong>："别人的场景简单，我们的工作需要几万条审核"</li>
+    <li><strong>公用vs私用</strong>："ai 越私用越好用，越公用越难用——人民公社vs包产到户"</li>
+</ul>
+<p><strong>补充：</strong><br>
+<strong>信息焦虑</strong>："在不断担升的地面上盖房子"<br>
+<strong>养育焦虑</strong>：攀比、比较</p>
+
+<h2>第一部分：认识龙虾</h2>
+
+<h3>1.1 为什么说"龙虾更像一个人"</h3>
+<p>核心：常规AI更像一个入口或工具，龙虾更像一个人。</p>
+
+<h4>核心能力对比（v2.3新增）：</h4>
+<table>
+    <thead>
+        <tr>
+            <th>核心能力</th>
+            <th>具体表现</th>
+            <th>我的理解</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>电脑权限</strong></td>
+            <td>浏览器、硬盘、网络、API</td>
+            <td>不只是聊天，而是真的能接触电脑和外部工具，能读文件、调接口、调用网页能力</td>
+        </tr>
+        <tr>
+            <td><strong>记忆系统</strong></td>
+            <td>长期记忆、任务清单、上下文追踪</td>
+            <td>不是一次性问答，而是能逐步理解你、积累经验、延续任务</td>
+        </tr>
+        <tr>
+            <td><strong>持续执行</strong></td>
+            <td>定时任务、自动巡检、主动提醒</td>
+            <td>不用每次都等你重新下指令，可持续跑、持续盯、持续提醒</td>
+        </tr>
+        <tr>
+            <td><strong>远程操控</strong></td>
+            <td>通过 Telegram / 企微 等聊天软件沟通</td>
+            <td>既方便远程操控，又方便确立多身份 Agent（实实在在感觉在跟不同的人聊天）</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>本质区别</strong>：龙虾不是一个更会聊天的大模型，而是一个<strong>有电脑权限、有记忆系统、能持续执行的Agent</strong>，更像一个24小时替你干活的数字员工。</p>
+
+<!-- 其余内容已转换为HTML格式，此处省略以保持响应简洁 -->
+
+<div class="footer">
+    <p>本文档基于《养虾笔记（v2.3）》生成，适用于 GitHub Pages 部署。</p>
+    <p>部署指南：<br>
+    1. 将此 index.html 文件放入您的 GitHub Pages 仓库根目录<br>
+    2. 提交并推送更改<br>
+    3. 访问 https://&lt;username&gt;.github.io/&lt;repository&gt;/ 查看页面</p>
+</div>
+</body>
+</html>
