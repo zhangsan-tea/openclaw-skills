@@ -1,0 +1,9 @@
+{
+  "promptDelete": false,
+  "newLinkFormat": "shortest",
+  "attachmentFolderPath": "_assets",
+  "showUnsupportedFiles": true,
+  "alwaysUpdateLinks": true,
+  "defaultViewMode": "source",
+  "livePreview": false
+}
