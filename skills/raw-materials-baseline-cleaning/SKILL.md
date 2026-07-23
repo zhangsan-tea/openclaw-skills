@@ -65,12 +65,28 @@ Trigger conditions:
    - Present `baseline_report.md` plus queue CSV files.
    - Request user confirmation before any destructive follow-up batch.
 
+6. Safe apply mode (isolation + rollback) for approved P0 batches.
+   When the user approves applying P0 actions (dedup move / redaction), run in an isolated, reversible folder tree. Never delete originals.
+   - Create `_P0_clean_<timestamp>/` under the repository root with subfolders:
+     - `_dedup_quarantine/<relative_path>` — MOVE duplicate files here (preserving relative path); canonical + non-duplicate files stay in place → clean trunk achieved without deletion.
+     - `_redaction_output/<relative_path>` — WRITE redacted COPIES here; originals are never modified.
+   - Emit `dedup_rollback_manifest.csv` (each moved file: src→quarantine, reverse `mv` command) and `redaction_log.csv` (per file: phone/email/idcard/key counts actually rewritten, dst path).
+   - Emit `rollback_manifest.csv` (unified reverse instructions) and `pre_run_snapshot.json` (list of moved originals for integrity check).
+   - Redaction patterns (conservative, avoid false positives):
+     - Phone: `1[3-9]\d{9}` → keep first 3 + `****` + last 4.
+     - Email: mask local part (`u***@domain`).
+     - ID card: STRICT validator (GB 11643-1999: 2-digit province code in known set + plausible date + checksum). Raw 18-digit matches are ~99% false positives (hashes / case numbers); only validated IDs get masked. Do NOT blanket-mask all 18-digit numbers.
+     - Key-like: only `api_key/secret/token/password/sk-...` followed by a quoted secret ≥8 chars; mask the secret value.
+   - Year-missing flag: after extraction, add a single `year_missing` column to `provenance_manifest.csv` (value `YES` when `inspection_year` empty); regenerate the index with red-highlighted year-less groups. Guard against duplicate column headers when rewriting the CSV.
+
 ## Pitfalls
 
 - Do not merge boundary-broken links with true missing nodes in one batch.
 - Do not treat all duplicate files as safe-to-delete; keep canonical and review context.
 - Do not scan binary files as plain text and assume sensitive-clean.
 - Do not execute destructive dedup without explicit user confirmation and backup.
+- ID-card scanning: 18-digit sequences are mostly false positives (file hashes, order numbers). Always validate with province code + checksum before masking; never mask blindly.
+- When rewriting `provenance_manifest.csv`, avoid creating a duplicate `year_missing` column (read existing header first, then add at most one).
 
 ## Verification
 
