@@ -1,6 +1,6 @@
 ---
 name: raw-materials-baseline-cleaning
-description: Build a clean baseline trunk for archival raw materials before knowledge ingestion. Use this skill when repeatedly running non-Wiki baseline governance on a material repository, including dedup candidate extraction, sensitive-text candidate scan, binary/OCR scan queue generation, generic filename queueing, and downloadable canonical manifest output.
+description: Build a clean baseline trunk for archival raw materials before knowledge ingestion. Use this skill when repeatedly running non-Wiki baseline governance on a material repository, including dedup candidate extraction, sensitive-text candidate scan, binary/OCR scan queue generation, generic filename queueing, provenance (year×inspection) extraction, and downloadable canonical manifest output.
 description_zh: 原始材料基线清洗
 description_en: Raw baseline cleaning
 disable: false
@@ -36,8 +36,17 @@ Trigger conditions:
      - `sensitive_candidates_text_scan.csv` (phone/ID/email/key-like matches in text files)
      - `unscanned_binary_queue.csv` (pdf/docx/xlsx/pptx/images, pending parser/OCR)
      - `generic_filename_queue.csv` (files requiring rename normalization)
-     - `baseline_action_queue.csv` (P0/P1/P2 integrated execution queue)
-     - `summary.json` and `baseline_report.md`
+    - `baseline_action_queue.csv` (P0/P1/P2 integrated execution queue)
+    - `summary.json` and `baseline_report.md`
+    - `provenance_manifest.csv` (per-file `inspection_year`/`inspection_name`/`inspection_level`/`material_class` — the source of truth for year×inspection attribution)
+    - `inspection_rollup.csv` (grouped counts by year×inspection)
+    - `按年×专项溯源索引.md` (human-readable index + year-missing gap flags)
+
+   Provenance parsing rules:
+   - Top-level folder name → `inspection_name` (strip year prefix, `一级：` prefix, `（新）` suffix).
+   - Year: 4-digit prefix (`2024 ...`) or `NN年` prefix (`25年`→2025); otherwise leave empty and flag `⚠️ 缺失，需标注`.
+   - Level: `一级` if name starts with `一级：`; else `常规`. `通用材料库/迎检材料模板/原始文件/其他检查` → `material_class=通用/模板`, `inspection_name=(通用/模板/未归类)`.
+   - Exclude `AI语料/` (derived mirror; its provenance inherits the parallel 专项 folder) and `_治理输出_*` from canonical set.
 
 3. Apply priority routing for action queue.
    - P0: raw duplicate review and sensitive candidates on raw materials.
@@ -47,6 +56,10 @@ Trigger conditions:
 4. Keep MD-learning and original-download split explicit.
    - Mark raw canonical files as download-required.
    - Keep derived/summary content outside mandatory download set.
+
+4.5 Provenance feeds downstream year×inspection querying.
+   - `provenance_manifest.csv` is the canonical source for the 入库 Agent to write `inspection_year`/`inspection_name`/`inspection_level` frontmatter when ingesting into iWiki (so folder-based provenance survives the flattening into L1–L4 knowledge layers).
+   - Future queries ("某年某次迎检全部资料" / "某资料是否属于某年某次迎检") are answered by filtering this manifest. The year-missing gap (folders without year in name) must be filled by content-based inference (入库 Agent reads dates/doc numbers), with human confirmation for ambiguous cases.
 
 5. Publish baseline results for review.
    - Present `baseline_report.md` plus queue CSV files.
