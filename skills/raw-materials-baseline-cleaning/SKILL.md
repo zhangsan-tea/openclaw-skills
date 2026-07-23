@@ -88,6 +88,16 @@ Trigger conditions:
 - ID-card scanning: 18-digit sequences are mostly false positives (file hashes, order numbers). Always validate with province code + checksum before masking; never mask blindly.
 - When rewriting `provenance_manifest.csv`, avoid creating a duplicate `year_missing` column (read existing header first, then add at most one).
 
+## Binary redaction pitfalls (docx / xlsx / pptx / pdf)
+
+Running the binary redaction pass on real 迎检材料归档 surfaced three silent-failure bugs. All three let the script report `redacted` while the PII stayed in the copy:
+
+1. **xlsx opened `read_only=True` → redactions never written.** `openpyxl.load_workbook(path, read_only=True)` makes cells immutable; assigning `cell.value = ...` raises `Cell is read only` and the file is logged as `ERROR` (not redacted). Open workbooks in writable mode (`load_workbook(path)`, fall back to `data_only=True` on load error) so redacted values persist.
+2. **xlsx numeric cells skipped.** Phone/ID numbers stored as `int`/`float` cells are invisible to a `isinstance(cell.value, str)` guard, so they are never masked even though the scan (which stringifies `str(v)`) counted them. Convert non-string cell values with `str(cell.value)`, redact, and write the masked string back (`cell.value = s2` only when changed).
+3. **docx hyperlink text missed by `paragraph.runs`.** `python-docx` `paragraph.runs` excludes runs inside `w:hyperlink`; `paragraph.text` includes them. A per-run redaction silently leaves hyperlinked emails/phones in place. Iterate all `w:t` nodes instead: `list(paragraph._p.iter(qn('w:t')))`, join their text, redact, write the result into the first `w:t` and blank the rest. (Tables are fine via `cell.text`, which already merges hyperlink text.)
+4. **Verify by negative test, not by regex-shape of the mask.** After redacting, confirm the original's exact 11-digit phones / exact emails no longer appear as standalone matches (`PHONE_RE`/`EMAIL_RE`) in the copy. Do NOT assert on the mask shape (e.g. `138****5678`) — text-formatted phone cells keep a leading `'` (`'138****0001`), which breaks a naive mask regex.
+5. **Image-only PDFs and archives can't be auto-redacted.** `pypdf` returns empty text for scanned/image PDFs (`pdf_image` skip) and `.7z/.zip/.doc/.png/.jpg` are not parsed. Route these to OCR / manual review; never assume them clean. Always keep originals untouched and emit a `redaction_log_binary.csv` + `rollback_manifest_binary.csv`.
+
 ## Verification
 
 1. Confirm output directory exists and includes all required artifacts.
