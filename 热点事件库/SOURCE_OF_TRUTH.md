@@ -1,67 +1,60 @@
-# 「热点事件库」Skill — 唯一权威源说明
+# 「热点事件库」Skill — 维护与备份约定
 
 > 本文件是整个 skill 的「宪法」。任何使用、修改、分发本 skill 的人或 AI，都必须先读这一份。
 
-## 唯一权威源（Single Source of Truth）
+## 核心模型：本地为主，GitHub 为备份
 
-**本 skill 的唯一权威源是：**
+**你原则上不更换 AI 工具，主战场就是 WorkBuddy。** 因此：
 
-```
-GitHub 仓库：zhangsan-tea/openclaw-skills
-路径：热点事件库/
-```
+- **主工作区（日常修改在这里）**：本地 `~/.codebuddy/skills/热点事件库/`
+- **唯一备份源（改了必须同步到这里）**：GitHub `zhangsan-tea/openclaw-skills` → `热点事件库/`
 
-**规则：所有对 skill 内容的修改，只在这里进行。**
+## 硬性规则：改完必须备份（最重要）
 
-其他任何位置出现的本 skill 副本，都是「派生副本」，一律以 GitHub 这份为准。
+> ⚠️ **任何对「热点事件库」skill 内容的修改，完成后必须立即 commit 并 push 到 GitHub。**
 
-## 副本清单与定位
-
-| 位置 | 定位 | 同步方式 |
-|------|------|----------|
-| **GitHub `zhangsan-tea/openclaw-skills`** | 🏆 **唯一权威源** | 修改只在这里 |
-| 本地 `~/.codebuddy/skills/热点事件库/`（或 `~/.openclaw/skills/`） | 派生副本（供当前 AI 环境调用） | 从 GitHub 拉取 |
-| 本地工作区 `/workspace/skills/热点事件库/` | 派生副本（供分享） | 从 GitHub 拉取 |
-| 工蜂 `lyndonzhang/obsidian-private` → `舆情热点/_工作流/热点事件库/` | 派生副本（私域知识库备份） | 从 GitHub 拉取 |
-| tdrive 项目资产 `skills/热点事件库/` | 派生副本（项目资产归档） | 从 GitHub 拉取 |
-
-## 修改流程（必须遵守）
-
-1. **只改 GitHub 仓库里的内容**（直接 clone 后修改，或在线编辑后 push）。
-2. 修改后 `git commit` + `git push origin main`。
-3. 需要同步到某处时，执行「拉取」动作（见下），而不是在目标处直接改。
-
-## 如何在任意环境恢复/同步
-
-在任何新环境（换电脑、换 AI 工具、新沙箱）里，执行：
+具体来说，当你（或 AI）修改了 SKILL.md 或 references/ 下的任何文件后，必须执行：
 
 ```bash
-# 1. 拉取唯一权威源
+cd /path/to/openclaw-skills   # GitHub 仓库的本地 clone
+cp -r ~/.codebuddy/skills/热点事件库/. 热点事件库/
+git add 热点事件库/
+git commit -m "update: 热点事件库 skill 更新说明"
+git push origin main
+```
+
+**这一条是强制性的，不可跳过。** 改完不 push 等于没备份。
+
+## 修改流程（按此顺序）
+
+1. **直接改本地** `~/.codebuddy/skills/热点事件库/`（这是主工作区，改了立刻在当前环境生效）。
+2. 改完**立即备份到 GitHub**（见上一条命令）。
+3. 不需要在其他任何地方（工蜂、tdrive、workspace）维护副本——那些位置如有需要，随时从 GitHub 拉取即可。
+
+## 为什么这样设计
+
+- **日常零负担**：改本地文件，下个对话窗口 AI 自动读到新版，无需任何「同步」动作。
+- **GitHub 是保险**：万一沙箱环境重置，`~/.codebuddy/skills/` 被清空，可从 GitHub 一键恢复。
+- **不依赖人记忆**：把「改完必须 push」写成硬性规则，由 AI 执行，你不用记。
+
+## 如何在环境重置后恢复
+
+如果沙箱被重置，`~/.codebuddy/skills/` 空了，执行：
+
+```bash
 git clone https://github.com/zhangsan-tea/openclaw-skills.git
-
-# 2. 复制到本地 skill 注册目录（供当前环境调用）
 cp -r openclaw-skills/热点事件库 ~/.codebuddy/skills/
-
-# （若环境用的是 ~/.openclaw/skills/，则改成对应路径）
 ```
 
-## 同步到其他副本（按需执行）
+即可恢复主工作区。
 
-```bash
-# 同步到工作区
-cp -r openclaw-skills/热点事件库 /workspace/skills/
+## 其他位置（工蜂 / tdrive / workspace）
 
-# 同步到工蜂（需工蜂 OAuth token）
-cd /path/to/obsidian-private
-cp -r /path/to/openclaw-skills/热点事件库 "舆情热点/_工作流/"
-git add . && git commit -m "sync: 从 GitHub 同步热点事件库 skill" && git push
-```
+这些位置**不维护副本**。它们的作用仅是「历史存档」，如确实需要更新，从 GitHub 拉取覆盖即可，不纳入日常同步。
 
-## 重要提醒
+## 一句话原则
 
-- ⚠️ **禁止**在派生副本上直接修改内容（改了也不会回传，只会造成分叉）。
-- ⚠️ 发现某处副本与 GitHub 不一致时，**以 GitHub 为准**，用「拉取」覆盖副本。
-- ✅ 跨 AI 工具使用时，直接打开 GitHub 上的 `SKILL.md` 正文（去掉 frontmatter）即可，方法论本身是工具无关的。
+**本地改，GitHub 备。改完必 push，其余全靠拉。**
 
 ---
 *本文件由「数字智库」项目维护，最后更新：2026-08-15*
