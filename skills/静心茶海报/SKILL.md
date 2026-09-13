@@ -386,6 +386,34 @@ HTML 生成完毕后，调用 `html-card-poster-export` 技能（**用主 HTML�
 
 > ⚠️ puppeteer 新版已移除 `page.waitForTimeout`，等待须用 `await new Promise(r => setTimeout(r, 300))`
 
+### 静心茶金句卡的标准导出参数（已验证，直接复用）
+
+```js
+await page.setViewport({ width: 375, height: 667, deviceScaleFactor: 2 });  // → 750×1334
+await page.goto('file://' + htmlPath, { waitUntil: 'networkidle0' });
+await page.evaluate(async () => {            // 等字体 + 全部图片
+  await document.fonts.ready;
+  await Promise.all([...document.querySelectorAll('img')].map(img =>
+    img.complete ? null : new Promise(r => { img.onload = r; img.onerror = r; })));
+});
+await new Promise(r => setTimeout(r, 2500));  // 缓冲，2s 够、2.5s 更稳
+await el.screenshot({ path, type: 'jpeg', quality: 94 });
+```
+- 逐张 `page.$('.card-N')` 截图，文件名沿用 `<批次>-NN-<主题>.jpg`（导出前先 `ls` 目标目录，避免编号撞车）
+- **导出前先 `ls` 检查编号是否被占**：曾发生旧批次误用 `202609-01..07`、与新批次撞号的事故
+
+### ⚠️ 导出后必做：防串图校验（必做，不要靠肉眼）
+
+```bash
+/usr/bin/python3 ~/.workbuddy/skills/静心茶海报/scripts/verify_export.py \
+  --html 静心茶金句卡-9月版.html --dir 海报导出 --prefix 202609
+```
+
+- 判定用**相对距离**：成品图区与其应有源图的 dhash 距离必须是全场最小，且与次近的差值 ≥3
+  （同一张图因 JPEG 压缩会在 6~26 浮动，**不能用绝对阈值**，但"自己 vs 别的图"是 15 vs 110 的数量级差）
+- **最大的坑：图片区在卡片【底部】**。卡片是 flex-column，DOM 顺序为 `text-area(63%)` → `photo-area(37%)`。
+  若按"图在上"去裁，14 张的距离会全部飙到 100+，看着像整批全错，其实只是裁错位置。脚本默认 `--photo bottom`。
+
 ---
 
 ## 工作流示例对话
