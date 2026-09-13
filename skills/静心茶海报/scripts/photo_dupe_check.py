@@ -38,6 +38,7 @@ except ImportError:
 PHOTO_DIR = "photos"
 SUBDIR_USED = "已用"           # photos/已用/ 归档目录
 QRCODE = "qrcode.jpg"
+USED_JSON = "used-photos.json"  # 位于 PHOTO_DIR 的上一级（素材根目录）
 HAM_THRESHOLD = 10             # 256-bit dhash，>10 视为不同图
 SAME_IMAGE = 12                # <=12 视为"同一张图的不同规格"
 EXPORT_W, EXPORT_H = 750, 494  # 图片区导出尺寸（卡高 37% × deviceScaleFactor 2）
@@ -125,6 +126,35 @@ def photos_in_html(path):
     for f in re.findall(r'photos/([^"\']+\.(?:jpeg|jpg|JPG|JPEG))', txt):
         if f != QRCODE and f not in out:
             out.append(f)
+    return out
+
+
+def load_blacklist(base=PHOTO_DIR):
+    """用户明确指定不再使用的「画面」黑名单 —— 从 used-photos.json 读取。
+
+    注意：退役画面可能只存在于这里（已从 HTML 移除、也不在 photos/已用/ 目录），
+    所以 build_used_set 覆盖不到，选候选时必须单独过滤，否则会被重新选中。
+    返回 pattern 列表（按文件名前缀匹配，UUID 命名可封禁同图全部规格）。
+    """
+    p = os.path.join(os.path.dirname(os.path.abspath(base)) or ".", USED_JSON)
+    if not os.path.exists(p):
+        return []
+    try:
+        import json
+        d = json.load(open(p, encoding="utf-8"))
+    except Exception:
+        return []
+    bl = d.get("黑名单")
+    if isinstance(bl, dict):
+        bl = bl.get("items", [])
+    if not isinstance(bl, list):
+        return []
+    out = []
+    for it in bl:
+        if isinstance(it, dict) and it.get("pattern"):
+            out.append(it["pattern"])
+        elif isinstance(it, str):
+            out.append(it)
     return out
 
 
@@ -332,10 +362,22 @@ def cmd_candidates(args):
     used_h = [h for h in (safe_hash(f, base) for f in used) if h is not None]
     best = best_by_uuid(base)          # 同 UUID 只保留最高清的那个，避免缩略图混入
     skip_small = not args.allow_small
+    bl = load_blacklist(base)          # 退役画面：只记录在 used-photos.json 里，build_used_set 覆盖不到
+
+    # 批内已保留的图（换其中几张时用），用于同时输出「距批内」距离
+    batch_h = []
+    if getattr(args, "batch_html", None):
+        for f in photos_in_html(args.batch_html):
+            h = safe_hash(f, base)
+            if h is not None:
+                batch_h.append((f, h))
 
     cands = []
-    dropped_small = dropped_used = 0
+    dropped_small = dropped_used = dropped_bl = 0
     for f in all_photos(base):
+        if any(f.startswith(p) for p in bl):     # 用户指定不再使用的画面
+            dropped_bl += 1
+            continue
         if f in used:
             dropped_used += 1
             continue
@@ -349,22 +391,29 @@ def cmd_candidates(args):
         h = safe_hash(f, base)
         if h is None:
             continue
-        cands.append((f, h, min((hamming(h, x) for x in used_h), default=999)))
+        dh = min((hamming(h, x) for x in used_h), default=999)
+        db = min((hamming(h, x) for _, x in batch_h), default=999) if batch_h else 999
+        cands.append((f, h, dh, db))
 
     sel = []
-    for f, h, mind in sorted(cands, key=lambda t: -t[2]):
-        if mind <= HAM_THRESHOLD:
+    for f, h, dh, db in sorted(cands, key=lambda t: -min(t[2], t[3])):
+        if dh <= HAM_THRESHOLD or (batch_h and db <= HAM_THRESHOLD):
             continue
-        if all(hamming(h, sh) > HAM_THRESHOLD for _, sh, _ in sel):
-            sel.append((f, h, mind))
+        if all(hamming(h, sh) > HAM_THRESHOLD for _, sh, _, _ in sel):
+            sel.append((f, h, dh, db))
 
-    print(f"扫到 {len(all_photos(base))} 张，已用 {dropped_used} 张，清晰度不足(低清缩略图) {dropped_small} 张")
-    print(f"未使用且清晰 {len(cands)} 张 -> 视觉唯一 {len(sel)} 张\n")
-    for i, (f, _, mind) in enumerate(sel[:args.top], 1):
+    print(f"扫到 {len(all_photos(base))} 张，已用 {dropped_used} 张，"
+          f"黑名单 {dropped_bl} 张，清晰度不足(低清缩略图) {dropped_small} 张")
+    print(f"未使用且清晰 {len(cands)} 张 -> 视觉唯一 {len(sel)} 张"
+          + (f"（批内参照 {len(batch_h)} 张）\n" if batch_h else "\n"))
+    for i, (f, _, dh, db) in enumerate(sel[:args.top], 1):
         sz = size_of(f, base)
-        print(f"  [{i:3d}] 距历史={mind:3d}  {sz[0]}x{sz[1]:<5} {f}")
+        ratio = sz[0] / sz[1]
+        orient = "横" if ratio > 1.2 else ("竖" if ratio < 0.85 else "方")
+        col = f"距历史={dh:3d} 距批内={db:3d}" if batch_h else f"距历史={dh:3d}"
+        print(f"  [{i:3d}] {col}  {sz[0]}x{sz[1]:<5} {orient} {f}")
     if args.grid:
-        grid([f for f, _, _ in sel[:args.top]], args.grid,
+        grid([f for f, _, _, _ in sel[:args.top]], args.grid,
              title_fn=lambda i: f"{size_of(sel[i][0], base)[0]}x{size_of(sel[i][0], base)[1]}",
              crop_ratio=(EXPORT_W, EXPORT_H), cell=(300, 300))
         print(f"\n拼图已生成: {args.grid}（按 {EXPORT_W}×{EXPORT_H} cover 裁切预览，务必人工过一遍）")
@@ -388,6 +437,7 @@ def main():
     p2.add_argument("--top", type=int, default=60)
     p2.add_argument("--grid", help="输出拼图 PNG 路径")
     p2.add_argument("--allow-small", action="store_true", help="允许包含需放大的低清图")
+    p2.add_argument("--batch-html", help="本批已保留图的 HTML，用于同时输出「距批内」距离")
     p2.set_defaults(func=cmd_candidates)
 
     p3 = sub.add_parser("verify", help="校验指定清单/HTML（清晰度 + 判重 + 批内距离）")
