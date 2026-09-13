@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>静心茶金句卡</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #f0ede8;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      padding: 40px;
+      justify-content: center;
+      font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+    }
+
+    /* ===== 卡片容器 ===== */
+    .card {
+      width: 375px;
+      height: 667px;
+      border-radius: 0;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 40px rgba(58, 53, 48, 0.15);
+    }
+
+    /* ===== 文字区（上 58%）===== */
+    .card-text-area {
+      height: 58%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 50px 35px 20px;
+      position: relative;
+      z-index: 3;
+    }
+
+    /* ===== 照片区（下 42%）===== */
+    .card-photo-area {
+      height: 42%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-photo-area img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* 照片顶部渐变：与文字区底部平滑过渡 */
+    .card-photo-area::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      top: 0;
+      height: 35%;
+      z-index: 2;
+      /* 由配色方案设定 */
+    }
+
+    /* 照片底部渐变：暗色压底，凸显二维码 */
+    .card-photo-area::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      bottom: 0;
+      height: 35%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.35), transparent);
+      z-index: 2;
+    }
+
+    /* ===== 品牌标识 ===== */
+    .brand {
+      position: absolute;
+      top: 26px;
+      left: 30px;
+      writing-mode: vertical-rl;
+      font-size: 12px;
+      letter-spacing: 5px;
+      z-index: 5;
+      opacity: 0.55;
+      color: inherit;
+      font-family: 'Noto Serif SC', 'Songti SC', serif;
+      font-weight: 400;
+    }
+
+    /* ===== 副标题 ===== */
+    .card-subtitle {
+      font-size: 11px;
+      letter-spacing: 5px;
+      opacity: 0.45;
+      margin-bottom: 28px;
+      font-weight: 400;
+    }
+
+    /* ===== 金句正文 ===== */
+    .quote-text {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.95;
+      letter-spacing: 3px;
+      text-align: center;
+    }
+
+    /* ===== 分隔线 ===== */
+    .card-divider {
+      width: 36px;
+      height: 1px;
+      margin-top: 30px;
+      background: currentColor;
+      opacity: 0.3;
+    }
+
+    /* ===== 二维码 ===== */
+    .qrcode {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.28);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 8px;
+      padding: 5px 5px 4px;
+      z-index: 6;
+      text-align: center;
+    }
+
+    .qrcode img {
+      width: 38px;
+      height: 38px;
+      display: block;
+      border-radius: 2px;
+    }
+
+    .qr-caption {
+      font-size: 7px;
+      line-height: 1.4;
+      margin-top: 2px;
+      color: inherit;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    /* ========================================
+       配色方案池（深色/浅色交替）
+       使用时替换 card-N 的渐变和文字色即可
+       ======================================== */
+
+    /* --- card-1：深绿 --- */
+    .card-1 { color: #e8e0d4; }
+    .card-1 .card-text-area { background: linear-gradient(160deg, #2c3e34 0%, #1a221c 100%); }
+    .card-1 .card-photo-area::before { background: linear-gradient(to bottom, #1a221c, transparent); }
+
+    /* --- card-2：浅米 --- */
+    .card-2 { color: #5e4e3d; }
+    .card-2 .card-text-area { background: linear-gradient(160deg, #f5ede0 0%, #e8d9c4 100%); }
+    .card-2 .card-photo-area::before { background: linear-gradient(to bottom, #e8d9c4, transparent); }
+
+    /* --- card-3：深棕 --- */
+    .card-3 { color: #dcc8b8; }
+    .card-3 .card-text-area { background: linear-gradient(160deg, #3d2e2a 0%, #221712 100%); }
+    .card-3 .card-photo-area::before { background: linear-gradient(to bottom, #221712, transparent); }
+
+    /* --- card-4：浅棕 --- */
+    .card-4 { color: #6b5a4a; }
+    .card-4 .card-text-area { background: linear-gradient(160deg, #e8dccf 0%, #d4c0a8 100%); }
+    .card-4 .card-photo-area::before { background: linear-gradient(to bottom, #d4c0a8, transparent); }
+
+    /* --- card-5：深蓝 --- */
+    .card-5 { color: #cee0f0; }
+    .card-5 .card-text-area { background: linear-gradient(160deg, #2a3a4e 0%, #141d2e 100%); }
+    .card-5 .card-photo-area::before { background: linear-gradient(to bottom, #141d2e, transparent); }
+
+    /* --- card-6：浅褐 --- */
+    .card-6 { color: #574a3e; }
+    .card-6 .card-text-area { background: linear-gradient(160deg, #efe6da 0%, #ddd0bd 100%); }
+    .card-6 .card-photo-area::before { background: linear-gradient(to bottom, #ddd0bd, transparent); }
+
+    /* --- card-7：深紫 --- */
+    .card-7 { color: #e8c8e0; }
+    .card-7 .card-text-area { background: linear-gradient(160deg, #3e2a3e 0%, #241524 100%); }
+    .card-7 .card-photo-area::before { background: linear-gradient(to bottom, #241524, transparent); }
+
+    /* --- card-8：浅米棕 --- */
+    .card-8 { color: #5e4e42; }
+    .card-8 .card-text-area { background: linear-gradient(160deg, #f0e4dc 0%, #ddc8b8 100%); }
+    .card-8 .card-photo-area::before { background: linear-gradient(to bottom, #ddc8b8, transparent); }
+
+    /* --- card-9：深森林 --- */
+    .card-9 { color: #d0e0c8; }
+    .card-9 .card-text-area { background: linear-gradient(160deg, #2e3a2e 0%, #16221a 100%); }
+    .card-9 .card-photo-area::before { background: linear-gradient(to bottom, #16221a, transparent); }
+
+    /* --- card-10：浅灰绿 --- */
+    .card-10 { color: #4e4e3e; }
+    .card-10 .card-text-area { background: linear-gradient(160deg, #eae6dc 0%, #d2ccb8 100%); }
+    .card-10 .card-photo-area::before { background: linear-gradient(to bottom, #d2ccb8, transparent); }
+
+    /* --- card-11：深咖啡 --- */
+    .card-11 { color: #e4d0c0; }
+    .card-11 .card-text-area { background: linear-gradient(160deg, #42342a 0%, #261c16 100%); }
+    .card-11 .card-photo-area::before { background: linear-gradient(to bottom, #261c16, transparent); }
+
+    /* --- card-12：浅暖灰 --- */
+    .card-12 { color: #5a4a3e; }
+    .card-12 .card-text-area { background: linear-gradient(160deg, #f2eae0 0%, #e0d0c0 100%); }
+    .card-12 .card-photo-area::before { background: linear-gradient(to bottom, #e0d0c0, transparent); }
+  </style>
+</head>
+<body>
+
+  <!-- ====== 卡片 1 ====== -->
+  <div class="card card-1">
+    <div class="brand">静心茶</div>
+    <div class="card-text-area">
+      <div class="card-subtitle">专 注 当 下</div>
+      <div class="quote-text">你观察了世界<br>却没有观察到<br>观察者本身</div>
+      <div class="card-divider"></div>
+    </div>
+    <div class="card-photo-area">
+      <img src="photos/01.jpeg" alt="">
+    </div>
+    <div class="qrcode">
+      <img src="photos/qrcode.jpg" alt="">
+      <div class="qr-caption">中脉空间<br>扫码咨询</div>
+    </div>
+  </div>
+
+  <!-- ====== 卡片 2 ====== -->
+  <div class="card card-2">
+    <div class="brand">静心茶</div>
+    <div class="card-text-area">
+      <div class="card-subtitle">放 下 执 念</div>
+      <div class="quote-text">真正的自由<br>不是得到更多<br>而是不再需要</div>
+      <div class="card-divider"></div>
+    </div>
+    <div class="card-photo-area">
+      <img src="photos/02.jpeg" alt="">
+    </div>
+    <div class="qrcode">
+      <img src="photos/qrcode.jpg" alt="">
+      <div class="qr-caption">中脉空间<br>扫码咨询</div>
+    </div>
+  </div>
+
+  <!-- ====== 卡片 3（按需复制） ====== -->
+  <div class="card card-3">
+    <div class="brand">静心茶</div>
+    <div class="card-text-area">
+      <div class="card-subtitle">向 内 观 看</div>
+      <div class="quote-text">外在的一切<br>都是内在的<br>回响</div>
+      <div class="card-divider"></div>
+    </div>
+    <div class="card-photo-area">
+      <img src="photos/03.jpeg" alt="">
+    </div>
+    <div class="qrcode">
+      <img src="photos/qrcode.jpg" alt="">
+      <div class="qr-caption">中脉空间<br>扫码咨询</div>
+    </div>
+  </div>
+
+</body>
+</html>
