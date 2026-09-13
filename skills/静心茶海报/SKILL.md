@@ -241,9 +241,45 @@ dhash 只看整体明暗梯度，**对"同题材不同构图"不敏感**。以�
 
 ---
 
+## 交付预览：必须额外生成自包含版（必做）
+
+**踩过的坑**：把带相对路径（`photos/xxx.jpeg`）的 HTML 直接丢给预览面板，浏览器只拿到 HTML 文件本身，同级 `photos/` 目录不在服务范围内 → 14 张背景图与二维码全部 404，用户看到的是一堆空白卡片，会直接反馈"没看到产物"。
+
+**正确做法**：主 HTML 保持相对路径（供 Puppeteer 导出用，**不要动**），另存一份 `xxx-预览.html`，把所有 `src` 换成 base64 data URI 再交付预览。
+
+```python
+import re, io, base64
+from PIL import Image
+
+html = open(src_html, encoding='utf-8').read()
+cache = {}
+def embed(rel):
+    if rel in cache: return cache[rel]
+    im = Image.open(rel).convert('RGB')
+    if 'qrcode' in rel:
+        im.thumbnail((240, 240), Image.LANCZOS); q = 90
+    else:
+        im.thumbnail((760, 760), Image.LANCZOS); q = 82   # 2x 显示宽度，够用
+    buf = io.BytesIO(); im.save(buf, 'JPEG', quality=q, optimize=True)
+    uri = 'data:image/jpeg;base64,' + base64.b64encode(buf.getvalue()).decode()
+    cache[rel] = uri
+    return uri
+
+out = html
+for s in sorted(set(re.findall(r'src="([^"]+)"', html))):
+    out = out.replace(f'src="{s}"', f'src="{embed(s)}"')
+open(dst_html, 'w', encoding='utf-8').write(out)
+assert len(re.findall(r'src="(?!data:)', out)) == 0   # 确认无残留外部引用
+```
+
+**体积参考**：14 张卡（14 背景图 + 共用二维码）压缩后约 **1.3 MB**，预览面板可正常加载。
+照片原图单张可达 4 MB（整库 300 MB+），**必须先压缩再内嵌**，否则预览会卡死。
+
+---
+
 ## 下游导出
 
-HTML 生成完毕后，调用 `html-card-poster-export` 技能：
+HTML 生成完毕后，调用 `html-card-poster-export` 技能（**用主 HTML，不是预览版**）：
 
 1. 用 puppeteer-core + Chrome 远程调试端口（9333）
 2. 每张 `.card` 截图为 1125×2001px（3倍率）的 JPG
