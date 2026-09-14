@@ -1,5 +1,5 @@
 ---
-name: management-defense-review
+name: 答辩评估
 description: 答辩评估：适用于管理岗位转正、中心负责人转正、岗位竞聘、专业/专家晋级等竞争型答辩材料与现场演练。用于诊断“是否证明胜任目标岗位或职级”、设计修改路径、模拟追问和复盘演练。
 description_zh: 答辩评估
 description_en: Defense Review
