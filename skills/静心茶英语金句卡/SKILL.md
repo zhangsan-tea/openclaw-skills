@@ -250,6 +250,34 @@ CSS 改完后，**必须实际跑一次截图**，把内容最长的几张卡片
 
 ---
 
+## 变体：中英对照双语卡（2026-09 新增）
+
+从**中文金句卡**反向做双语版：挑文字量少的卡 → 找到波密英文原文 → 中英同卡上下对照。
+
+**素材来源**：中文卡 HTML（如 `静心茶金句卡-9月版.html`）取中文金句；英文原文去
+`~/obsidian-private/向内看/静心茶/练习记录/YYYYMMDD_静心茶练习.md` 里按关键词（`camera`/`trust`/`light and dark`/`listen`/`mind` 等）grep 查找波密原话。
+
+**DOM 结构（自上而下）**：
+```
+brand-label（静心茶，竖排）→ series-tag（跟着波密 · 庄西学英语）
+→ day-tag（0907 · 信任）→ quote-en（主，opacity .95, 17px）
+→ bi-divider（28×1px，opacity .22，上下 margin 18/16）
+→ quote-chinese（次，15px，opacity .58，letter-spacing 2px）
+```
+视觉层级：**英文为主、中文为辅**（与纯中文金句卡相反），靠字号 + 透明度拉开，不要用颜色区分。
+
+**⚠️ 硬坑：英文长句折行**。375px 卡宽、`padding: 30px 26px` ⇒ 正文可用宽度仅 **323px**。
+17px 时较长句会折行，表现为末尾"孤零零的 —"或语义被切断（不是版式效果，是 bug）。
+**必须逐行实测**：puppeteer 对 `.quote-en` 的每个 `childNode` 用 `document.createRange()` 取 height，
+单行 ≈ 21–25px，出现 50+ 即折行。超行就给该卡单独加覆盖：
+```css
+.card-1 .quote-en { font-size: 14.5px; letter-spacing: 0; line-height: 1.72; }
+.card-2 .quote-en { font-size: 15.5px; letter-spacing: 0; line-height: 1.7; }
+```
+（实测：0907 需 14.5px、0908 需 15.5px，其余 17px 即可。`letter-spacing` 必须归零，否则英文更宽。）
+
+---
+
 ## 输出目录
 
 `.../海报输出/英语金句卡-{批次}-{1..N}.jpg`
