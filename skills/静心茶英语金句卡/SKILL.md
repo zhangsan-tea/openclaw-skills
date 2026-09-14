@@ -260,21 +260,24 @@ CSS 改完后，**必须实际跑一次截图**，把内容最长的几张卡片
 **DOM 结构（自上而下）**：
 ```
 brand-label（静心茶，竖排）→ series-tag（跟着波密 · 庄西学英语）
-→ day-tag（0907 · 信任）→ quote-en（主，opacity .95, 17px）
+→ day-tag（0907 · 信任）→ quote-en（辅，15.5px，opacity .76）
 → bi-divider（28×1px，opacity .22，上下 margin 18/16）
-→ quote-chinese（次，15px，opacity .58，letter-spacing 2px）
+→ quote-chinese（主，16.5px，opacity .96，letter-spacing 2.5px，line-height 1.9）
 ```
-视觉层级：**英文为主、中文为辅**（与纯中文金句卡相反），靠字号 + 透明度拉开，不要用颜色区分。
+视觉层级：**中文为主、英文为辅**，靠**字号 + 透明度**拉开，不要用颜色区分。
+差异要克制（用户明确要求"中文更突出，但差异不要太明显"）——参考比例：中文 16.5px/.96 vs 英文 15.5px/.76，
+不要出现"一边很粗一边几乎看不见"的悬殊。
 
 **⚠️ 硬坑：英文长句折行**。375px 卡宽、`padding: 30px 26px` ⇒ 正文可用宽度仅 **323px**。
-17px 时较长句会折行，表现为末尾"孤零零的 —"或语义被切断（不是版式效果，是 bug）。
+英文较长句会折行，表现为末尾"孤零零的 —"或语义被切断（不是版式效果，是 bug）。
 **必须逐行实测**：puppeteer 对 `.quote-en` 的每个 `childNode` 用 `document.createRange()` 取 height，
-单行 ≈ 21–25px，出现 50+ 即折行。超行就给该卡单独加覆盖：
+单行 ≈ 20–22px，出现 40+ 即折行。超行就给该卡单独加覆盖：
 ```css
-.card-1 .quote-en { font-size: 14.5px; letter-spacing: 0; line-height: 1.72; }
-.card-2 .quote-en { font-size: 15.5px; letter-spacing: 0; line-height: 1.7; }
+.card-1 .quote-en { font-size: 13.5px; letter-spacing: 0; line-height: 1.75; }
+.card-2 .quote-en { font-size: 14.5px; letter-spacing: 0; line-height: 1.72; }
 ```
-（实测：0907 需 14.5px、0908 需 15.5px，其余 17px 即可。`letter-spacing` 必须归零，否则英文更宽。）
+（实测：0907 需 13.5px、0908 需 14.5px，其余 15.5px 即可。`letter-spacing` 必须归零，否则英文更宽。
+缩小英文后中文可同时放大，不冲突——两边都要跑一次逐行实测。）
 
 ---
 
