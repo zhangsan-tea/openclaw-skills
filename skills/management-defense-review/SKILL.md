@@ -1,13 +1,13 @@
 ---
 name: management-defense-review
-description: 评估管理岗位转正答辩、中心负责人转正、岗位竞聘、专家晋级等答辩材料与现场演练。适用于用户提供PPT、企微智能文档、会议转写或答辩录像后，需要诊断“是否证明胜任目标岗位”、设计修改路径、模拟追问或复盘演练的场景。
-description_zh: 管理岗位答辩评估
-description_en: Management Defense Review
+description: 答辩评估：适用于管理岗位转正、中心负责人转正、岗位竞聘、专业/专家晋级等竞争型答辩材料与现场演练。用于诊断“是否证明胜任目标岗位或职级”、设计修改路径、模拟追问和复盘演练。
+description_zh: 答辩评估
+description_en: Defense Review
 disable: false
 agent_created: true
 ---
 
-# 管理岗位答辩评估与演练
+# 答辩评估与演练
 
 ## 适用边界
 
