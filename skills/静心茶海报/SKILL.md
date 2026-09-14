@@ -376,6 +376,46 @@ assert len(re.findall(r'src="(?!data:)', out)) == 0   # 确认无残留外部引
 
 ---
 
+## 变体：中英对照双语卡（2026-09 新增）
+
+从**纯中文金句卡**反向做双语版：选中文字少的卡 → 找波密英文原话 → 同卡上下对照。
+英文原文去 `~/obsidian-private/向内看/静心茶/练习记录/YYYYMMDD_静心茶练习.md` 按关键词（`camera`/`trust`/`light and dark`/`listener`/`observer` 等）grep **Bommie** 段落。
+
+### ⚠️ 品牌标签（2026-09-14 踩坑纠正）
+双语金句卡**只有** `静心茶` 竖排角标 + `日期 · 主题` 标签，**不加任何系列标签**。
+`跟着波密 · 庄西学英语` 属于**另一个项目**（英语金句卡：英文原文/机翻/庄西译/对比点拨/觉察提示五层），
+不可混用到金句卡上。
+
+### DOM 与视觉层级
+```
+day-tag（0907 · 信任）
+→ quote-en（辅，15.5px，opacity .76）
+→ bi-divider（28×1px，opacity .22，margin: 18px 0 16px）
+→ quote-chinese（主，16.5px，opacity .96，letter-spacing 2.5px，line-height 1.9）
+```
+中文为主、英文为辅，靠**字号 + 透明度**拉开，差异要克制（用户原话："中文更突出，但差异不要太明显"）。
+
+**长英文行收窄用类名，不要用 `.card-N`**：卡数会增减，位置类名必然错位。
+```css
+.en-xs { font-size: 13.5px; letter-spacing: 0; line-height: 1.75; }
+.en-sm { font-size: 14.5px; letter-spacing: 0; line-height: 1.72; }
+```
+
+### 选卡判据（实测容量，375×667）
+- text-area = 63% = 420px，padding 30/14 ⇒ **可用 376px**
+- 固定抬头（day-tag + margin 20 + divider 35）≈ **71px**
+- **中文行 ≈ 31.4px**（16.5×1.9）；**英文行 ≈ 26.4px**（15.5×1.7）
+- 结论：**中文 ≤6 行可做**（实测余量 39–133px）；中文 7 行已临界；**中文 ≥8 行放不下**（等于要砍正文，另议）
+
+### 双项实测（必做）
+1. **余量** `avail - content ≥ ~35px`；<20px 视觉上偏挤，宁可换卡或压英文行数。
+2. **折行** 英文按 `<br>` 逐行测 `document.createRange().getBoundingClientRect().height`，
+   出现单行高度的 1.6 倍即为折行（表面看是"行尾孤零零一个 —"，实际是 bug）。
+   超宽就换 `.en-sm`/`.en-xs`，或改写句子——**改短句比无限缩小字号好**（13.5px 已是下限）。
+   ⚠️ 别用 `getBoundingClientRect` 累加子树高度做溢出检测，会得出荒谬数值（实测报过 2850px）。
+
+---
+
 ## 下游导出
 
 HTML 生成完毕后，调用 `html-card-poster-export` 技能（**用主 HTML，不是预览版**）：
