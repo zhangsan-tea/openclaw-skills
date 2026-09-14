@@ -19,7 +19,11 @@ read_when:
 
 1. **收集素材**：向用户索取文字内容（副标题 + 金句正文）和背景照片
 2. **生成 HTML**：按本 Skill 的模板规范输出 `.html` 文件
-3. **导出 JPG**：调用 `html-card-poster-export` 技能完成截图导出
+3. **导出 JPG**：跑 `scripts/export_cards.js`（本技能自带）⇒ 750×1334，导出后跑 `scripts/verify_export.py` 防串图
+
+> `scripts/` 现有：`export_cards.js`（批量导出）、`verify_export.py`（防串图校验）、
+> `measure_card_fit.js`（余量/行宽/折行实测）、`photo_dupe_check.py`（选图判重）。
+> 新增脚本一律落这里，**不要留在 `/tmp`**——被系统清理后只能重写。
 
 ---
 
@@ -30,7 +34,7 @@ read_when:
 | 属性 | 值 | 说明 |
 |---|---|---|
 | 尺寸 | 375×667px | 手机屏竖版 |
-| 输出倍率 | 3x → 1125×2001px | 导出时由 puppeteer 设置 |
+| 输出倍率 | **2x → 750×1334px**（q94） | 导出时由 puppeteer 设置，见「下游导出」 |
 | 圆角 | **直角 `border-radius: 0`** | 不可用圆角，否则手机全屏查看露出底色 |
 | 布局 | `flex-direction: column` | 上文字区 + 下照片区 |
 
@@ -477,13 +481,29 @@ NODE_PATH=/Users/sanzhang/.workbuddy/binaries/node/workspace/node_modules \
 
 ## 下游导出
 
-HTML 生成完毕后，调用 `html-card-poster-export` 技能（**用主 HTML，不是预览版**）：
+HTML 生成完毕后，**直接跑本技能自带脚本**（用主 HTML，不是预览版）：
 
-1. 用 puppeteer-core + Chrome 远程调试端口（9333）
-2. 每张 `.card` 截图为 1125×2001px（3倍率）的 JPG
-3. 输出到指定目录
+```bash
+cd "<素材目录>"
+NODE_PATH=/Users/sanzhang/.workbuddy/binaries/node/workspace/node_modules \
+  /Users/sanzhang/.workbuddy/binaries/node/versions/22.22.2-3/bin/node \
+  ~/.workbuddy/skills/静心茶海报/scripts/export_cards.js \
+  --html 静心茶金句卡-9月版-双语.html \
+  --outdir 海报导出 --prefix 202609-双语 --sel '#bcard-{i}'
+```
+
+| 参数 | 说明 |
+|---|---|
+| `--sel` | 中文版用 `.card-{i}`；双语版用 `#bcard-{i}` |
+| `--prefix` | 文件名前缀；脚本自动补零编号 + 从注释提取主题名 ⇒ `<前缀>NN-<主题>.jpg` |
+| `--count` | 默认从注释条数推断（14） |
+| `--quality` | 默认 94 |
+
+脚本内置：等字体就绪（`document.fonts.ready` + 800ms 缓冲）、逐卡尺寸 assert（≠375×667 告警）、
+自动建输出目录。**导出后紧接着跑 `verify_export.py`**（见下）。
 
 > ⚠️ puppeteer 新版已移除 `page.waitForTimeout`，等待须用 `await new Promise(r => setTimeout(r, 300))`
+> ⚠️ 导出脚本曾只存在于 `/tmp`，被系统清理后不得不重写——**凡是要复用的脚本，一律落进 `scripts/`**。
 
 ### 静心茶金句卡的标准导出参数（已验证，直接复用）
 
