@@ -9,7 +9,7 @@ read_when:
 
 # 静心茶海报 Skill
 
-生成符合静心茶品牌视觉规范的金句卡 HTML，配合下游 `html-card-poster-export` 技能即可导出高清 JPG 海报。
+生成符合静心茶品牌视觉规范的金句卡 HTML，使用本 Skill 自带的 `scripts/export_cards.js` 导出 750×1334 高清 JPG 海报，并以 `scripts/verify_export.py` 防串图校验。
 
 ---
 
@@ -544,7 +544,7 @@ await el.screenshot({ path, type: 'jpeg', quality: 94 });
 2. 向用户索取3张背景照片（或建议用 AI 生成）
 3. 选择配色方案（自动分配深浅交替，如 card-1/card-2/card-3）
 4. 生成 HTML 文件
-5. 调用 `html-card-poster-export` 导出 JPG
+5. 跑 `scripts/export_cards.js` 导出 JPG，并用 `scripts/verify_export.py` 校验
 6. 交付海报文件
 
 ---
