@@ -1,9 +1,9 @@
 ---
 name: 静心茶转写整理
-description: 从腾讯会议转写数据生成静心茶练习记录 Markdown 文件，中英文逐段交替格式（英文原文段后紧跟中文翻译段），保留发言人标记。使用已授权的 tmeet CLI 拉取录制与转写，不在 Skill 内保存 token。
+description: 从腾讯会议转写数据生成静心茶练习记录 Markdown 文件，中英文逐段交替格式（英文原文段后紧跟中文翻译段），保留发言人标记。使用已授权的 tmeet CLI 拉取录制与转写，不在 Skill 内保存 token。触发：拉取/整理静心茶练习记录、提到「静心茶转写/练习记录/补录记录」、批量生成或覆盖练习记录文件。
 read_when:
   - 用户要拉取/整理静心茶练习记录
-  - 用户提到"静心茶转写"、"练习记录"、"补录记录"
+  - 用户提到「静心茶转写」「练习记录」「补录记录」
   - 需要从腾讯会议抓取静心茶营转写并整理入库
   - 需要批量生成或覆盖静心茶练习记录文件
 ---
@@ -71,15 +71,29 @@ auto_generated: true
 
 ## 数据获取流程
 
-### 1. 查询录制列表
+### 0. 检查授权（每次开工先做）
 
 使用已授权的 `tmeet` CLI；不在 Skill 中硬编码 token、用户目录或旧脚本路径。
 
 ```bash
-tmeet record list --start "YYYY-MM-DD" --end "YYYY-MM-DD" --format json
+tmeet auth status
 ```
 
-从返回结果中记录目标录制的 `record_file_id` 与 `meeting_id`。
+- 返回 `Not logged in` 时执行 `tmeet auth login --no-browser`，把打印出的 `authorize url` 交给 Lee 在浏览器确认，完成后再继续。
+- 报错 `file lock timeout (5s): ~/.tmeet/token.lock` —— 说明上次登录进程残留，执行 `rm -f ~/.tmeet/token.lock` 后重跑。
+- 凭证失效的典型迹象：`~/.tmeet/config.json` 缺失、`~/Library/Application Support/tmeet/` 下只剩 `.enc.lock` 没有 `.enc`。
+
+### 1. 查询录制列表
+
+```bash
+tmeet record list --start "2026-09-01T00:00:00+08:00" --end "2026-09-30T23:59:59+08:00" --format json
+```
+
+**日期必须是 RFC3339 完整格式**（`2026-09-01T00:00:00+08:00`）。只给 `YYYY-MM-DD` 会报 `--start format error`。
+
+返回路径 `data.record_meetings[].record_files[]`，记录目标录制的 `record_file_id` 与 `meeting_id`。
+
+> 同一场会议常有多条 `record_files`（会前短片段 + 正片）。取**时长覆盖完整会议**的那条；会前短片段常已被删除，拉取时会报 `error_code 4051 录制文件已经被删除`，直接跳过即可。
 
 ### 2. 获取转写段落
 
@@ -104,6 +118,13 @@ paragraphs[].sentences[].words[].text
 - 每个 `paragraph` 包含说话人和多个 `sentence`；必须先按 `speaker.user_name` 保留说话人边界。
 - Bommie 英文段后应紧跟对应的「中脉空间」中文段；不得因批处理而删除英文内容。
 - 对于只有单语、缺少对应口译或说话人标记的录制，不强行补译；在处理清单中列为「待人工确认」。
+- **说话人映射**（腾讯会议转写只给「中脉空间-发言人N」）：
+  | 转写说话人 | 成品标记 | 内容 |
+  |---|---|---|
+  | 中脉空间-发言人1 | `**Bommie**` | 英文原文 |
+  | 中脉空间-发言人2 | `**中脉空间**` | 中文口译 |
+- 文本拼接：`sentences[].words[].text` 顺序拼接后 `strip()`；空段落写 `（此处无清晰内容）`。
+- 拉到 JSON 后用 `python3` 直接解析生成 md，**不要把原始 JSON 读进上下文**（单日约 120KB）。
 
 ### 3. 关键参数与安全边界
 

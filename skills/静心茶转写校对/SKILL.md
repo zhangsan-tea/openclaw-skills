@@ -201,6 +201,45 @@ Step 7: 输出校对后正文 + 修改清单（Layer 5）
 | if 句首小写 | **If** | 句首应大写 |
 | i / we 小写 | **I / We** | Bommie 自述时首字母大写 |
 | when that when that | **when that** | 重复词去重 |
+| tm meditation lovers | **tea and meditation lovers** | 固定开场白 |
+| seat（"take a seat / open that seat"） | **seed** | 后文讲种子与大树 |
+| sold（"They sold / So sold everywhere"） | **salt** | 全段在讲盐溶于水 |
+| punishments（"do punishments have two examples"） | **Upanishads** | 后文讲奥义书 |
+| scene / non scene | **seen / unseen** | 讲「所见与未见」 |
+| the watch | **the watcher** | 讲「观者与被观」 |
+| to preverbial. Cup | **the proverbial cup** | 断句 + 近音 |
+
+**中文方向的高频误识**（同一段落中英文互为证据时修正）：
+
+| 转写 | 应为 | 线索 |
+|---|---|---|
+| 蛋 / 饭 / 范 / 饭饭 | **梵**（Brahman） | 全篇讲 brahma、atman |
+| 马艳艳 | **满盈盈** | 空杯/满杯语境 |
+| 没有时间先 | **没有时间线** | 英文 No timeline |
+| 笼子里没有任何东西 | **种子里没有任何东西** | 英文 in that seed |
+| 这把烟 | **这把盐** | 英文 block of salt |
+| 看见相教育没有看见 | **看见的相较于没有看见的** | 英文 seen / unseen |
+| 存载体 | **存在** | 英文 keep your being fresh |
+| 这水管 | **这水罐** | 英文 break the jar |
+| 一封领悟 | **一份领悟** | 量词误识 |
+| 只会在溢出去 | **只会再溢出去** | 在 / 再 同音 |
+
+---
+
+## 成品格式约定（8 月及之后的成品样式）
+
+校对应产出**成品**，不是带双标记的初稿：
+
+```markdown
+**Bommie**：
+（英文原文）
+
+（中文口译，紧随英文段，不再单独写 **中脉空间**）
+```
+
+- 中文口译段并入其英文段之后，全篇 `**中脉空间**` 标记数为 0；删除这些标记会让字符数下降约 8–9%，属正常，保真率仍应 ≥90%。
+- **frontmatter 必须原样保留**。历史上出现过校对后 frontmatter 被整段丢失的情况，不得重演。
+- 连续同说话人段（英文接连、中文接连）合并为一段，不重复标记。
 
 ---
 
