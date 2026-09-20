@@ -131,17 +131,47 @@ tmeet record list --start "2026-09-01T00:00:00+08:00" --end "2026-09-30T23:59:59
 返回路径 `data.record_meetings[].record_files[]`，记录目标录制的 `record_file_id` 与 `meeting_id`。
 
 > 同一场会议常有多条 `record_files`（会前短片段 + 正片）。取**时长覆盖完整会议**的那条；会前短片段常已被删除，拉取时会报 `error_code 4051 录制文件已经被删除`，直接跳过即可。
+>
+> 排序建议：同一天按 `record_files[].record_start_time` 升序，**取最后一条（时长最长）为主录**。实测主录时长 45–130 分钟，会前短片段 0–6 分钟。
 
-### 2. 获取转写段落
+#### ⚠️ 录制「查不到」≠「不存在」——转码与可见有延迟，隔日必须复查（2026-09-20 实测立）
+
+**实例**：9/16、9/18、9/19 三天在 9/18 早间按会议号全类型搜索 + 逐日复核时，均为 **0 场**，曾被判定为「无云端录制」；9/20 早间再查，**三天全部出现**，且 `state_int = 3（转码完成）`。
+
+⇒ **铁律**：
+1. **绝不下「这几天没有录制」的结论**。查不到只说明**此刻**不可见。
+2. 补录任务里若有「今天/昨天」的场次缺失，先记为**待复查**，**次日再查一次**，不要写进「不要再试」的清单。
+3. 查录制前先核 `state_int`：`3` = 转码完成可拉转写；未完成的场次等下一轮。
+4. 一次把搜索窗口放宽到「目标日 ±7 天」，把已在库/未在库的所有静心茶场次一次列全，再按日期差集找缺口——比逐日单查更省调用，也不会漏掉延迟可见的场次。
+
+### 2. 获取转写段落（**两步**，不可省）
+
+**第一步：拿段落索引与总段数**
+
+```bash
+tmeet record transcript-paragraphs \
+  --record-file-id "<record_file_id>" \
+  --meeting-id "<meeting_id>" \
+  --format json
+```
+
+返回 `data.pids[]`（每项含 `pid` / `start_time` / `end_time`）与 **`data.total`**（总段数）。**这一步拿不到任何正文文字**——只用来确定 `total`。
+
+> ⚠️ 常见误判：直接拿这个接口的结果去数段落，会得到「0 段」的错觉（它没有 `minutes.paragraphs` 字段）。正文必须走第二步。
+
+**第二步：按 `pid` 拉正文**
 
 ```bash
 tmeet record transcript-get \
   --record-file-id "<record_file_id>" \
   --meeting-id "<meeting_id>" \
   --pid "0" \
-  --limit "250" \
+  --limit "<total + 10>" \
   --format json
 ```
+
+- `--limit` 给 `total + 10` 即可**一次拉全**（实测 516 段的场次一次到位）。
+- 若取回的 `paragraphs` 数 < `total`，退化为**分批循环**：`--pid` 从 0 开始，每次 `--limit 50`，累加结果。
 
 ### 转写数据结构
 
@@ -160,11 +190,17 @@ paragraphs[].sentences[].words[].text
   | 场次 | `中脉空间-发言人1` | `中脉空间-发言人2` |
   |---|---|---|
   | 20260914 | 全部**英文**（109 段） | 全部**中文**（109 段） |
+  | 20260916 | 全部**英文**（82 段） | 全部**中文**（81 段） |
   | 20260917 | 以**中文**为主（82 中 + 2 中英混说） | 以**英文**为主（79 英 + 1 中「拜拜。」） |
+  | 20260918 | 全部**英文**（78 段） | 全部**中文**（77 段） |
+  | 20260919 | 英文 225 / 中文 235（**同一账号内混合**） | 同上（另含 5 位学员独立声纹） |
 
   ⇒ **发言人编号随「谁先开口」而变，两场之间可以完全相反。** 判定规则只有一条：
-  - 段落 `speaker.user_name` 匹配 `^中脉空间-发言人\d+$` → 按**段落语种**定标签：英文字符多于中文字符 → `**Bommie**`；否则 → `**中脉空间**`。
-  - `speaker.user_name` 是**具体人名**（如「夜子」「戴晶晶」）→ 直接用该人名做标签，**不改写、不并入老师段**。
+  - 段落 `speaker.user_name` **以 `中脉空间` 开头** → 按**段落语种**定标签：英文字符多于中文字符 → `**Bommie**`；否则 → `**中脉空间**`。
+    实际有三种形态，都要覆盖：`中脉空间`（无后缀）、`中脉空间-发言人N`、`中脉空间 共享音频`（唱诵/播放段，归同一判定）。
+    20260919 实测同一账号下英文 225 段、中文 235 段**交错**，`中脉空间-发言人1/2` 的区分与语种无稳定对应——**只能逐段看语种**。
+  - `speaker.user_name` 是**学员名 + 声纹后缀**（如 `安然入税-发言人1`、`安然入税-发言人2`）→ **剥掉 `-发言人N`，取基础人名**做标签（同一人的两个编号是声纹切分，不是两个人）。
+  - `speaker.user_name` 是**具体人名**（如「夜子」「利军」「谷雨」「路翠Lucy」「Elsa.艾莎」）→ 直接用该人名做标签，**不改写、不并入老师段**。
   - 判语种用 `len(re.findall(r"[A-Za-z]", t)) > len(re.findall(r"[\u4e00-\u9fff]", t))`；对中英混说段（如波密说「啊，所以所以。Halfway in the circle.」）以多数语种为准。
 - 老师与学员共用账号时，学员**只有独立声纹**才会被识别出真实姓名；否则会被并进「发言人N」。逐场核一下非老师标签的数量，异常为 0 时在清单里记一句。
 - 同一场若出现**连续同标签段**（ASR 把一句切成两帧），**保留原始 1:1 帧结构**，不做合并；库内既有成品同样存在该现象（如 20260912 有 105 处）。
@@ -222,8 +258,8 @@ auto_generated: true
 | 项目 | 规则 |
 |---|---|
 | 认证 | 由 `tmeet auth status` 使用现有授权；Skill 内不保存 token |
-| 日期范围 | 每次仅查询一个自然月，提取时一次只处理一天 |
-| 分页 | 单次 `--limit 250`；段落更多时按服务端返回的分页标识续拉 |
+| 日期范围 | 录制查询一次可放宽到「目标月 ±7 天」，再按日期差集找缺口；转写提取一次只处理一天 |
+| 分页 | 先 `transcript-paragraphs` 取 `total`，再 `transcript-get --pid 0 --limit total+10` 一次拉全；不足时按 50 段一批循环 |
 | 输出路径 | `/Users/lee/obsidian-private/向内看/静心茶/练习记录/` |
 
 ---
@@ -239,12 +275,19 @@ auto_generated: true
 ### 推荐处理脚本模式
 
 ```bash
-# 1. 拉取一天的转写 JSON 到临时文件（不要回显到对话上下文）
-tmeet record transcript-get --record-file-id "<record_file_id>" --meeting-id "<meeting_id>" --pid "0" --limit "250" --format json > "/tmp/transcript_YYYYMMDD.json"
+# 1a. 先取段落索引拿到 total（此步无正文）
+tmeet record transcript-paragraphs --record-file-id "<fid>" --meeting-id "<mid>" --format json \
+  | python3 -c "import json,sys; d=json.load(sys.stdin)['data']; print(d['total'])"
+
+# 1b. 再按 pid 拉正文到临时文件（不要回显到对话上下文）
+tmeet record transcript-get --record-file-id "<fid>" --meeting-id "<mid>" \
+  --pid "0" --limit "<total+10>" --format json > "/tmp/transcript_YYYYMMDD.json"
 
 # 2. 用 Python 从 data.minutes.paragraphs 读取说话人和 words[].text，
 #    直接写入目标 Markdown；写入前保留原文件备份，并生成独立修改清单。
 ```
+
+> 若把两步合并成一次 `transcript-get --pid 0 --limit 250` 也能拿到前 250 段，但**长场次（如 128 分钟 / 516 段）会截断**——仍建议先取 `total` 再定 `--limit`。
 
 ---
 
