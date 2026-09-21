@@ -73,7 +73,11 @@ function extractTopics(html) {
   const browser = await puppeteer.launch({
     executablePath: chrome,
     headless: 'new',
-    args: ['--font-render-hinting=none', '--force-color-profile=srgb'],
+    // --no-sandbox / --disable-dev-shm-usage：本机（尤其从自动化环境唤起 Chrome 时）
+    // 缺这两个参数会偶发 "Protocol error (Emulation.setTouchEmulationEnabled): Session closed"
+    // ——浏览器一起来就崩，且报错完全看不出是沙箱问题（2026-09-21 实测）
+    args: ['--font-render-hinting=none', '--force-color-profile=srgb',
+           '--no-sandbox', '--disable-dev-shm-usage'],
   });
   const page = await browser.newPage();
   await page.setViewport({ width: 500, height: 800, deviceScaleFactor: 2 });

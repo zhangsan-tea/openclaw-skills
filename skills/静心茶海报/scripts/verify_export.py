@@ -43,13 +43,45 @@ def ham(a, b):
     return bin(a ^ b).count("1")
 
 
-def crop_like_cover(src, area_w, area_h, skip_ratio=0.42):
-    """按 object-fit:cover; object-position:center 裁出与卡片图片区对应的区域，并跳过顶部渐隐带"""
+def parse_object_position(style):
+    """解析 object-position: center 86%，返回 (x_pct, y_pct) 0~1。
+
+    ⚠️ 必须解析：卡片用 object-position 微调取景时（如 `center 86%`），
+    若仍按居中裁参考图，该卡的 self 距离会飙到 100+ 而被误报 BAD
+    （2026-09-21 实测：卡07 关系中的安静 self=116 best=10）。
+    """
+    if not style:
+        return 0.5, 0.5
+    m = re.search(r'object-position\s*:\s*([^;]+)', style)
+    if not m:
+        return 0.5, 0.5
+    parts = m.group(1).strip().split()
+
+    def one(tok):
+        if tok.endswith('%'):
+            return float(tok[:-1]) / 100.0
+        if tok in ('left', 'top'):
+            return 0.0
+        if tok in ('right', 'bottom'):
+            return 1.0
+        if tok == 'center':
+            return 0.5
+        try:
+            return float(tok)
+        except ValueError:
+            return 0.5
+    if len(parts) == 1:
+        return one(parts[0]), 0.5
+    return one(parts[0]), one(parts[1])
+
+
+def crop_like_cover(src, area_w, area_h, obj_pos=(0.5, 0.5), skip_ratio=0.42):
+    """按 object-fit:cover + object-position 裁出与卡片图片区对应的区域，并跳过顶部渐隐带"""
     im = ImageOps.exif_transpose(Image.open(src))
     sw, sh = im.size
     sc = max(area_w / sw, area_h / sh)
     nw, nh = sw * sc, sh * sc
-    ox, oy = (nw - area_w) / 2, (nh - area_h) / 2
+    ox, oy = (nw - area_w) * obj_pos[0], (nh - area_h) * obj_pos[1]
     y0 = int(area_h * skip_ratio)
     box = (ox / sc, (oy + y0) / sc, (ox + area_w) / sc, (oy + area_h) / sc)
     return im.crop(box)
@@ -66,8 +98,13 @@ def main():
     a = ap.parse_args()
 
     html = open(a.html, encoding="utf-8").read()
-    srcs = [x for x in re.findall(r'photos/[^"\')> ]+\.(?:jpg|jpeg|png|JPG|JPEG|PNG)', html)
-            if "qrcode" not in x]
+    # 连 style 一起抓，才能拿到每张卡的 object-position
+    srcs, poses = [], []
+    for m in re.finditer(r'<img\s+src="(photos/[^"]+)"([^>]*)>', html, re.I):
+        if "qrcode" in m.group(1):
+            continue
+        srcs.append(m.group(1))
+        poses.append(parse_object_position(m.group(2)))
     if not srcs:
         print("HTML 里没找到图片引用，检查 --html 与相对路径前缀"); sys.exit(1)
 
@@ -82,7 +119,7 @@ def main():
     y_card = 0 if a.photo == "top" else CARD_H - area_h
     skip = int(area_h * 0.42)
 
-    refs = [dhash(crop_like_cover(s, area_w, area_h)) for s in srcs]
+    refs = [dhash(crop_like_cover(s, area_w, area_h, p)) for s, p in zip(srcs, poses)]
 
     bad = 0
     n = min(len(files), len(srcs))
