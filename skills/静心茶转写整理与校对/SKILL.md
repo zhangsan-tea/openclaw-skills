@@ -182,6 +182,10 @@ mkdir -p ~/.workbuddy/binaries/node/tmeet-cli && cp -R /tmp/tmeet-cli/node_modul
 T=~/.workbuddy/binaries/node/tmeet-cli/node_modules/.bin/tmeet   # v1.0.18
 ```
 
+`tmeet` 连接器在 WorkBuddy 里显示 connected 时，PATH 里通常已有
+`~/.workbuddy/binaries/node/cli-connector-packages/bin/tmeet` —— **优先用 `command -v tmeet` 拿到的那个**，
+只有查不到时才走上面的安装流程。两种情况凭证目录都是 `~/.tmeet/`，可共用。
+
 凭证目录 `~/.tmeet/` 与安装位置无关，重装 CLI 不影响已登录状态（若 `~/.tmeet/logs` 还在，说明之前装过）。
 
 ### 2.1 查询录制列表
@@ -411,6 +415,15 @@ assert norm(拆分前) == norm(拆分后)                   # 逐字一致
 ```
 
 5. 拆分会让「保留率」略高于 100%（新增的是标签本身），在自检里**写明增量来源**即可。
+6. **⚠️ 重建文件时必须保留前言**（2026-09-20 实测踩坑）：用正则 `^\*\*标签\*\*：` 抽段后若直接 `join` 写回，**H1 标题、「来源：」行、frontmatter 后的 `---` 分隔线会全部丢失**。正确切法：
+   ```python
+   m = re.search(r'(?m)^\*\*[^*\n]+?\*\*：', t)
+   pre, body = t[:m.start()], t[m.start():]      # pre = 前言，原样保留
+   segs = re.findall(r'(?m)^\*\*([^*\n]+?)\*\*：\n(.*?)(?=\n\n|\Z)', body, re.S)
+   out = pre + '\n\n'.join(...)                   # 不要从 segs 重建全文
+   ```
+   写完**必须**跑 `norm(拆分前 body) == norm(拆分后 body)` 逐字校验——这次正是校验 FAIL 才发现了丢前言。
+7. 单句本身超 150 字时退到 `，、；` 级再切一次；**第一轮句号级切完常残留 180–200 字段**，需第二轮。
 
 #### D. 必须保留的东西
 
