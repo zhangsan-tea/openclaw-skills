@@ -159,10 +159,21 @@ def load_blacklist(base=PHOTO_DIR):
 
 
 def build_used_set(base=PHOTO_DIR, exclude_html=None):
-    """已用内容真值集：全部历史 HTML 的引用 + photos/已用/ 归档"""
+    """已用内容真值集：全部历史 HTML 的引用 + photos/已用/ 归档
+
+    exclude_html 可传单个文件名或文件名列表 —— 同一批次的多个 HTML
+    （如「9月版.html」与「9月版-双语.html」共用同一批图）必须一并排除，
+    否则同批图会被自己的兄弟 HTML 判成「撞历史 d=0」（2026-09-21 实测踩到）。
+    """
+    if not exclude_html:
+        excl = set()
+    elif isinstance(exclude_html, str):
+        excl = {os.path.basename(exclude_html)}
+    else:
+        excl = {os.path.basename(x) for x in exclude_html}
     used = set()
     for h in sorted(glob.glob("*.html")):
-        if exclude_html and os.path.basename(h) == os.path.basename(exclude_html):
+        if os.path.basename(h) in excl:
             continue
         used.update(f for f in photos_in_html(h) if find_photo(f, base))
     used_dir = os.path.join(base, SUBDIR_USED)
@@ -318,10 +329,10 @@ def cmd_clarity(args):
 def cmd_verify(args):
     src = args.source
     if src.endswith(".html"):
-        names, base_excl = photos_in_html(src), src
+        names, base_excl = photos_in_html(src), [src] + list(getattr(args, "exclude", []) or [])
     else:
         names = [l.strip() for l in open(src, encoding="utf-8") if l.strip() and not l.startswith("#")]
-        base_excl = None
+        base_excl = list(getattr(args, "exclude", []) or [])
     base = args.photo_dir
     used = build_used_set(base, exclude_html=base_excl)
     used_h = [h for h in (safe_hash(f, base) for f in used) if h is not None]
@@ -442,6 +453,8 @@ def main():
 
     p3 = sub.add_parser("verify", help="校验指定清单/HTML（清晰度 + 判重 + 批内距离）")
     p3.add_argument("source")
+    p3.add_argument("--exclude", nargs="*", default=[],
+                    help="同批次的兄弟 HTML（共用同一批图），一并从「历史集」中排除")
     p3.set_defaults(func=cmd_verify)
 
     args = ap.parse_args()

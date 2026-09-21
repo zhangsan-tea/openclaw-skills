@@ -17,10 +17,12 @@ read_when:
 
 用户说"帮我做几张静心茶海报"时的工作流：
 
-1. **收集素材**：向用户索取文字内容（副标题 + 金句正文）和背景照片
-2. **生成 HTML**：按本 Skill 的模板规范输出 `.html` 文件
+1. **收集素材**：向用户索取/提炼中文内容，并从练习记录中匹配**波密英文原话**；再选择背景照片
+2. **生成 HTML**：默认按中英上下对照的模板规范输出 `.html` 文件；用户明确要求纯中文时才切换纯中文模板
 3. **导出 JPG**：跑 `scripts/export_cards.js`（本技能自带）⇒ 750×1334，导出后跑 `scripts/verify_export.py` 防串图
 
+> **默认语言规则（2026-09-20 定稿）**：静心茶海报默认均为**中英双语**，中文为主、英文为辅；英文优先逐句核对练习记录中 **Bommie** 的原话，不用意译英文替代原话。内容含隐喻、例证或因果时，中文必须保留“情境/动作 + 结果/指向”的最小完整链条，不能只截一句抽象结论。例：盐融于水必须交代“放盐 → 从表面到杯底都有盐味 → 水看上去仍未改变”，否则读者无法理解意象。
+>
 > `scripts/` 现有：`export_cards.js`（批量导出）、`verify_export.py`（防串图校验）、
 > `measure_card_fit.js`（余量/行宽/折行实测）、`photo_dupe_check.py`（选图判重）。
 > 新增脚本一律落这里，**不要留在 `/tmp`**——被系统清理后只能重写。
@@ -245,10 +247,15 @@ dhash 只看整体明暗梯度，**对"同题材不同构图"不敏感**。以�
    > 选图时把**两个距离一起打出来**核对：`距历史` 与 `距批内`，两个都要 ≥ 80 才保险。
 5. **生成候选拼图 → 人工看图**，按题材配比挑选（按 750×494 cover 裁切预览，看实际入画效果）
 6. 定稿后再做一次最终校验（14 张彼此 + 与历史 + 清晰度）
-7. **整卡渲染复核**（关键，换图后必做）：用 Puppeteer 截图看每张卡的完整效果，确认
+   —— `verify` 时若存在**同批次的兄弟 HTML**（如纯中文版与双语版共用同一批图），
+   必须加 `--exclude 兄弟.html` 排除，否则同批图全被误报「撞历史 d=0」（2026-09-21 实测）
+7. **全批画面复核**（换图后必做）：`scripts/preview_photo_areas.py <主HTML> -o /tmp/areas.png`
+   按卡片实际 cover 裁切渲染图片区拼图，逐张检查方向与完整度
+   —— 方向问题的第一排查项：`getexif().get(274)` ≠ 1？预览倒/躺而主 HTML 正常 = 内嵌脚本丢 EXIF（见 make_preview.py），不是选图错
+8. **整卡渲染复核**（关键，换图后必做）：用 Puppeteer 截图看每张卡的完整效果，确认
    - 图片区顶部与文字区底色的渐隐过渡（`.card-N .card-photo-area::before` 的起点色）没有出现色带穿帮
    - 若新图顶部色与该卡渐变起点色差异过大，需按新图顶部主色改 `::before` 起点色
-8. 生成"最终 14 张一览图"留档，文件名 `<批次名>-背景图一览.png`（红框标出本轮换过/升级过的卡）
+9. 生成"最终 14 张一览图"留档，文件名 `<批次名>-背景图一览.png`（红框标出本轮换过/升级过的卡）
 
 ### 用户指定"这张以后都别用了"时的处理（退役流程）
 
@@ -354,15 +361,31 @@ dhash 只看整体明暗梯度，**对"同题材不同构图"不敏感**。以�
 
 **正确做法**：主 HTML 保持相对路径（供 Puppeteer 导出用，**不要动**），另存一份 `xxx-预览.html`，把所有 `src` 换成 base64 data URI 再交付预览。
 
+**一律用 `scripts/make_preview.py`（2026-09-21 起），不要手写内嵌脚本**：
+
+```bash
+/Users/sanzhang/.workbuddy/binaries/python/envs/default/bin/python \
+  ~/.workbuddy/skills/静心茶海报/scripts/make_preview.py 静心茶金句卡-本周版-双语.html
+# 输出同名 -预览.html；打印体积与"内嵌 N 张，残留外部引用 0"即成功
+```
+
+> ⚠️ **EXIF 方向坑（2026-09-21 实测）**：内嵌时必须先 `ImageOps.exif_transpose()` 摆正。
+> PIL 的 `convert()/save()` 会丢 orientation 标记但像素不转，导致带方向标记的图
+> （exif=3 倒置 / 6 横躺）在预览里方向错误，而 Chrome 导出是正的 ——
+> 曾因此把「卡03/卡06 方向不对」误判为选图问题，差点白换图。
+> 误判信号：用户说某卡"方向不对"，先查该图 `getexif().get(274)` 是否 ≠1，再看主 HTML 渲染是否正常。
+
+`make_preview.py` 已内置摆正逻辑；如手写内嵌代码，务必带 `exif_transpose`。
+
 ```python
 import re, io, base64
-from PIL import Image
+from PIL import Image, ImageOps
 
 html = open(src_html, encoding='utf-8').read()
 cache = {}
 def embed(rel):
     if rel in cache: return cache[rel]
-    im = Image.open(rel).convert('RGB')
+    im = ImageOps.exif_transpose(Image.open(rel)).convert('RGB')   # ⚠️ 必须先摆正
     if 'qrcode' in rel:
         im.thumbnail((240, 240), Image.LANCZOS); q = 90
     else:
@@ -384,10 +407,13 @@ assert len(re.findall(r'src="(?!data:)', out)) == 0   # 确认无残留外部引
 
 ---
 
-## 变体：中英对照双语卡（2026-09 新增）
+## 标准模式：中英对照双语卡（2026-09-20 更新）
 
-从**纯中文金句卡**反向做双语版：选中文字少的卡 → 找波密英文原话 → 同卡上下对照。
-英文原文去 `~/obsidian-private/向内看/静心茶/练习记录/YYYYMMDD_静心茶练习.md` 按关键词（`camera`/`trust`/`light and dark`/`listener`/`observer` 等）grep **Bommie** 段落。
+**中英对照是默认模式，不再先做纯中文、再反向补英文。** 制作时应先从 `~/obsidian-private/向内看/静心茶/练习记录/YYYYMMDD_静心茶练习.md` 检索关键词，逐段找到并核对 **Bommie** 原话，再与中文一起定稿；仅当用户明确要求“纯中文”时才省略英文。
+
+- 英文以波密原句为准；为版面断行可拆句、可裁去重复语气词，但不得改写原意。
+- 中文不因双语排版而删掉隐喻成立所需的关键步骤。若是故事型内容，先保内容，再通过 `.en-sm` / `.en-xs`、`.tight`、`.cn-snug` 收紧。
+- 选背景时除去重、清晰度外，必须审查**意象方向**：关系/连接优先选成对、相伴、汇聚或平静水面；恐惧/观察优先选空阔、警觉、可安住的画面。不得只因图片好看而与文意相背。
 
 ### ⚠️ 品牌标签（2026-09-14 踩坑纠正）
 双语金句卡**只有** `静心茶` 竖排角标 + `日期 · 主题` 标签，**不加任何系列标签**。
