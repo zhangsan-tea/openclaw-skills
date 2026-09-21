@@ -65,7 +65,11 @@ def load_entries(html_path, sel_tpl, count):
     base = os.path.dirname(os.path.abspath(html_path))
     entries = []
     if sel_tpl and '{i}' in sel_tpl:
-        # 按 id="bcard-N" 分块
+        # 按 id="bcard-N" 分块；count<=0 时自动取 HTML 里最大的 N（避免手动漏传）
+        if count <= 0:
+            ns = [int(x) for x in re.findall(r'id="%s(\d+)"'
+                  % re.escape(sel_tpl.format(i='').lstrip('#').lstrip('.')), html)]
+            count = max(ns) if ns else 0
         for i in range(1, count + 1):
             sid = sel_tpl.format(i=i)
             key = sid.lstrip('#').lstrip('.')
@@ -140,7 +144,8 @@ def main():
     ap.add_argument('--cols', type=int, default=4)
     ap.add_argument('--cellw', type=int, default=340)
     ap.add_argument('--sel', default='#bcard-{i}')
-    ap.add_argument('--count', type=int, default=14)
+    ap.add_argument('--count', type=int, default=0,
+                    help='卡片数；0（默认）= 自动取 HTML 中最大的 bcard-N')
     a = ap.parse_args()
     if a.imgs:
         entries = [(i + 1, p, (0.5, 0.5)) for i, p in enumerate(a.imgs)]

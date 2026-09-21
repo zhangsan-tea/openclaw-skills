@@ -39,6 +39,10 @@ PHOTO_DIR = "photos"
 SUBDIR_USED = "已用"           # photos/已用/ 归档目录
 QRCODE = "qrcode.jpg"
 USED_JSON = "used-photos.json"  # 位于 PHOTO_DIR 的上一级（素材根目录）
+# 索引/一览类 HTML 必须排除：它们把整池照片都列进 src（如「背景照片一览.html」嵌了 265 张），
+# 若当成历史批次扫进去，全池照片都会被判成"已用"，候选永远是 0（2026-09-21 实测踩到）。
+INDEX_HTML_PAT = ("一览", "索引", "gallery", "index", "-预览")
+
 HAM_THRESHOLD = 10             # 256-bit dhash，>10 视为不同图
 SAME_IMAGE = 12                # <=12 视为"同一张图的不同规格"
 EXPORT_W, EXPORT_H = 750, 494  # 图片区导出尺寸（卡高 37% × deviceScaleFactor 2）
@@ -164,6 +168,9 @@ def build_used_set(base=PHOTO_DIR, exclude_html=None):
     exclude_html 可传单个文件名或文件名列表 —— 同一批次的多个 HTML
     （如「9月版.html」与「9月版-双语.html」共用同一批图）必须一并排除，
     否则同批图会被自己的兄弟 HTML 判成「撞历史 d=0」（2026-09-21 实测踩到）。
+
+    另外恒定跳过 INDEX_HTML_PAT（一览/索引/预览页）—— 它们不是卡片批次，
+    却把整池照片写进了 src，扫进去会让全池误判为已用。
     """
     if not exclude_html:
         excl = set()
@@ -173,7 +180,8 @@ def build_used_set(base=PHOTO_DIR, exclude_html=None):
         excl = {os.path.basename(x) for x in exclude_html}
     used = set()
     for h in sorted(glob.glob("*.html")):
-        if os.path.basename(h) in excl:
+        b = os.path.basename(h)
+        if b in excl or any(p in b for p in INDEX_HTML_PAT):
             continue
         used.update(f for f in photos_in_html(h) if find_photo(f, base))
     used_dir = os.path.join(base, SUBDIR_USED)
