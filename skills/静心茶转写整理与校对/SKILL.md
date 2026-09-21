@@ -156,33 +156,33 @@ tmeet auth status
 - 授权成功后 `tmeet auth status` 显示 `Logged in` + OpenId + UserName；AccessToken 约 6 小时、RefreshToken 约 30 天。
 - **Skill 内不保存 token**，不写死用户目录与旧脚本路径。
 
-#### 授权窗口只有约 5 分钟 —— 挂续期循环，不要反复找 Lee 要链接
+#### ⚠️ 2026-09-21 实测纠正：**必须前台跑 login，后台跑会白点**
 
-实测 `tmeet auth login` 打印的 `authorize url` **有效期约 5 分钟**，超时进程自行退出。只发一条链接必然超时，来回折腾。
+旧版本节建议「挂后台续期循环」，**实测无效，已推翻**：后台（`nohup … &`、脚本内子 shell、`script` pty 均试过）启动的 `tmeet auth login` 虽能打印 `authorize url`，但 **Lee 在浏览器点完显示「授权成功」后，`auth status` 仍是 `Not logged in`，`~/.tmeet/` 里始终不出现凭证**——因为后台进程脱离控制终端，OAuth 回调写不回本地。也试过 tmux（本机未装）。
+
+**有效做法：前台直接跑，让它阻塞等待（最长 300s）。**
 
 ```bash
-cat > /tmp/tmeet_wait.sh <<'SH'
-#!/bin/zsh
-LOG=/tmp/tmeet_url.txt
-: > "$LOG"
-for i in {1..24}; do
-  if tmeet auth status 2>/dev/null | grep -q "Logged in"; then
-    echo "$(date '+%H:%M:%S') LOGIN_OK" >> "$LOG"; break
-  fi
-  ( tmeet auth login --no-browser > /tmp/tmeet_cycle.log 2>&1 ) &
-  PID=$!
-  for j in {1..25}; do sleep 1; grep -q "authorize url:" /tmp/tmeet_cycle.log 2>/dev/null && break; done
-  echo "$(date '+%H:%M:%S') $(grep -m1 'authorize url:' /tmp/tmeet_cycle.log | sed 's/.*authorize url: //')" >> "$LOG"
-  wait $PID
-  tmeet auth status 2>/dev/null | grep -q "Logged in" && { echo "$(date '+%H:%M:%S') LOGIN_OK" >> "$LOG"; break; }
-done
-SH
-chmod +x /tmp/tmeet_wait.sh
+tmeet auth login --no-browser     # 前台执行，会打印 authorize url 后阻塞 waiting for authorization...
 ```
 
-- **必须以后台任务方式启动**，否则阻塞当前轮次。
-- 启动后 `sleep 10` 再读 `/tmp/tmeet_url.txt`，取最后一条链接给 Lee，并告知「有效期约 5 分钟，超时回我一个字，我立刻贴下一条」。
-- 循环约可撑 2 小时（24 轮 × 5 分钟）。循环进程已死（`ps aux | grep tmeet_wait.sh` 为空）→ `pkill -f "tmeet auth login"` 后重启。
+- 用 Bash 工具**前台**执行并给足 `timeout`（如 45–60s）；工具超时后会自动转后台，此时 URL 已在输出里，把链接给用户点即可。
+- 用户点完若凭证已落盘，再跑一次会返回 `Error: user has been login, please use 'tmeet cmd [flags]' to use` —— **这是成功的信号**，立刻 `tmeet auth status` 确认。
+- 链接有效期约 5 分钟。过期就 `pkill -f "tmeet auth login"` + `rm -f ~/.tmeet/token.lock`，再前台跑一条新的。
+- 判死标准：浏览器说成功但 `auth status` 仍 `Not logged in` → 一定是**本机没有前台进程在等**，不是授权失败。
+
+#### tmeet 不在 PATH 时（换新会话／环境重置后常见）
+
+`tmeet` 不是系统自带，由 WorkBuddy 连接器提供，包名为 `@tencentcloud/tmeet`（见 `~/.workbuddy/connectors-marketplace/connectors/tmeet/cli.json`）。`which tmeet` 为空时**装到独立空目录**，不要装进 `~/.workbuddy/binaries/node/workspace`（已有 node_modules 会 ENOTEMPTY + BROKER_DENY 失败）：
+
+```bash
+mkdir -p /tmp/tmeet-cli && cd /tmp/tmeet-cli && npm install @tencentcloud/tmeet
+# 固化到持久目录，后续用完整路径调用
+mkdir -p ~/.workbuddy/binaries/node/tmeet-cli && cp -R /tmp/tmeet-cli/node_modules ~/.workbuddy/binaries/node/tmeet-cli/
+T=~/.workbuddy/binaries/node/tmeet-cli/node_modules/.bin/tmeet   # v1.0.18
+```
+
+凭证目录 `~/.tmeet/` 与安装位置无关，重装 CLI 不影响已登录状态（若 `~/.tmeet/logs` 还在，说明之前装过）。
 
 ### 2.1 查询录制列表
 
@@ -485,7 +485,7 @@ assert norm(拆分前) == norm(拆分后)                   # 逐字一致
 | `练习记录/校对后v1备份/YYYYMM/` | 第一轮（五层校对）完成、第二轮（标点分段）尚未开始时的快照 |
 | `练习记录/校对记录/YYYYMM/` | 每篇的 `.changes.md` |
 | `练习记录/原始转写/YYYY-MM/` | 未加工直出稿归档（附 README）；**引用请用顶层成品** |
-| `练习记录/Skills/` | 本 Skill 的 Obsidian 备份（见 §11） |
+| `~/obsidian-private/向内看/静心茶/Skills/静心茶转写整理与校对/` | 本 Skill 的 Obsidian 备份（见 §11） |
 
 任何一批开始前先做 `校对前备份`，并 md5 校验一致。
 
