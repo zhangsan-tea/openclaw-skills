@@ -24,8 +24,15 @@ agent_created: true
 系统默认拒绝脚本访问照片（错误 -10004）。两种解法：
 
 **A. 授权（推荐，之后全自动）**
-系统设置 → 隐私与安全性 → 自动化 → 找到当前应用 → 勾选「Photos」；
-同页 → 照片 → 允许该应用访问。授权后 `python3 sync_bg_photos.py` 直连相簿。
+1. 系统设置 → 隐私与安全性 → 自动化 → **WorkBuddy** → 勾选「Photos」
+2. 系统设置 → 隐私与安全性 → 照片 → 允许 **WorkBuddy** 访问
+
+WorkBuddy bundle id：`com.tencent.workbuddy.mac`。
+若列表无此条目或曾误点「不允许」，先重置授权记录再重跑脚本（会重新弹窗）：
+`sudo tccutil reset AppleEvents com.tencent.workbuddy.mac`
+
+> 已实测的死路，别再试：直读图库 SQLite（`~/Pictures/Photos Library.photoslibrary/database/`）
+> 同样受 TCC 管控，未授权时 PermissionError，绕不开 AppleScript。
 
 **B. 手动导出兜底（免授权）**
 照片 App 打开该相簿 → 全选 → 文件 → 导出 → 导出 N 张照片 → 选文件夹，然后：

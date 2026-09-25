@@ -122,12 +122,20 @@ def export_album(dest_dir):
     return True, out
 
 
-PERMISSION_HELP = """照片访问被系统拒绝（错误 -10004）。请做一次授权:
-  系统设置 → 隐私与安全性 → 自动化 → 找到本应用(WorkBuddy/Terminal) → 勾选「Photos」
-  以及 → 隐私与安全性 → 照片 → 允许本应用访问
-授权后重跑本脚本即可。若只想免授权，可在照片 App 里全选相簿 →
-  文件 → 导出 → 导出 N 张照片 → 选一个文件夹，然后:
-  python3 sync_bg_photos.py --from-dir <那个文件夹路径>
+PERMISSION_HELP = """照片访问被系统拒绝（错误 -10004）。需做一次授权（只需一次，之后全自动）:
+
+  1) 系统设置 → 隐私与安全性 → 自动化 → WorkBuddy → 勾选「Photos」
+  2) 系统设置 → 隐私与安全性 → 照片   → 允许 WorkBuddy 访问
+
+  若列表里没有 WorkBuddy 条目，或之前误点过「不允许」，先在终端重置该授权记录:
+     sudo tccutil reset AppleEvents com.tencent.workbuddy.mac
+  重置后重跑本脚本，系统会重新弹窗，点「好」即可。
+  （WorkBuddy bundle id: com.tencent.workbuddy.mac）
+
+  备注：直接读照片图库 SQLite 也走同一套 TCC，未授权时同样 PermissionError，绕不开。
+
+  若只想免授权，照片 App 打开相簿 → 全选 → 文件 → 导出 → 导出 N 张照片 → 选文件夹，然后:
+    python3 sync_bg_photos.py --from-dir <那个文件夹路径>
 """
 
 
