@@ -276,6 +276,28 @@ dhash 只看整体明暗梯度，**对"同题材不同构图"不敏感**。以�
 
 > ⚠️ 改 `used-photos.json` 前**先 `cp` 一份到 /tmp**（该目录无 git）。`早期批次已用` 是 `{"说明":…,"photos":[…]}` 结构，取 `.photos`，别当 list 遍历 —— 踩过一次，把 `all_used` 从 79 缩到 65。
 
+### 归档：把已用照片移进 `photos/已用/` 时，**必须同步改 HTML 的 `src`**
+
+主 HTML / 中文版 HTML / 双语版 HTML 里的图片都是**相对路径** `photos/IMG_xxxx.jpeg`。一旦把照片移进 `photos/已用/` 做物理隔离，这些 HTML 立刻 9 处 404 —— **2026-09-21 就是这么踩的**（16 张双语卡移走 9 张，HTML 静默失效，2026-09-25 才发现）。
+
+规矩：
+1. 移图**和**改路径放同一个动作里做；改完必须验证
+2. 验证脚本（一次查所有引用方）：
+
+```bash
+cd "<素材目录>" && python3 - <<'EOF'
+import re, os
+for h in [f for f in os.listdir('.') if f.endswith('.html') and '一览' not in f and '预览' not in f]:
+    t = open(h, encoding='utf-8').read()
+    srcs = set(re.findall(r'src="(photos/[^"]+)"', t))
+    miss = [s for s in srcs if not os.path.exists(s)]
+    print(h, '引用', len(srcs), '缺失', len(miss), miss[:6])
+EOF
+```
+3. 修路径（把失效引用指到 `photos/已用/`）：
+   `t.replace('src="photos/X.jpeg"', 'src="photos/已用/X.jpeg"')`，逐个确认目标文件存在再改，改完复跑第 2 步
+4. 若 `-预览.html` 是自包含 base64 版，不受影响；但**检查清单要覆盖全部非预览 HTML**
+
 ### 换图后的两个连带检查
 
 | 检查项 | 方法 | 处理 |
@@ -438,9 +460,16 @@ day-tag（0907 · 信任）
 
 **长英文行收窄用类名，不要用 `.card-N`**：卡数会增减，位置类名必然错位。
 ```css
-.en-xs { font-size: 13.5px; letter-spacing: 0; line-height: 1.75; }
-.en-sm { font-size: 14.5px; letter-spacing: 0; line-height: 1.72; }
+/* ⚠️ 必须写成 .card.xxx .quote-en —— 裸的 .en-xs 是无效的！
+   因为 .quote-en 自己声明了 font-size/letter-spacing/line-height，
+   父级 .card 上的类无法通过继承覆盖它。
+   2026-09-25 实测：老 HTML 里 `.en-xs {…}` 一直是空转（没报错、没生效），
+   全靠「行本来就短」蒙过去；真正的长行照样折。 */
+.card.en-xs .quote-en { font-size: 13.5px; line-height: 1.72; letter-spacing: 0; }
+.card.en-sm .quote-en { font-size: 14.5px; line-height: 1.70; letter-spacing: 0; }
+.card.cn-snug .quote-chinese { font-size: 16px; line-height: 1.72; letter-spacing: 2px; }
 ```
+> 只有 `.card.tight .card-text-area` / `.card.tight .bi-divider` 这类**后代选择器**是生效的。
 
 ### 选卡判据（实测校准，375×667）
 - text-area = 63% = 420px，padding 30/14 ⇒ **可用 376px**；加了 `.tight` 后 **可用 404px**
