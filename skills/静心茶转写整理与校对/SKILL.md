@@ -1,6 +1,6 @@
 ---
 name: stillness-tea-transcript-pipeline
-description: 静心茶练习记录的全链路处理。① 整理入库：用已授权的 tmeet CLI 从腾讯会议拉取录制与转写，生成中英逐段交替、保留发言人标记的练习记录 Markdown；② 校对：五层交叉互检（音转文硬伤、中文反推英文断句、正念语义校准、修辞保留、输出标记）与标点分段优化，产出校对稿与四节式修改清单。含长文分块处理、保真率三口径校验、说话人按语种判定、录制可见延迟排查、ASR 幻听词与平台掩码处理。触发：拉取/整理/补录静心茶练习记录、校对静心茶转写、提到「静心茶转写 / 练习记录 / 补录记录 / 校对记录」、批量生成或覆盖练习记录文件。
+description: 静心茶练习记录的全链路处理。① 整理入库：用已授权的 tmeet CLI 从腾讯会议拉取录制与转写，生成练习记录 Markdown——2026-10-07 起默认「中英分列」版式（先中文全文、再英文全文、同序号段落互相对应，混合场追加交流段；2026-09 及之前的旧稿为「中英逐段交替」式，不改），保留发言人标记；② 校对：五层交叉互检（音转文硬伤、中文反推英文断句、正念语义校准、修辞保留、输出标记）与标点分段优化，产出校对稿与四节式修改清单。含长文分块处理、保真率三口径校验、说话人按语种判定、录制可见延迟排查、ASR 幻听词与平台掩码处理。触发：拉取/整理/补录静心茶练习记录、校对静心茶转写、提到「静心茶转写 / 练习记录 / 补录记录 / 校对记录」、批量生成或覆盖练习记录文件。
 description_zh: 静心茶转写整理与校对
 description_en: Stillness Tea Transcript Pipeline
 disable: false
@@ -61,7 +61,10 @@ auto_generated: true
 ---
 ```
 
-### 1.2 正文骨架
+### 1.2 正文骨架（**交替式 · 2026-09 及之前的旧稿形态，新稿不再使用**）
+
+> ⚠️ 本节描述的是**旧版式**。2026-10-08 起新入库稿一律改用 §1.2B「中英分列版式」。
+> 旧稿保持交替式不动——「不加原文没有的内容」优先级高于版式统一。
 
 ```markdown
 # 21日静心茶营 · M月D日
@@ -97,6 +100,118 @@ auto_generated: true
 
 **8 月 5 日起口径**：30 篇双标签 vs 5 篇单标签 ⇒ **双标签是现行主流，作为新稿目标**。
 ⚠️ 旧稿（尤其 7 月 `**Elsa**` 录播场、0822–0825、20260915）**保持原形态，不转换**——「不加原文没有的内容」优先级高于版式统一。
+
+---
+
+### 1.2B 中英分列版式（**2026-10-08 起新稿默认**）
+
+> Lee 2026-10-08 定版。原话要点：交替式「一句英文一句中文」好处是提取海报时中文方便，缺点是**通读会跳**；要的是
+> 「**完整的中文全部罗列出来，再完整的英文全部罗列出来**，中文一段一段、英文一段一段，中文和英文的段落基本能够对照」
+> ——既方便复习，也方便做海报时的中英对照。
+
+**适用范围**：2026-10-07 及之后入库的练习记录一律用此版式。**旧稿不回改**。
+
+#### 骨架（纯练习场）
+
+````markdown
+---
+date: 2026-10-08
+source: 腾讯会议转写
+meeting: 21日静心茶营
+type: 练习记录
+layout: 中英分列（先中文全文，再英文全文，同序号段落互相对应）
+auto_generated: true
+---
+
+# 21日静心茶营 · 10月8日
+
+来源：腾讯会议自动转写，AI 整理格式。
+
+> 版式：中文全文与英文全文分列，**同一序号的中英文段落互相对应**——中文第 N 段 ↔ 英文第 N 段。
+> 中文为庄西口译，英文为波密原声。
+
+---
+
+## 中文全文
+
+**1**
+（中文段）
+
+**2**
+（中文段）
+
+---
+
+## 英文全文
+
+**1**
+（英文段）
+
+**2**
+（英文段）
+````
+
+#### 骨架（练习 + 分享混合场）
+
+练习部分照上；**交流段追加在最末，保留对话体**：
+
+```markdown
+---
+
+## 交流
+
+**学员名**：
+（发言）
+
+**Bommie**：
+（英文回应）
+
+**中脉空间**：
+（中文口译）
+```
+
+- **交流段不适用分列**：学员发言只有中文、没有英文对应段，强行分列会破坏序号对照。
+- 交流段说话人标签仍按 §1.3 语种判定，连续同人合并为一轮（见 §7.3）。
+
+#### 段落配对算法（必须照做，勿自由发挥）
+
+按顺序把练习段切成 `(lang, text)` 块（语种判定同 §1.3），再按下述规则配对：
+
+```python
+def pair_up(blocks):                      # blocks: [(lang, text)]，对话顺序
+    pairs, i = [], 0
+    n = len(blocks)
+    while i < n:
+        en, zh = [], []
+        while i < n and blocks[i][0] == 'en':     # 连续英文块并入同一"半"
+            en.append(blocks[i][1]); i += 1
+        while i < n and blocks[i][0] == 'zh':     # 紧随的连续中文块为对应"半"
+            zh.append(blocks[i][1]); i += 1
+        if not en and not zh:
+            break
+        pairs.append((' '.join(en).strip(), ''.join(zh).strip()))
+    return pairs
+```
+
+- 英文块之间以**空格**连接；中文块之间**直接连接**（不加空格、不加标点）。
+- 编号从 **1** 起，**中文全文与英文全文的段数必须完全相等**。
+- 一侧为空时（如波密连说两段、庄西只译一段，或学员串话造成单边），另一侧照常输出，**不要写「（此段无中文）」占位**，除非两侧都空。
+- 配对**只发生在练习/引导段内部**；唱诵、共享音频归入 `〔过程：…〕`，不参与配对。
+
+#### 与交替式的取舍（下游用途对照）
+
+| 用途 | 交替式（旧） | 中英分列式（新） |
+|---|---|---|
+| 通读复习 | 中英来回跳 | ✅ 单一语种连续读 |
+| 中文金句提取（海报） | ✅ 直接取 | ✅ 直接取（中文全文一整块） |
+| 中英对照做海报 | 需上下找对应 | ✅ 按序号 N 直接配对 |
+| 保留对话时序 | ✅ | 不保留（练习段无需） |
+
+#### 新增自检项（并入 §10.1 / §10.2）
+
+- `## 中文全文` 段落数 == `## 英文全文` 段落数（**必须相等**，不等即为配对算法出错）。
+- 编号连续、从 1 起、无跳号。
+- `layout:` 字段存在于 frontmatter。
 
 ### 1.3 说话人标签判定（按语种，**不按编号**）
 
@@ -156,37 +271,33 @@ tmeet auth status
 - 授权成功后 `tmeet auth status` 显示 `Logged in` + OpenId + UserName；AccessToken 约 6 小时、RefreshToken 约 30 天。
 - **Skill 内不保存 token**，不写死用户目录与旧脚本路径。
 
-#### ⚠️ 2026-09-21 实测纠正：**必须前台跑 login，后台跑会白点**
+#### 授权窗口只有约 5 分钟 —— 挂续期循环，不要反复找 Lee 要链接
 
-旧版本节建议「挂后台续期循环」，**实测无效，已推翻**：后台（`nohup … &`、脚本内子 shell、`script` pty 均试过）启动的 `tmeet auth login` 虽能打印 `authorize url`，但 **Lee 在浏览器点完显示「授权成功」后，`auth status` 仍是 `Not logged in`，`~/.tmeet/` 里始终不出现凭证**——因为后台进程脱离控制终端，OAuth 回调写不回本地。也试过 tmux（本机未装）。
-
-**有效做法：前台直接跑，让它阻塞等待（最长 300s）。**
+实测 `tmeet auth login` 打印的 `authorize url` **有效期约 5 分钟**，超时进程自行退出。只发一条链接必然超时，来回折腾。
 
 ```bash
-tmeet auth login --no-browser     # 前台执行，会打印 authorize url 后阻塞 waiting for authorization...
+cat > /tmp/tmeet_wait.sh <<'SH'
+#!/bin/zsh
+LOG=/tmp/tmeet_url.txt
+: > "$LOG"
+for i in {1..24}; do
+  if tmeet auth status 2>/dev/null | grep -q "Logged in"; then
+    echo "$(date '+%H:%M:%S') LOGIN_OK" >> "$LOG"; break
+  fi
+  ( tmeet auth login --no-browser > /tmp/tmeet_cycle.log 2>&1 ) &
+  PID=$!
+  for j in {1..25}; do sleep 1; grep -q "authorize url:" /tmp/tmeet_cycle.log 2>/dev/null && break; done
+  echo "$(date '+%H:%M:%S') $(grep -m1 'authorize url:' /tmp/tmeet_cycle.log | sed 's/.*authorize url: //')" >> "$LOG"
+  wait $PID
+  tmeet auth status 2>/dev/null | grep -q "Logged in" && { echo "$(date '+%H:%M:%S') LOGIN_OK" >> "$LOG"; break; }
+done
+SH
+chmod +x /tmp/tmeet_wait.sh
 ```
 
-- 用 Bash 工具**前台**执行并给足 `timeout`（如 45–60s）；工具超时后会自动转后台，此时 URL 已在输出里，把链接给用户点即可。
-- 用户点完若凭证已落盘，再跑一次会返回 `Error: user has been login, please use 'tmeet cmd [flags]' to use` —— **这是成功的信号**，立刻 `tmeet auth status` 确认。
-- 链接有效期约 5 分钟。过期就 `pkill -f "tmeet auth login"` + `rm -f ~/.tmeet/token.lock`，再前台跑一条新的。
-- 判死标准：浏览器说成功但 `auth status` 仍 `Not logged in` → 一定是**本机没有前台进程在等**，不是授权失败。
-
-#### tmeet 不在 PATH 时（换新会话／环境重置后常见）
-
-`tmeet` 不是系统自带，由 WorkBuddy 连接器提供，包名为 `@tencentcloud/tmeet`（见 `~/.workbuddy/connectors-marketplace/connectors/tmeet/cli.json`）。`which tmeet` 为空时**装到独立空目录**，不要装进 `~/.workbuddy/binaries/node/workspace`（已有 node_modules 会 ENOTEMPTY + BROKER_DENY 失败）：
-
-```bash
-mkdir -p /tmp/tmeet-cli && cd /tmp/tmeet-cli && npm install @tencentcloud/tmeet
-# 固化到持久目录，后续用完整路径调用
-mkdir -p ~/.workbuddy/binaries/node/tmeet-cli && cp -R /tmp/tmeet-cli/node_modules ~/.workbuddy/binaries/node/tmeet-cli/
-T=~/.workbuddy/binaries/node/tmeet-cli/node_modules/.bin/tmeet   # v1.0.18
-```
-
-`tmeet` 连接器在 WorkBuddy 里显示 connected 时，PATH 里通常已有
-`~/.workbuddy/binaries/node/cli-connector-packages/bin/tmeet` —— **优先用 `command -v tmeet` 拿到的那个**，
-只有查不到时才走上面的安装流程。两种情况凭证目录都是 `~/.tmeet/`，可共用。
-
-凭证目录 `~/.tmeet/` 与安装位置无关，重装 CLI 不影响已登录状态（若 `~/.tmeet/logs` 还在，说明之前装过）。
+- **必须以后台任务方式启动**，否则阻塞当前轮次。
+- 启动后 `sleep 10` 再读 `/tmp/tmeet_url.txt`，取最后一条链接给 Lee，并告知「有效期约 5 分钟，超时回我一个字，我立刻贴下一条」。
+- 循环约可撑 2 小时（24 轮 × 5 分钟）。循环进程已死（`ps aux | grep tmeet_wait.sh` 为空）→ `pkill -f "tmeet auth login"` 后重启。
 
 ### 2.1 查询录制列表
 
@@ -263,8 +374,16 @@ tmeet record transcript-paragraphs --record-file-id "<fid>" --meeting-id "<mid>"
 # 2. 再按 pid 拉正文到临时文件
 tmeet record transcript-get --record-file-id "<fid>" --meeting-id "<mid>" \
   --pid "0" --limit "<total+10>" --format json > /tmp/st_full_YYYYMMDD.json
-# 3. 解析 data.minutes.paragraphs，按 §1.2 版式写目标 md
+# 3. 解析 data.minutes.paragraphs，按 §1.2B 版式写目标 md（2026-10-07 起新稿默认）
 ```
+
+**新稿生成要点（§1.2B）**：
+
+1. 按 `speaker.user_name` 切出练习段（`中脉空间-发言人N` 二人交替区）与交流段（出现学员真名之后）。
+2. 练习段按语种切块 → `pair_up()` 配对 → 先写 `## 中文全文`，再写 `## 英文全文`，同序号。
+3. 交流段按对话体写，连续同说话人合并为一轮，轮内 >150 字按句拆分。
+4. `中脉空间 共享音频`（唱诵）折叠为一行 `〔过程：播放唱诵音频〕`，**连续多条只保留一条**。
+5. 一次性写文件，不回显全文；写完跑 §10.1 自检脚本。
 
 ### 2.4 平台屏蔽词与掩码（落 Markdown 前必须清除）
 
@@ -415,15 +534,6 @@ assert norm(拆分前) == norm(拆分后)                   # 逐字一致
 ```
 
 5. 拆分会让「保留率」略高于 100%（新增的是标签本身），在自检里**写明增量来源**即可。
-6. **⚠️ 重建文件时必须保留前言**（2026-09-20 实测踩坑）：用正则 `^\*\*标签\*\*：` 抽段后若直接 `join` 写回，**H1 标题、「来源：」行、frontmatter 后的 `---` 分隔线会全部丢失**。正确切法：
-   ```python
-   m = re.search(r'(?m)^\*\*[^*\n]+?\*\*：', t)
-   pre, body = t[:m.start()], t[m.start():]      # pre = 前言，原样保留
-   segs = re.findall(r'(?m)^\*\*([^*\n]+?)\*\*：\n(.*?)(?=\n\n|\Z)', body, re.S)
-   out = pre + '\n\n'.join(...)                   # 不要从 segs 重建全文
-   ```
-   写完**必须**跑 `norm(拆分前 body) == norm(拆分后 body)` 逐字校验——这次正是校验 FAIL 才发现了丢前言。
-7. 单句本身超 150 字时退到 `，、；` 级再切一次；**第一轮句号级切完常残留 180–200 字段**，需第二轮。
 
 #### D. 必须保留的东西
 
@@ -498,7 +608,7 @@ assert norm(拆分前) == norm(拆分后)                   # 逐字一致
 | `练习记录/校对后v1备份/YYYYMM/` | 第一轮（五层校对）完成、第二轮（标点分段）尚未开始时的快照 |
 | `练习记录/校对记录/YYYYMM/` | 每篇的 `.changes.md` |
 | `练习记录/原始转写/YYYY-MM/` | 未加工直出稿归档（附 README）；**引用请用顶层成品** |
-| `~/obsidian-private/向内看/静心茶/Skills/静心茶转写整理与校对/` | 本 Skill 的 Obsidian 备份（见 §11） |
+| `练习记录/Skills/` | 本 Skill 的 Obsidian 备份（见 §11） |
 
 任何一批开始前先做 `校对前备份`，并 md5 校验一致。
 
@@ -829,13 +939,17 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 | `(MISSING)` 掩码残留 | 0 |
 | 拆分保真 | 拆分前后去标签去空白后逐字一致 |
 | frontmatter | 完整未改 |
+| **中英分列稿：`## 中文全文` 段数 == `## 英文全文` 段数** | **必须相等**（2026-10-08 起） |
+| **中英分列稿：编号连续、从 1 起、无跳号** | 0 处异常 |
+| **中英分列稿：frontmatter 含 `layout:` 字段** | 必须存在 |
 
 ### 10.2 阶段 A 完成检查
 
 - [ ] 文件名 `YYYYMMDD_静心茶练习.md`
 - [ ] YAML frontmatter **与库内主流形态一致**（先统计再落笔，不凭记忆）
 - [ ] 正文标题 `# 21日静心茶营 · M月D日`
-- [ ] 中英逐段交替（英文段 → 中文段）
+- [ ] **版式选对**：2026-10-07 及之后的新稿走 §1.2B 中英分列（先中文全文、再英文全文、同序号对照）；旧稿沿用 §1.2 交替式
+- [ ] 中英分列稿：`## 中文全文` / `## 英文全文` / （混合场）`## 交流` 三段齐全，两段**段数相等**
 - [ ] 发言人标记按**语种**判定，非按 `发言人N` 编号
 - [ ] 学员独立声纹保留原姓名标签
 - [ ] 无遗漏英文内容；段落数与原始转写段落数一致
