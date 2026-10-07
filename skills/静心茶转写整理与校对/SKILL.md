@@ -986,7 +986,15 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 
 **推送规则**：
 
-- 远端领先本地时，**用干净临时克隆做增量同步**（`/tmp/oas-clean`），**禁止强推**，不得混入无关改动。
+- 远端领先本地时，**用干净临时目录做增量同步**，**禁止强推**，不得混入无关改动。
+- ⚠️ **2026-10-08 实测：`git clone` 本仓库会挂死**（12 分钟后 exit 128）。**改用浅 fetch，7 秒完成**：
+  ```bash
+  rm -rf /tmp/oas2 && mkdir -p /tmp/oas2 && cd /tmp/oas2
+  git init -q && git remote add origin https://github.com/zhangsan-tea/openclaw-skills.git
+  git fetch --depth 1 origin main && git checkout -q -b main FETCH_HEAD
+  # 覆盖目标 Skill 文件 → git add -A → commit → push origin main
+  ```
+  推不动时先跑 `git ls-remote https://github.com/... HEAD` 探连通（本机 zsh **无 `timeout` 命令**）。
 - 推送前先 `git fetch` + 比对 `HEAD..origin/main`；远端有他人提交时先对齐再推。
 - 只提交本次改动的 Skill 文件，**不要连带提交无关目录**。
 - Skill 目录名、`description_zh` 用中文便于识别；`name` 字段保持 ASCII kebab-case。
