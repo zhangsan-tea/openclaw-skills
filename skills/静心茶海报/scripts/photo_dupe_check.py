@@ -35,9 +35,11 @@ try:
 except ImportError:
     sys.exit("需要 Pillow：~/.workbuddy/binaries/python/envs/default/bin/pip install Pillow")
 
-# 2026-10-11 起背景照片统一放 ../背景照片/（相对素材根目录），HTML 引用也用该相对路径 ——
-# 不同电脑用户名不同，HTML 内绝不能写绝对路径，也不能依赖软链（企微同步盘不同步软链）。
-PHOTO_DIR = "../背景照片"
+# 权威照片池 = 跨电脑同步盘里的 海报制作素材/photos/（HTML 与 photos/ 同级、一起同步）。
+# 2026-10-11 Lee 定：背景照片不放 Obsidian 库内（图片量大，每次同步开销太高），
+# 改放跨电脑同步的独立路径；只要 HTML 落在素材根目录、用 photos/xxx 相对前缀引用，
+# 换电脑/换用户名都能正常显示 —— 绝不能写绝对路径，也不能依赖软链（同步盘不同步软链）。
+PHOTO_DIR = "photos"
 SUBDIR_USED = "已用"           # photos/已用/ 归档目录
 QRCODE = "qrcode.jpg"
 USED_JSON = "used-photos.json"  # 位于 PHOTO_DIR 的上一级（素材根目录）
