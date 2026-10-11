@@ -236,6 +236,8 @@ def pair_up(blocks):                      # blocks: [(lang, text)]，对话顺�
 
 ⚠️ **`发言人1` / `发言人2` 的编号随「谁先开口」翻转，场次之间可以完全相反**（实测 20260914 是 1=英文、20260917 是 1=中文；20260919 同一账号内英文中文交错，编号与语种无稳定对应）。**绝不可按编号机械映射。**
 
+**2026-10 起：腾讯会议新版已直接还原标签。** 实测 10/09、10/10、10/11 的 `speaker.user_name` 就是 `Bommie` / `中脉空间`（不再是「中脉空间-发言人N」），与上述语种判定结果一致。仍**保留语种兜底**：遇到 `发言人N` 形态或标签与语种矛盾时，一律以**段落语种**为准。
+
 **标签一律不改**：不做「Elsa 场重标为 Bommie/庄西」这类机械改写——同一标签在录播场指账号、在交流场指真人，机械改写必然出错。
 
 ### 1.4 段落长度上限
@@ -710,6 +712,16 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 - **按普通学员对待，归【问】，不单列、不特殊处理。**
 - **下游标记与引用一律写 `lee`（小写）**，与 `Bommie`／`lulu` 等小写标签风格一致。
 - **转写层标签保留原样不改**（正文仍写 `**利军：**`），只在标记与引用时归并为 `lee`。
+
+**学员英文名对照（2026-10-11 实测补充）**：
+
+| 中文标签 | Bommie 口中的称呼 |
+|---|---|
+| 夜子 | **Shining** |
+| 陈 | **Simin** |
+| 路翠 | **Lucy**（转写作「路翠Lucy」） |
+
+⚠️ **夜子（Shining）与思敏（Simin）不是同一人**（Lee 2026-10-11 确认）。10/07 曾出现 Bommie 称夜子为 "simin"、庄西又说「谢谢夜子，思敏」的疑似情形，但**两个说话人标签必须保持独立，不得合并**。
 - ⚠️ `- 待补充（Lee 阅读后添加）`（如 20260522）是**生成工具的占位提示**，不是发言，属编辑批注，**不进学员层**。
 
 ---
@@ -843,6 +855,27 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 | chairing | **sharing** | 中文「分享」 |
 | One movie | **when moving** | 中文「移动时」 |
 | science / violence | **silence** | 全段在讲宁静 |
+| Cc / C C | **Cici**（庄西） | 10/11 `Cc knows that`；10/09 开场 `Cc is on the way` + `No translator` 互证＝翻译在路上 |
+| fastness（never ending fastness） | **vastness** | 讲「无边无际」 |
+| sewers（between you and the sewers） | **source** | 中文作「源头」 |
+| symbios | **symbiosis** | 中文作「共生」 |
+| increat（an increat of awareness） | **increase** | 觉知提升语境 |
+| postal girl | **poster girl** | 「你可以是我们的代言人」 |
+| I Am Dead by Nisa Gadata | **I Am That** by **Nisargadatta** | 中文作《我就是那》，印度不二论 |
+| 101（of my favorite teachers） | **one of** | 数字断词 |
+| 630 we meet | **6:30** we meet | 时间格式 |
+| two words（two words the manifestation） | **towards** | 高频断词误识 |
+| Ldl / Dad（When Ldl is established） | **that** | 全段讲「当那建立起来之后」 |
+| breast（the breast, the movement） | **breath** | 与 movement、silence 并列 |
+| bee（of the bee） | **being** | 讲存在体 |
+| ground（inside that ground） | **crown** | 前句讲 crown of the skull |
+| in our eyes（the eyes, the in our eyes） | **inner eyes** | 中文作「内在之眼」 |
+| this section（by this section, by dissolving） | **dissecting** | 中文作「通过分解」 |
+| It were everything possible | **It is where** everything possible | 语法 |
+| com ing / merg ing（词中插空格） | **coming / merging** | ASR 断词，去空格 |
+| breeding（change in breeding） | **breathing** | 全段讲呼吸 |
+| Hello.（Hello. The separation…） | **Allow** | 引导语常以 Allow 开头 |
+| Had acceptance | **That** acceptance | 句首音转文 |
 
 **身体扫描类引导语的通用规律**：`Kill / Fill / Will` → **Feel**；`drunk` → **trunk**；`heed` → **head**。
 引导动词几乎只用 `Feel` / `Allow` / `Realize` / `Notice`，凡出现 `Kill` 一类动词，先怀疑是 `Feel`。
@@ -883,6 +916,23 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 | 最钟 | **最终** | 音近 |
 | 2 平方 / 阿平方 | **R²** | 学员名 |
 | 爱莎 / 艾莎（人名称呼处） | **艾莎** | 同修人名统一写法；录播播放账号标记本身仍写 `**Elsa**` |
+| 先知（我们作为人类的先知） | **限制 / 身份认同** | 英文 limitations / identification of being a human |
+| 零在 | **临在** | 英文 presence，教练／咨询语境 |
+| 冰心（冰心也在邀请你） | **静心** | 本营主题 |
+| 莫云（莫云说谢谢你） | **波密** | 老师名 |
+| 动物（让动物变得更…） | **动** | 英文 the movement |
+| 号 / 耗（放掉那个号／纠结在耗上） | **如何** | 英文 letting go of the how |
+| 物类 / 负类 / 负类的类 | **物累** | 讲「为物所累」，英文 the impulse of collecting |
+| 真香（形状，轮廓，真香） | **真相** | 英文 the truth |
+| 愿（就会愿意识到） | **越**（越意识到） | 英文 the deeper… the more |
+| 社会（社会把一份信任带入） | **这** | 英文 That will bring the trust |
+| 洗练（我自己的洗练的方法） | **练习** | 英文 practice |
+| 开心人类的可能一切的可能 | **这也是一切对人类而言可能** | 英文 It is where everything possible to humankind |
+| 有宽膝 | **手肘、髋部和膝盖** | 英文 elbows, hips and knees |
+| 小环儿（眼睛闭上小环儿） | **片刻** | 英文 for a moment |
+| 引起这画面。变化。 | **然后允许这画面发生变化** | 英文 allow the image to change |
+| 依依（依依的画面） | **合一** | 英文 the picture of oneness（与 §8.3 幻听词「依依」并存，须逐处判） |
+| 行行色色（与「过程／源头／分心」同现） | **过程 / 分心**（依语境） | 英文 process / distraction，须逐处判 |
 
 ### 8.3 ASR「幻听词」：同一个词在不同位置对应不同原词，只能逐处判
 
@@ -916,6 +966,20 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 
 0822 用中文「艾莎」而 202607 同批用 `**Elsa**`——**不自行统一**，一律在清单「待确认」列出待用户拍板。
 
+### 9.5 交流段正文行首残留空格（ASR 通病，必清）
+
+腾讯会议转写在段落首字前会插入 1 个空格，落到 Markdown 后表现为 `**Bommie**：\n Than so.`。生成后统一清除：
+
+```python
+s, n = re.subn(r'(?m)^ +(?=\S)', '', s)   # 只清行首连续空格，不动缩进结构
+```
+
+实测 10/11 单场清理 24 处。**注意**：用 `re.sub(r'(?m)^(\*\*[^*]+：\n)[ \t]+', ...)` 这类带前缀的写法会匹配不到（标签行与正文之间有换行差异），直接用行首空格通用式更可靠。
+
+### 9.6 生成脚本的闭包陷阱（工程备忘）
+
+按说话人合并交流段时，若在嵌套函数内写 `L += [...]`（列表 `L` 是外层变量），Python 会把它当局部变量，抛 `UnboundLocalError: cannot access local variable 'L'`。必须写成 `L.extend([...])`。
+
 ### 9.4 原稿缺结构时保持缺失
 
 2026-08 有 3 篇（0822/0824/0825）原稿直接以 `**Bommie**：` 开头，**无 frontmatter、无 `# 标题`、无 `来源：` 行**——属上游入库时的半成品。处理原则：**不加原文没有的内容**，保持缺失，在「待确认」写明「本文件原稿无 frontmatter，未补写，待用户决定是否回填」。
@@ -933,6 +997,7 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 | 中文段最长 | 纯练习 ≤150 字；**交流/分享段 ≤150 字** |
 | 英文段最长 | 不设 150 字上限（以不滚屏为准） |
 | 游离句号 / 中文词间空格 / 多余空行 / 行尾空格 / 标点前空格 | 全部为 0 |
+| 正文行首残留空格 | 0（ASR 通病，见 §9.5） |
 | 点号异常（`..` / `。。。`） | 0 |
 | 小写 `i` 残留 / `i'm` 等 | 0（英文引导语里作第一人称的一律 `I`） |
 | `**` 屏蔽掩码残留 | 0 |
