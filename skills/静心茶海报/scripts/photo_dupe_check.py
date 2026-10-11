@@ -167,8 +167,40 @@ def load_blacklist(base=PHOTO_DIR):
     return out
 
 
+def load_listed(base=PHOTO_DIR, exclude_names=()):
+    """used-photos.json 里登记为「已用」的照片（batches + all_used + 早期批次已用）。
+
+    2026-10-11 重大修正：判重此前只扫历史 HTML 的 src，完全没读这份清单 ——
+    结果十月版选出的 12 张里有 4 张（IMG_8613/8046/0026/9289）早已登记为已用却漏检。
+    很多批次只在清单里登记、HTML 未必留在同一台机器，光扫 HTML 必然漏。
+
+    exclude_names：本批自己的照片（清单里可能已写入当前批次），需剔除，否则 d=0 自查。
+    """
+    p = os.path.join(os.path.dirname(os.path.abspath(base)) or ".", USED_JSON)
+    if not os.path.exists(p):
+        return set()
+    try:
+        import json
+        d = json.load(open(p, encoding="utf-8"))
+    except Exception:
+        return set()
+    out = set()
+    for b in d.get("batches", []) if isinstance(d.get("batches"), list) else []:
+        out.update(b.get("photos", []) if isinstance(b, dict) else [])
+    for k in ("all_used",):
+        v = d.get(k)
+        if isinstance(v, list):
+            out.update(v)
+    e = d.get("早期批次已用")
+    if isinstance(e, dict):
+        out.update(e.get("photos", []))
+    elif isinstance(e, list):
+        out.update(e)
+    return {f for f in out if f not in set(exclude_names)}
+
+
 def build_used_set(base=PHOTO_DIR, exclude_html=None):
-    """已用内容真值集：全部历史 HTML 的引用 + photos/已用/ 归档
+    """已用内容真值集：全部历史 HTML 的引用 + photos/已用/ 归档 + 清单登记（used-photos.json）
 
     exclude_html 可传单个文件名或文件名列表 —— 同一批次的多个 HTML
     （如「9月版.html」与「9月版-双语.html」共用同一批图）必须一并排除，
@@ -193,6 +225,13 @@ def build_used_set(base=PHOTO_DIR, exclude_html=None):
     if os.path.isdir(used_dir):
         used.update(f for f in os.listdir(used_dir)
                     if f.lower().endswith((".jpeg", ".jpg")) and find_photo(f, base))
+    # 清单登记：本批自己的照片要剔除（清单可能已写入当前批次）
+    own = set()
+    for h in (exclude_html if isinstance(exclude_html, (list, tuple)) else
+              ([exclude_html] if exclude_html else [])):
+        if os.path.exists(h):
+            own.update(photos_in_html(h))
+    used.update(f for f in load_listed(base, exclude_names=own) if find_photo(f, base))
     return used
 
 
