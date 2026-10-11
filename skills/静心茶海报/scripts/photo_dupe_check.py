@@ -33,9 +33,11 @@ import os, re, sys, glob, argparse, itertools
 try:
     from PIL import Image, ImageDraw, ImageStat, ImageOps
 except ImportError:
-    sys.exit("需要 Pillow：/Users/sanzhang/.workbuddy/binaries/python/envs/default/bin/pip install Pillow")
+    sys.exit("需要 Pillow：~/.workbuddy/binaries/python/envs/default/bin/pip install Pillow")
 
-PHOTO_DIR = "photos"
+# 2026-10-11 起背景照片统一放 ../背景照片/（相对素材根目录），HTML 引用也用该相对路径 ——
+# 不同电脑用户名不同，HTML 内绝不能写绝对路径，也不能依赖软链（企微同步盘不同步软链）。
+PHOTO_DIR = "../背景照片"
 SUBDIR_USED = "已用"           # photos/已用/ 归档目录
 QRCODE = "qrcode.jpg"
 USED_JSON = "used-photos.json"  # 位于 PHOTO_DIR 的上一级（素材根目录）
@@ -127,7 +129,8 @@ def photos_in_html(path):
     """按出现顺序返回 HTML 引用的照片（去重、去二维码）"""
     txt = open(path, encoding="utf-8", errors="ignore").read()
     out = []
-    for f in re.findall(r'photos/([^"\']+\.(?:jpeg|jpg|JPG|JPEG))', txt):
+    # 兼容两种历史写法：photos/（2026-10-11 前的软链式）与 ../背景照片/（现行相对路径）
+    for f in re.findall(r'(?:photos/|\.\./背景照片/)([^"\']+\.(?:jpeg|jpg|JPG|JPEG))', txt):
         if f != QRCODE and f not in out:
             out.append(f)
     return out
