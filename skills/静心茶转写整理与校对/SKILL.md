@@ -213,6 +213,29 @@ def pair_up(blocks):                      # blocks: [(lang, text)]，对话顺�
 - 编号连续、从 1 起、无跳号。
 - `layout:` 字段存在于 frontmatter。
 
+### 1.2C 无翻译场（纯英文场）处理口径（**2026-10-15 起新增**）
+
+**识别信号**（命中任一即按本口径处理）：
+
+- 波密开场自述 `another day without translation` / `No translator` / `Cici is not here`；
+- 整场 `speaker.user_name` 几乎只有 `Bommie`，中文帧总量 < 5 帧且多为场务碎片（如「你是 15。」）；
+- 10 月营期实测：10/09、10/15 为无翻译场，10/07、10/08、10/10、10/11、10/13 有口译。
+
+**处理顺序（不可颠倒）**：
+
+1. **先校对英文原文**——无翻译场没有中文可作互证，必须靠正念语境 + 既往场次用语 + §8.1 错误表自行判读。重点排查 `no ↔ know`、`breeding ↔ breathing`、`buddy ↔ body`、`be long ↔ belong`、`Dad/Bd/Ldl ↔ that` 几组。
+2. **再补译中文**——按 §1.4 术语统一表与既有译法成句，**不要**逐字硬译；英文侧大量短促停顿（`The meditation. Is. Inviting you.`）在英文侧**保留原标点**，中文侧按通顺中文成句。
+3. **落版式**——仍用 §1.2B 中英分列，序号一一对应。
+4. **必须打标记**，否则下游会把补译误当作庄西口译原声：
+   - frontmatter 增加一行：`translated_by: AI 补译（本场无现场口译）`
+   - 正文顶部说明块增加一行：
+     `> ⚠️ 本场**没有现场口译**，中文全文为依据**校对后英文**的补译，非庄西口译原声。`
+
+**保真率另算**：无翻译场的中文是新增内容，全文口径必然 > 100%，无意义。改为**只算英文侧**：
+`英文成品非空白字符 ÷ 英文原文非空白字符`，合格区间 **95%–102%**（10/15 实测 97.9%，差额来自删除 ASR 中文杂音）。
+
+**存疑条目照旧进 `.changes.md` 第三节**，且**英文保留原词不臆改**、只在中文里按推测义译出。
+
 ### 1.3 说话人标签判定（按语种，**不按编号**）
 
 | 标签 | 实际含义 |
@@ -876,6 +899,18 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 | breeding（change in breeding） | **breathing** | 全段讲呼吸 |
 | Hello.（Hello. The separation…） | **Allow** | 引导语常以 Allow 开头 |
 | Had acceptance | **That** acceptance | 句首音转文 |
+| **No.**（`No. What real strength is?`） | **Know** | ⭐**最高频误转之一**——Lee 2026-10-15 亲自指出。祈使句「要知道…」；`No.` 起句在本库几乎必是 `Know` |
+| buddy（`A calm buddy that knows`） | **body** | 紧接 `A calm being`，本场大量 body/being 严格对仗 |
+| be long（`doesn't be long`） | **belong** | 下段即复现 `what doesn't belong`，可互证 |
+| talk（`everything that is talk to you`） | **told** | 被动语态，后接 `is already there in you` |
+| Bd / D. W.（`as a D. W.` / `the original Bd original`） | **that / the**（依语境） | 与 `Dad`、`Ldl` 同一音源乱码家族 |
+| folk song（`Relaxing folk song`） | **follows** | 「随呼气而放松」；疑证，未臆改 |
+| tea on（`tea on meditation lovers`） | **tea and** | 与 `tm meditation lovers` 同源，固定开场称呼 |
+| Show show his health | **?**（疑 `Sure, sure, he's here`） | 音证不足，**保留原词**，进存疑节 |
+| Beach Island | **?**（疑 `Be still`） | 承接上段 `Be silent.`、下段 `be truly what you are`；**保留原词** |
+| I found the fee | **?**（疑 `the theme` / `the few things`） | 音证不足，**保留原词** |
+
+**no ↔ know 通用判据**：句首独立成段的 `No.` 后面接名词性从句／疑问词从句（what / who / how）时，一律判为 **`Know`**——`No.` 无法带宾语从句。
 
 **身体扫描类引导语的通用规律**：`Kill / Fill / Will` → **Feel**；`drunk` → **trunk**；`heed` → **head**。
 引导动词几乎只用 `Feel` / `Allow` / `Realize` / `Notice`，凡出现 `Kill` 一类动词，先怀疑是 `Feel`。
@@ -933,6 +968,16 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 | 引起这画面。变化。 | **然后允许这画面发生变化** | 英文 allow the image to change |
 | 依依（依依的画面） | **合一** | 英文 the picture of oneness（与 §8.3 幻听词「依依」并存，须逐处判） |
 | 行行色色（与「过程／源头／分心」同现） | **过程 / 分心**（依语境） | 英文 process / distraction，须逐处判 |
+| 遇到 / 味道 / 回到（～什么在存在体的左侧／上方／下方） | **注意到** | 英文 `Notice what is on the left side`；⭐本库「注意到」的误转形态极多（对到／吹到／遇到／味道／回到），见到就查英文是否 Notice/Be aware |
+| 肯定（～就在于这个当下） | **稳定** | 英文 `Stability lies in the moment` |
+| 中性（同样的～） | **中心** | 英文 `to the center to purity` |
+| 清楚（当下去～一个障碍） | **清除** | 英文 `to heal an obstacle`；「清楚／清除」同音 |
+| 引（一切～觉知而到达那里的） | **以** | 英文 `with awareness` |
+| 听到会引导（～任何没有评论的观察） | **引导会引导** | 英文 `The guidance guides every observation` |
+| 市中心（这个片刻就是～） | **是中心** | 英文 `The moment is the center` |
+| 叫中心 | **回到中心** | 英文 `Then go to the center` |
+| 完整。一切。（孤立两截） | **中心完整一切。** | 英文 `The center completes everything`，漏主语 |
+| 要允许（～那份纯粹被污染） | **不要允许** | 英文 `Don't allow`，⭐漏「不」会**把语义弄反**，见到 Don't 必查 |
 
 ### 8.3 ASR「幻听词」：同一个词在不同位置对应不同原词，只能逐处判
 
