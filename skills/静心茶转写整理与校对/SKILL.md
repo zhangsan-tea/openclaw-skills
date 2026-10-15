@@ -332,6 +332,14 @@ tmeet record list --start "2026-09-01T00:00:00+08:00" --end "2026-09-30T23:59:59
 
 - **日期必须是 RFC3339 完整格式**（`2026-09-01T00:00:00+08:00`）；只给 `YYYY-MM-DD` 会报 `--start format error`。
 - 返回路径 `data.record_meetings[].record_files[]`，取 `record_file_id` 与 `meeting_id`。
+- ⚠️ **只认 `record_files[].record_file_id`，不要用上一层的 `meeting_record_id`**（2026-10-15 实测）。两者**数值相差 1**：
+
+  | 场次 | `meeting_record_id`（会议级，❌ 不能用） | `record_files[].record_file_id`（✅ 用它） |
+  |---|---|---|
+  | 10/14 | 2110126980411604992 | **2110126980411604993** |
+  | 10/15 | 2110489326892814336 | **2110489326892814337** |
+
+  误用会议级 id 调 `transcript-paragraphs` / `transcript-get` 会返回 `error_code 7003 找不到会议录制文件`，**极易被误读成「这一天没有转写」**——历史上多起「查不到录制」的误判即源于此。拉转写前先确认手上 id 来自 `record_files[]`。
 - 一场会议通常有 **2 条 `record_files`**：会前短片段（0–6 分钟、几 MB）+ 正片（45–130 分钟、几百 MB）。按 `record_start_time` 升序，**取时长覆盖完整会议的那条**。会前短片段常已被删除，拉取时报 `error_code 4051 录制文件已经被删除`，跳过即可。
 
 #### ⚠️ 录制「查不到」≠「不存在」——转码与可见有延迟，隔日必须复查
