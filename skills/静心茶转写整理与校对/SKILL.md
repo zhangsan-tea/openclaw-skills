@@ -917,6 +917,18 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 | Show show his health | **?**（疑 `Sure, sure, he's here`） | 音证不足，**保留原词**，进存疑节 |
 | Beach Island | **?**（疑 `Be still`） | 承接上段 `Be silent.`、下段 `be truly what you are`；**保留原词** |
 | I found the fee | **?**（疑 `the theme` / `the few things`） | 音证不足，**保留原词** |
+| Nafing（`I'm from Nafing. Do everything.`） | **From nothing to everything** | 全段为 `From X to Y` 排比（10/12） |
+| greet（`Goodbye fear. Goodbye greet.`） | **greed** | 与 fear 并列，对句为 healing / perfection（10/12） |
+| bury（`lay them calmly inside that bury`） | **brain** | 全段讲感官收摄进大脑（10/12） |
+| size（`make and drink the tea in that size`） | **silence** | 泡茶喝茶语境（10/12） |
+| simin（`very simin, very little in English`） | **删除** | 是 simple 的重叠误转（10/12） |
+| They.（句尾孤立） | **删除** | 残音（10/12） |
+| Anita（`Anita into the center`） | **?**（疑 `And` / `Inhale`） | 四阶段序列中的连接句，中英两侧同为乱码，**保留存疑**（10/16） |
+| gunning（`That gunning quality`） | **cunning** | 上句即 `the mind is also very cunning`（10/16） |
+| reading（`Just a reading.`） | **breath** | 中文侧作「做一道呼吸」（10/16） |
+| Some（`one of our. Some more subtle aspects`） | **删除** | 误入音节（10/16） |
+| slap your buttocks | **slapped your buttocks** | 讲出生第一口气，过去时（10/16） |
+| it's alignment. We have existed. | **its alignment with existence** | 断句 + 同音（10/16） |
 
 **no ↔ know 通用判据**：句首独立成段的 `No.` 后面接名词性从句／疑问词从句（what / who / how）时，一律判为 **`Know`**——`No.` 无法带宾语从句。
 
@@ -986,6 +998,19 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 | 叫中心 | **回到中心** | 英文 `Then go to the center` |
 | 完整。一切。（孤立两截） | **中心完整一切。** | 英文 `The center completes everything`，漏主语 |
 | 要允许（～那份纯粹被污染） | **不要允许** | 英文 `Don't allow`，⭐漏「不」会**把语义弄反**，见到 Don't 必查 |
+| 五（再从～到一切 / 去到～） | **空无 / 无** | 英文 `From nothing to everything`；⭐与 everything 对举、或出现在 `From X to Y` 排比里时，「五」必是「无」（10/12） |
+| 惊喜（热爱～的伙伴们） | **静心** | 英文 meditation；开场称呼处（10/16） |
+| 地图（～当下，也就是观察） | **意图** | 英文 `The intention, the moment slash observation`（10/16） |
+| 这是套（～它的影响） | **去意识到** | 英文 `To realize its influence`（10/16） |
+| 呼吸（所以～也会用精微的方式来控制呼吸） | **头脑** | 英文 `the mind also uses subtlety to keep control over the breath`；否则「呼吸控制呼吸」不可解（10/16） |
+| 平静（～是个机会） | **宁静** | 英文 `The silence is an opportunity`（10/16） |
+| 腹股沟阴部 | **髋部、臀部、骨盆** | 英文 hips, buttocks, pelvis（10/12） |
+| 心时（完全敞开的～） | **心智** | 英文 `the complete open mind`（10/12） |
+| 最好的主题 | **最好的指引** | 英文 `the purest guide`（10/12） |
+| 感官接受 | **感官觉受** | 正念固定术语（10/16） |
+| 放放下。玩玩。 | **让这份放下是彻底的** | 英文 `let the letting go be total`，整段为 ASR 乱码（10/16） |
+| 要去听书本上说的 | **不要去听书本上说的** | 英文 `Don't go with the books`，⭐第二次命中「Don't 必查」（10/16） |
+| 谢你今天来 | **谢谢你今天来** | 补字（10/16） |
 
 ### 8.3 ASR「幻听词」：同一个词在不同位置对应不同原词，只能逐处判
 
