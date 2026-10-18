@@ -213,6 +213,16 @@ def pair_up(blocks):                      # blocks: [(lang, text)]，对话顺�
 - 编号连续、从 1 起、无跳号。
 - `layout:` 字段存在于 frontmatter。
 
+#### 交流段的三条整理口径（**2026-10-17/18 定型，适用于新版分声纹转写**）
+
+1. **老师回应合并为「一轮」**：新版转写把波密（英文）与庄西（中文）拆成两个发言人、逐句交替，**若逐帧成轮会碎成 400+ 轮**。
+   正确做法：把**连续的老师帧**（不论英中）合并为一轮，英文并英文、中文并中文，输出为
+   `**Bommie**：<英文>` + `**中脉空间**：<中文>`（缺一侧则只出一块）。实测 10/18：503 帧 → 42 轮。
+2. **英文长段落必须按句分段**：分段函数若只认中文句号（`。！？`），1500 字的英文会挤成一行。
+   英文按 `(?<=[.!?])\s+` 切句、≤400 字符一段；中文仍按 ≤150 字一段。
+3. **练习段中间的唱诵**：转写为 `<歌声>` 梵文乱码帧，删除后在中英两侧**同一位置**各插入单行
+   `〔过程：播放唱诵音频〕`（不占编号），保证中文段数 == 英文段数仍然成立。
+
 ### 1.2C 无翻译场（纯英文场）处理口径（**2026-10-15 起新增**）
 
 **识别信号**（命中任一即按本口径处理）：
@@ -932,6 +942,22 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 
 **no ↔ know 通用判据**：句首独立成段的 `No.` 后面接名词性从句／疑问词从句（what / who / how）时，一律判为 **`Know`**——`No.` 无法带宾语从句。
 
+| Athens（`Not only the Athens lies in the center`） | **essence** | 中文「不仅是本质」（10/17） |
+| sender（`periphery of that sender` / `overwhelm the sender`） | **center** | 同一段反复讲「中心」，sender 与 center 尾音混（10/17，2 处） |
+| garment（`breaking of garment issues`） | **karmic** | 中文「切断这些业力的议题」（10/17） |
+| Buy（`by what you've been told`） | **by** | 介词（10/17） |
+| Hans（`Now I see Hans.`） | **hands** | 举手发言语境（10/17） |
+| bold（`People say you're getting bold`） | **bald** | 讲脱发（10/18） |
+| beggar job | **bigger job** | 与前文 stronger way of working 递进（10/18） |
+| odps | **the Upanishads** | 与 Buddha / hindu streams 并列；⚠️中文侧作「不二论」，两者不同义，**保留存疑未强行对齐**（10/18） |
+| buddhism team meditation | **tea meditation** | 固定词组（10/17） |
+| white question | **why question** | 全段讲「不要问 why」（10/18） |
+| emphasis … Then on | **emphasize … than on** | `rather … than …` 结构（10/18） |
+| valley（`as nice as in valley`） | **Dali** | 中文「和大理一样好」；本库 Dali 常转成 valley/d（10/18） |
+| thickly（`experience that thickly`） | **tickling** | 上句 ticklish/tickling 同族，中文「轻触」（10/18） |
+| To win（与 `the wind` 排比的第二句） | **The wind** | 排比对仗（10/18） |
+| `That things become unhealthy.` | **`That things don't become unhealthy.`** | ⭐第三次命中「见到否定必查」：与上句 `That things don't become old.` 严格对仗（10/18） |
+
 **身体扫描类引导语的通用规律**：`Kill / Fill / Will` → **Feel**；`drunk` → **trunk**；`heed` → **head**。
 引导动词几乎只用 `Feel` / `Allow` / `Realize` / `Notice`，凡出现 `Kill` 一类动词，先怀疑是 `Feel`。
 
@@ -1011,6 +1037,21 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 | 放放下。玩玩。 | **让这份放下是彻底的** | 英文 `let the letting go be total`，整段为 ASR 乱码（10/16） |
 | 要去听书本上说的 | **不要去听书本上说的** | 英文 `Don't go with the books`，⭐第二次命中「Don't 必查」（10/16） |
 | 谢你今天来 | **谢谢你今天来** | 补字（10/16） |
+| 灌肠（首先像～一样） | **像往常一样** | 英文 `like always`（10/17） |
+| 存载体 | **存在体** | 拼写变体（10/17） |
+| 六脉轮（与第三脉轮对举） | **第五脉轮** | 英文 `5th Chakra`；第四脉轮上下对称的是第三与第五（10/17） |
+| 记住（或许在～） | **脊柱** | 英文 `Maybe in the spine`，身体扫描排比（10/18） |
+| 不洁（让一切不会变得～） | **不健康** | 英文 `unhealthy`（10/18） |
+| 下一口呼吸（让～保持新鲜） | **下一次诞生** | 英文 `for the next birth to stay fresh`，「呼吸」与「诞生」在本库高频互串（10/18） |
+| 议题（消除个体的无知写成～） | **无知** | 英文 `personal ignorance`（10/18） |
+| 食神（元神和～） | **识神** | 元神／识神固定对举，中医术语（10/17） |
+| 七七老师 | **西西老师** | 口译者庄西（10/17） |
+| 庄希 | **庄西** | 同上（10/17） |
+| 杜翠 / 豆蓉 | **路翠（Lucy）** | 学员名（10/17） |
+| 吴医生（分享后回应处） | **凡凡** | 英文 `What fan fan said is right`（10/17） |
+| 大额（请～分享） | **大鹅** | 学员「无心金刚鹅」（10/18） |
+| 行行色色（没有在静～之中） | **静心茶** | ⚠️ 行行色色在别处是 process/distraction，此处语境为「静心茶」，**必须逐处判**（10/18） |
+| 上周有时（～课程只是用英文） | **这一周有些课** | 英文 `there were some classes only in english`（10/18） |
 
 ### 8.3 ASR「幻听词」：同一个词在不同位置对应不同原词，只能逐处判
 
