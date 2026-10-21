@@ -273,6 +273,21 @@ def pair_up(blocks):                      # blocks: [(lang, text)]，对话顺�
 
 **标签一律不改**：不做「Elsa 场重标为 Bommie/庄西」这类机械改写——同一标签在录播场指账号、在交流场指真人，机械改写必然出错。
 
+⭐ **中英混帧陷阱（2026-10-21 实测，必读）**：庄西口译时会**夹带英文专有名词**（月份名、chakra、解剖名等），按「英字母数 vs 中文字数」的多数表决会把**中文帧误判成英文帧**，导致整段配对错位。
+
+```python
+# ❌ 错误：纯字符比例
+label = "en" if en_chars > zh_chars else "zh"
+
+# ✅ 正确：先按说话人定默认语种，只在「完全没有该语种字符」时才反转
+if sp.endswith("-发言人2"):          # 庄西 → 默认中文
+    lang = "zh" if has_cjk(t) else "en"
+elif sp.endswith("-发言人1"):        # 波密 → 默认英文
+    lang = "en" if has_ascii_letter(t) else "zh"
+```
+
+实测反例：10/21 pid 31「…10月的这个词 october 其实 oct 是有 8 月的词根，然后 november 是有 9 月的词根。」英文字母 38 > 汉字 30，比例法判成英文，结果该帧被并进英文半、其后的中文全部错位。**生成后必须抽查：中英段数相等 ≠ 配对正确，还要看首尾几对是否语义对得上。**
+
 ### 1.4 段落长度上限
 
 | 段落类型 | 上限 | 说明 |
@@ -958,6 +973,24 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 | To win（与 `the wind` 排比的第二句） | **The wind** | 排比对仗（10/18） |
 | `That things become unhealthy.` | **`That things don't become unhealthy.`** | ⭐第三次命中「见到否定必查」：与上句 `That things don't become old.` 严格对仗（10/18） |
 
+| `moon gale` | **moon calendar** | 中文「阴历的日历，月亮的日历」（10/21） |
+| `they always go with 704` | **go with seven, four** | 中文「有七的循环，而四是循环的中间」（10/21） |
+| `The nectar's throat` | **The neck, the throat** | 中文「喉咙的底部」；`nectar's` 是 `neck, the` 连读（10/21） |
+| `The exile representing…` | **The exhale** | ⭐中文「**呼气**代表…」；`exile/exhale` 本季第二次命中（10/21） |
+| `dizzle`（`eventually dizzle into the pond`） | **dissolve** | 中文「消融于池塘本身」（10/21） |
+| `Understanding the qualities honey like` | **the qualities, like** | `honey` 是语气词残留，中文无对应（10/21） |
+| `As where the moment truly arises?` | **That's where** | 与上句 `That's where the freedom lies` 排比（10/21） |
+| `Had observation` | **And observation** | 中文「这份观察」（10/21） |
+| `No means nine.` | **Nov means nine.** | 上句 `november nov means nine`（10/21） |
+| `How does the balance? Not.` | **How is the balance now?** | 中文「注意到稳定！」；`Not.` 是 `now`（10/20） |
+| `Connect the dungeon…` | **the dantian** | ⭐中文「**丹田**与头顶相连接」，固定误转（10/20） |
+| `Give the riddle its freedom.` | **Give the rhythm its freedom.** | 中文「韵律…自由」；`riddle ↔ rhythm` 高频互串（10/20） |
+| `the roads through arms and legs` | **the routes** | 中文「通向头顶的**通道**」（10/20） |
+| `I'llfully see you to morrow.` | **I'll hopefully see you tomorrow.** | 收尾固定语（10/20） |
+| `I'm third.` | **And transcend.** | 中文「并且超越」，承接上文「整个房间」（10/19） |
+| `the coming 4040 5min.` | **the coming 40, 45 minutes.** | 中文「下面的 40 分钟」（10/19） |
+| `is cleaning up if having is having all kind of…` | **is cleaning up, and is having all kinds of…** | 中文「会带来很多正向的结果」（10/19） |
+
 **身体扫描类引导语的通用规律**：`Kill / Fill / Will` → **Feel**；`drunk` → **trunk**；`heed` → **head**。
 引导动词几乎只用 `Feel` / `Allow` / `Realize` / `Notice`，凡出现 `Kill` 一类动词，先怀疑是 `Feel`。
 
@@ -1052,6 +1085,22 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 | 大额（请～分享） | **大鹅** | 学员「无心金刚鹅」（10/18） |
 | 行行色色（没有在静～之中） | **静心茶** | ⚠️ 行行色色在别处是 process/distraction，此处语境为「静心茶」，**必须逐处判**（10/18） |
 | 上周有时（～课程只是用英文） | **这一周有些课** | 英文 `there were some classes only in english`（10/18） |
+| 摇鼓 / 摇骨（上下～，～和大脑的关联） | **颌骨** | 英文 `the jaws`；身体扫描「下巴/颌」段（10/20） |
+| 有想象的力量打把眼睛 | **用**想象的力量**把**眼睛 | 英文 `with the power of imagination, bring eyes…`（10/20） |
+| 长向（～呼吸在脖子和锁骨周边循环） | **想象** | 英文 `Imagine a circle of breath`（10/19） |
+| 吹到（～液体和它的温暖） | **注意到** | ⭐「遇到/味道/回到/吹到」在本库全是「**注意到**」的误转，累计 7 种形态（10/19） |
+| 自信（把我们的～转换成） | **智性**（→ 智慧） | 英文 `turn our intelligence into wisdom`（10/19） |
+| 成功（所有的～需要被做） | **努力** | 英文 `All the efforts we made`（10/19） |
+| 硬核（那些～的中心） | **心轮** | 英文 `The heart center`（10/19，见清单存疑） |
+| 新轮的第 400 轮 | **心轮，第四脉轮** | 英文 `It's the 4th chakra day, the day of the heart`（10/21） |
+| 中间的一些阶段（有一些～） | **错乱的地方** | 英文 `some corruption there`（10/21） |
+| 圆形（一切有生命的都有一个～开始） | **循环** | 英文 `starts with a circle, starts with a cycle`（10/21） |
+| 中下（～就是自然的循环圈之上的二生） | **当下** | 英文 `The moment lies on the cycle of nature`（10/21） |
+| 开在中心 | **待在中心** | 英文 `Being in the center`（10/21） |
+| 贵和持中 | **保持持中** | 英文 `Staying centered, staying grounded`（10/21） |
+| 知识观察（简单的～） | **观察** | 英文 `simple mere observation`；「知识」是「只是」的误转（10/21） |
+| 在中间消除（～我们的紧张和议题） | **消除** | 英文 `Getting rid of our tensions and issues`（10/21） |
+| 买的。（句尾孤立出现） | **删除** | 无对应英文，ASR 尾音噪声（10/21） |
 
 ### 8.3 ASR「幻听词」：同一个词在不同位置对应不同原词，只能逐处判
 
