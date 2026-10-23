@@ -288,6 +288,16 @@ elif sp.endswith("-发言人1"):        # 波密 → 默认英文
 
 实测反例：10/21 pid 31「…10月的这个词 october 其实 oct 是有 8 月的词根，然后 november 是有 9 月的词根。」英文字母 38 > 汉字 30，比例法判成英文，结果该帧被并进英文半、其后的中文全部错位。**生成后必须抽查：中英段数相等 ≠ 配对正确，还要看首尾几对是否语义对得上。**
 
+#### 1.3A 三种必须人工干预的帧（2026-10-22/23 实测）
+
+| 情形 | 症状 | 处理 |
+|---|---|---|
+| **时间/数字帧** | 庄西用中文报时间（「是的，六点半」）被写成 `630, yeah.`，**无中文字符、有英文字母**→ 上面「无该语种字符才反转」的规则会把它判成英文 | 加 `lang_override: {pid: 'zh'}` 强制判中文并还原文本；**覆盖后必须跳过反转逻辑**（否则会被再次反转回英文） |
+| **练习中途的学员场外插话** | 练习段里出现一句学员真名（如「余晓娟：躺着看，躺着看他腰不好。」），与引导内容无关，但英文侧无对应 | 作**不编号的斜体过程行** `*〔过程：学员XX插话「…」〕*` 插入**中文侧**对应位置；英文侧不插。既保留信息又不破坏配对 |
+| **ASR 时序错位** | 英文短句被插进庄西两句中间（如 `These hours.` 落在「虽然不是那么容易…」之前），按帧序配对会语义错位 | 人工指定合并方向：英文帧并入**下一**英文帧、被打断的中文帧并入**前一**中文帧 |
+
+⚠️ 覆盖类修正要在**语种判定之后、清洗之前**生效，且一旦 forced 就不再走自动反转——实现时务必用 `forced` 标志位隔断，不要只改初始值。
+
 ### 1.4 段落长度上限
 
 | 段落类型 | 上限 | 说明 |
@@ -994,6 +1004,23 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 **身体扫描类引导语的通用规律**：`Kill / Fill / Will` → **Feel**；`drunk` → **trunk**；`heed` → **head**。
 引导动词几乎只用 `Feel` / `Allow` / `Realize` / `Notice`，凡出现 `Kill` 一类动词，先怀疑是 `Feel`。
 
+**2026-10-22 / 10-23 新增**：
+
+| 转写 | 修正 | 判据 |
+|---|---|---|
+| `But to see you.` | **Good to see you.** | 中文「很高兴见到大家！」（10/22） |
+| `Not there is the back of the vertebras…` | **Notice the back of the vertebras** | 与上文四句 `Notice the back of…` 排比（10/22） |
+| `Open the arts.` | **Open the eyes.** | 中文「睁开眼睛」（10/22） |
+| `into the bar.` | **into the body.** | 中文「带入到身体之中」（10/22） |
+| `No, the homework.` | **Now, the homework.** | 中文「那么，作业。」（10/22） |
+| `I'm free to breathe.` | **Free to breathe.** | 中文「给呼吸自由」（10/22） |
+| `go back to the superfish` | （存疑：superficial） | 中文「回到浅的呼吸」，未臆改（10/22） |
+| `Wider. I'm wilder why they stay so wild they stay so.` | （存疑，保留） | 中文仅「保持柔软，变得越来越宽。」（10/22） |
+| `Do these opportunities existence give you? When you looking…` | **These are the opportunities existence gives you when you're looking…** | 中文「而是因为存在给你的这些机会」（10/23） |
+| `programmed in A. Problem Solution Way?` | **in a problem solution way** | 中文「解决问题的方案的方式」（10/23） |
+| `looking at live as a problem` | **life** | 同段反复出现 life（10/23） |
+| `But it could be the. Had to realize it might take some effort.` | **But to realize it, it might take some effort.** | 中文「但是要实现它可能需要付出一些努力」（10/23） |
+
 ### 8.2 中文方向高频误识表（同段英文互为证据时修正）
 
 | 转写 | 应为 | 线索 |
@@ -1101,6 +1128,26 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 | 知识观察（简单的～） | **观察** | 英文 `simple mere observation`；「知识」是「只是」的误转（10/21） |
 | 在中间消除（～我们的紧张和议题） | **消除** | 英文 `Getting rid of our tensions and issues`（10/21） |
 | 买的。（句尾孤立出现） | **删除** | 无对应英文，ASR 尾音噪声（10/21） |
+| 推到 / 归到（～脊柱中段的后侧） | **注意到** | ⭐「遇到/味道/回到/吹到/推到/归到」在本库全是「**注意到**」的误转，累计 9 种形态（10/22） |
+| 放松面部的前侧（与 jaws 同句） | **脖子的前侧、喉咙** | 英文 `the front side of the neck, the throat`；⭐「面部」与「颈部」互串（10/22） |
+| 上下咬骨 / 上下摇骨 | **下颌** | 英文 `the jaws`（10/22，与 10/20「摇鼓/摇骨」同源） |
+| 像一个弧的弧面 | **一个湖面** | 英文 `a surface of a lake`（10/22） |
+| 保持膝盖是低的 | **保持肩膀是低的** | ⭐英文 `Keep the shoulders low`；**部位误译**（10/22） |
+| 帮我精微的感官觉受 | **这光，这精微的感官觉受** | 英文 `The light? The subtle sensations.`（10/22） |
+| 味道（～可以从那中出来的舒适和力量） | **注意到** | 英文 `There's a comfort and a power that could bubble up`（10/22） |
+| 指导作业 | **那么，作业** | 英文 `Now, the homework`（10/22） |
+| 更好的开始的方式 | **这是一个很棒的开启方式** | 英文 `A great way to start`；「一个更」= A great（10/23） |
+| 行行色色，因为我们行走于世间 | **删「行行色色」** | ⭐英文 `walking around` 被误转成「行行色色」，与后半句重复；与本库既有「行行色色→静心茶/过程/分心」是**不同来源**（10/23） |
+| 心事 / 心时（正向的～、宁静的～） | **心智** | 英文 `mind`；⭐「心事/心时」均为心智误转（10/23） |
+| 头脑静视的状态 | **那个存在体** | 英文 `that being`（10/23） |
+| 我只会可以在这份宁静…被找到 | **真实，可以在…被找到** | 英文 `The truth reality can be found`（10/23） |
+| 中脉空间，中脉空间，让自己以不同的方式… | **创造空间** | ⭐英文 `Creating space` 被误转为**会议名**「中脉空间」——本库最高危误转之一（10/23） |
+| 是艺术意识到… | **是：意识到** | 英文 `is to realize`（10/23） |
+| 我们可以去给它编程 | **我们如何去给它编程** | 英文 `How we program it?` 疑问句（10/23） |
+| 行行色色当代的头脑行驶的状态是？ | **当下的头脑，惯性地把生命看成…** | 英文 `most current minds are programmed to see life … as filled with distractions`（10/23） |
+| `630, yeah.`（庄西帧） | **是的，六点半** | 中文报时被数字化，须强制判中文（10/23） |
+
+⚠️ **漏否定是本季最高频的语义反转坑**（已 4 次命中）：见到 `Don't` / `Instead of` / `not` 必查中文漏没漏「不」。10/23 中文「我们是可以跟随着惯性的程序去走」对应 `Instead of going with the program problem solution`，须改为「我们可以**不**跟随…」。
 
 ### 8.3 ASR「幻听词」：同一个词在不同位置对应不同原词，只能逐处判
 
