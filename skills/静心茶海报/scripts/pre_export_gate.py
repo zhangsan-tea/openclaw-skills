@@ -117,7 +117,10 @@ def check_images(html, html_path, rep):
         rep.add("A", "图片引用", False, f"{len(miss)} 张文件不存在，如 {miss[0]}")
         return
     # 背景图一律走 photos/ 前缀（换电脑也能显示）；二维码是同级裸文件名
-    photo = [s for s in srcs if s.startswith("photos/")]
+    # 二维码现在使用真实 <img>（便于自包含预览内嵌），统计背景图时必须排除它
+    photo = [s for s in srcs
+             if s.startswith("photos/")
+             and not any(k in s.lower() for k in ("qrcode", "二维码", "qr_", "qr."))]
     if not photo:  # 退化：没有 photos/ 前缀时按关键词排除
         photo = [s for s in srcs
                  if not any(k in s.lower() for k in ("qrcode", "二维码", "qr_", "qr."))]
