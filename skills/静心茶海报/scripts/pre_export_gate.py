@@ -28,6 +28,7 @@
   F 排版实测        调 probe_lines.js（需 node + Chrome）：超宽行 / 折断 / 行尾标点
   G 清单对齐        给了 --list/--json 才跑，调 verify_alignment.py（防漏条）
   H 已用图判重      给了 --photos 才跑，调 photo_dupe_check.py check
+  I 日期格式        日期字段必须使用阿拉伯数字，禁止中文数字日期漂移
 """
 import argparse
 import glob
@@ -162,6 +163,32 @@ def check_static_rules(html, rep):
             else "缺 flex/重叠，百分比小数高度会露白线")
 
 
+def check_date_format(html, rep):
+    """日期字段统一使用阿拉伯数字，拦截中文数字日期漂移。"""
+    fields = []
+    for pattern in (
+        r'<title[^>]*>(.*?)</title>',
+        r'<div class="page-title"[^>]*>.*?<h1[^>]*>(.*?)</h1>.*?<p[^>]*>(.*?)</p>',
+        r'class="[^\"]*day-tag[^\"]*"[^>]*>(.*?)</div>',
+    ):
+        for m in re.finditer(pattern, html, re.S | re.I):
+            fields.extend(m.groups())
+    fields = [re.sub(r'<[^>]+>', '', x).strip() for x in fields if x]
+    chinese_date = re.compile(r'[一二三四五六七八九十〇零两]+月[一二三四五六七八九十〇零两]+日')
+    day_fields = [x for x in fields if '月' in x and '日' in x]
+    bad_chinese = [x for x in day_fields if chinese_date.search(x)]
+    bad_day = [x for x in fields if ' · ' in x and '月' in x and '日' in x
+               and not re.search(r'\d{1,2}月\d{1,2}日', x)]
+    title_fields = fields[:2]
+    bad_title = [x for x in title_fields if ('月' in x and '日' in x)
+                 and not re.search(r'\d{1,2}月\d{1,2}日', x)]
+    ok = not (bad_chinese or bad_day or bad_title)
+    detail = '日期字段均为阿拉伯数字 ✓' if ok else (
+        f'发现中文/非阿拉伯数字日期 {len(bad_chinese) + len(bad_day) + len(bad_title)} 处：'
+        f'{(bad_chinese or bad_day or bad_title)[0][:50]}')
+    rep.add('I', '日期格式', ok, detail)
+
+
 def run_probe(html_path, rep, force):
     node, nm = find_node(), find_node_modules()
     env = dict(os.environ)
@@ -223,6 +250,7 @@ def main():
     rep = Report()
     check_images(html, a.html, rep)
     check_static_rules(html, rep)
+    check_date_format(html, rep)
     if not a.no_probe:
         run_probe(a.html, rep, a.force)
     if a.list and a.json:
