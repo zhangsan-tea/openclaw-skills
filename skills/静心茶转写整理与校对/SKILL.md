@@ -267,6 +267,8 @@ def pair_up(blocks):                      # blocks: [(lang, text)]，对话顺�
 2. `speaker.user_name` 是「学员名 + `-发言人N`」→ **剥掉 `-发言人N` 取基础人名**（同一人的两个编号是声纹切分，不是两个人）。
 3. `speaker.user_name` 是具体人名（夜子／利军／谷雨／路翠Lucy／Elsa.艾莎）→ 直接用该人名，**不改写、不并入老师段**。
 
+⚠️ **庄西可能被切成多个声纹 id（2026-10-24 实测）**：10/24 出现 `发言人1`=波密（英文）、`发言人2` **与 `发言人3` 同为庄西（中文）**，两者**交替出现**（发言人3 有 61 段）。只按「发言人1=英文、发言人2=中文」映射会**漏掉约 60 段中文**。⇒ 判据：**把所有非「最先开口的那个英文声纹」的帧都先当中文候选**，生成后核对中文段数是否覆盖全部中文帧。
+
 ⚠️ **`发言人1` / `发言人2` 的编号随「谁先开口」翻转，场次之间可以完全相反**（实测 20260914 是 1=英文、20260917 是 1=中文；20260919 同一账号内英文中文交错，编号与语种无稳定对应）。**绝不可按编号机械映射。**
 
 **2026-10 起：腾讯会议新版已直接还原标签。** 实测 10/09、10/10、10/11 的 `speaker.user_name` 就是 `Bommie` / `中脉空间`（不再是「中脉空间-发言人N」），与上述语种判定结果一致。仍**保留语种兜底**：遇到 `发言人N` 形态或标签与语种矛盾时，一律以**段落语种**为准。
@@ -1020,6 +1022,23 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 | `programmed in A. Problem Solution Way?` | **in a problem solution way** | 中文「解决问题的方案的方式」（10/23） |
 | `looking at live as a problem` | **life** | 同段反复出现 life（10/23） |
 | `But it could be the. Had to realize it might take some effort.` | **But to realize it, it might take some effort.** | 中文「但是要实现它可能需要付出一些努力」（10/23） |
+| `We're drinking fermented **wine**` | **fermented tea** | 中文「喝熟普」，熟普是发酵茶（10/24） |
+| `feedback to us about the **team**` | **the tea** | 中文「分享喝茶的感受」（10/24） |
+| `the effect that **he** has on the **B**` | **it / the being** | 中文「茶对于存在体的影响」（10/24） |
+| `connect to the **T**` | **the tea** | 单字母专名残留（10/24） |
+| `human beings **works works**` | **works** | 叠词复读（10/24） |
+| `so let **the let the** whatever the mind invokes` | 删重复 | ASR 卡顿复读（10/24） |
+| `**Has** so much joy and non manipulation` | **There's so much joy in non-manipulation** | 与后 5 句 `There's so much X in Y` 排比一致（10/24） |
+| `**At** expanding space. Is creating also…` | **An expanding space is also creating…** | 中文「这扩展的空间也带来不同的语境」（10/24） |
+| `**Ear** the observation can give you…` | **Or**（存疑，或 Yeah） | 中文「观察可以给予你那个片刻的语境」（10/24） |
+| `differently**ear-on-year**our interactions` | **differently, your interactions** | 串字乱码（10/24） |
+| `a danger to **Anita**` | **to them** | 中文「对他们来说是危险或威胁」；`Anita` 为本库高频幻听词（10/24） |
+| `never **bail out** the possibility…become **critic criticizing on you, criticizing on you**` | **rule out** … **critical of you** | 中文「人们会对你有批评的状态」（10/24） |
+| `So that's that, **David**.` | 删 `David` | 无对应，幻听专名（10/24） |
+| `listen to your **model**` | **your mother** | 中文「倾听你的妈妈」（10/24） |
+| `**So Ifa** teacher comes into a classroom` | **So if a** | —（10/24） |
+| `listening in **Anita Way**` | **in a natural way** | 中文「自然而然的去倾听」（10/24） |
+| `**I I** will say / **that that** I have been / **but the the** real / **in the in** these / that's **that's**` | 删复读 | ASR 卡顿复读，一次 5 处（10/24） |
 
 ### 8.2 中文方向高频误识表（同段英文互为证据时修正）
 
@@ -1148,6 +1167,24 @@ Lee 口径（原话）：「**只要分清引导语、回应和学员提问就�
 | `630, yeah.`（庄西帧） | **是的，六点半** | 中文报时被数字化，须强制判中文（10/23） |
 
 ⚠️ **漏否定是本季最高频的语义反转坑**（已 4 次命中）：见到 `Don't` / `Instead of` / `not` 必查中文漏没漏「不」。10/23 中文「我们是可以跟随着惯性的程序去走」对应 `Instead of going with the program problem solution`，须改为「我们可以**不**跟随…」。
+
+**2026-10-24 新增**：
+
+| 转写 | 修正 | 判据 |
+|---|---|---|
+| 热爱**金星** | **热爱静心** | 固定误转（10/24，本库高频） |
+| **这是如是的指示**连接关联 | **只是如是的连接，只是关联** | 英文 `just the connection, just the association`；「指示」=「只是」 |
+| 把周边一切的**洞** | **动作** | 英文 `the movements around it`（10/24） |
+| **这氛围**（承接 stability） | **这份稳定** | 英文 `that stability can support you`；「氛围」=「稳定」误转 |
+| **直到**自由的 | **要知道**，自由的 | 英文 `Know that`（10/24） |
+| 存在的**安联** | **关联** | 英文 `in relationship to`（10/24） |
+| 好为**文**师 | **好为人师** | 成语（10/24） |
+| 人生是有三苦苦苦坏苦**行行色** | **苦苦、坏苦、行苦** | 佛教术语（10/24） |
+| 有一些**身重** | **上师** | 语境为修行团队成员（10/24） |
+| 就这样看**博美**有没有 | **波密** | 讲者名（10/24） |
+| 寂静之中**安然入税**这种美好 | **安然** | ⭐学员名被误插入正文（10/24） |
+| 刚刚那个**七七**他说的 | **西西** | 庄西（10/24） |
+| 匮乏**生生**存的焦虑 | **匮乏、生存**的焦虑 | 叠字（10/24） |
 
 ### 8.3 ASR「幻听词」：同一个词在不同位置对应不同原词，只能逐处判
 
