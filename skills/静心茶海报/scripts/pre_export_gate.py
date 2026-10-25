@@ -200,7 +200,7 @@ def run_alignment(listf, jsonf, rep):
 
 def run_dupe(html_path, photos, rep):
     r = subprocess.run([sys.executable, os.path.join(HERE, "photo_dupe_check.py"),
-                        "check", "--html", html_path, "--photos", photos],
+                        "--photo-dir", photos, "check", html_path],
                        capture_output=True, text=True)
     ok = (r.returncode == 0)
     first = (r.stdout.strip().splitlines() or [""])[-1][:70]
