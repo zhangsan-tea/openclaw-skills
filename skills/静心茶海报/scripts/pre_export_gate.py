@@ -28,7 +28,7 @@
   F 排版实测        调 probe_lines.js（需 node + Chrome）：超宽行 / 折断 / 行尾标点
   G 清单对齐        给了 --list/--json 才跑，调 verify_alignment.py（防漏条）
   H 已用图判重      给了 --photos 才跑，调 photo_dupe_check.py check
-  I 日期格式        日期字段必须使用阿拉伯数字，禁止中文数字日期漂移
+  I 日期格式        日期字段必须使用上一期的 MMDD 紧凑格式（如 1025）
 """
 import argparse
 import glob
@@ -164,28 +164,29 @@ def check_static_rules(html, rep):
 
 
 def check_date_format(html, rep):
-    """日期字段统一使用阿拉伯数字，拦截中文数字日期漂移。"""
+    """日期字段统一使用上一期的 MMDD 紧凑格式，拦截中文日期或“10月25日”漂移。"""
     fields = []
+    day_fields = []
     for pattern in (
         r'<title[^>]*>(.*?)</title>',
         r'<div class="page-title"[^>]*>.*?<h1[^>]*>(.*?)</h1>.*?<p[^>]*>(.*?)</p>',
         r'class="[^\"]*day-tag[^\"]*"[^>]*>(.*?)</div>',
     ):
         for m in re.finditer(pattern, html, re.S | re.I):
-            fields.extend(m.groups())
-    fields = [re.sub(r'<[^>]+>', '', x).strip() for x in fields if x]
+            values = [re.sub(r'<[^>]+>', '', x).strip() for x in m.groups() if x]
+            fields.extend(values)
+            if 'day-tag' in pattern:
+                day_fields.extend(values)
     chinese_date = re.compile(r'[一二三四五六七八九十〇零两]+月[一二三四五六七八九十〇零两]+日')
-    day_fields = [x for x in fields if '月' in x and '日' in x]
-    bad_chinese = [x for x in day_fields if chinese_date.search(x)]
-    bad_day = [x for x in fields if ' · ' in x and '月' in x and '日' in x
-               and not re.search(r'\d{1,2}月\d{1,2}日', x)]
-    title_fields = fields[:2]
-    bad_title = [x for x in title_fields if ('月' in x and '日' in x)
-                 and not re.search(r'\d{1,2}月\d{1,2}日', x)]
-    ok = not (bad_chinese or bad_day or bad_title)
-    detail = '日期字段均为阿拉伯数字 ✓' if ok else (
-        f'发现中文/非阿拉伯数字日期 {len(bad_chinese) + len(bad_day) + len(bad_title)} 处：'
-        f'{(bad_chinese or bad_day or bad_title)[0][:50]}')
+    month_date = re.compile(r'\d{1,2}月\d{1,2}日')
+    bad_chinese = [x for x in fields if chinese_date.search(x)]
+    bad_month_date = [x for x in fields if month_date.search(x)]
+    bad_day = [x for x in day_fields if not re.match(r'^\d{4}\s+·\s+', x)]
+    bad_title = [x for x in fields[:2] if chinese_date.search(x) or month_date.search(x)]
+    bad = bad_chinese + bad_month_date + bad_day + bad_title
+    ok = not bad
+    detail = '日期字段统一为 MMDD（如 1025）✓' if ok else (
+        f'发现非 MMDD 日期格式 {len(bad)} 处：{bad[0][:50]}')
     rep.add('I', '日期格式', ok, detail)
 
 
