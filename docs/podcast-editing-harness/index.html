@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>播客访谈剪辑 · 人机协作 Harness 手册 v1.0</title>
+<meta name="description" content="从一期两小时访谈压到七十分钟的全过程复盘：流程关卡、协作协议、技术参数、踩坑清单与弱模型执行清单。">
+<style>
+:root{
+  --bg:#fbfaf7;--card:#ffffff;--ink:#1f2328;--sub:#5b6370;--line:#e6e2da;
+  --accent:#2f6f5e;--accent-soft:#e7f1ee;--warn:#a5521b;--warn-soft:#fbefe4;
+  --bad:#b4372f;--bad-soft:#fbe9e7;--blue:#2b5c9e;--blue-soft:#e8eff9;--code:#f3f1ec;
+  --radius:12px;--maxw:980px;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#15171a;--card:#1d2024;--ink:#e7e9ec;--sub:#a3abb6;--line:#2e3238;
+  --accent:#7cc4ad;--accent-soft:#1e2e2a;--warn:#e8a46f;--warn-soft:#33261b;
+  --bad:#f08a80;--bad-soft:#3a2220;--blue:#8fb4ea;--blue-soft:#1d2738;--code:#25282d;}
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",sans-serif}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px 80px}
+header.hero{padding:44px 0 20px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.kicker{font-size:13px;letter-spacing:.12em;color:var(--accent);font-weight:600}
+h1{font-size:30px;line-height:1.35;margin:8px 0 12px}
+.lead{color:var(--sub);font-size:16px;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.pill{font-size:12.5px;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+nav.toc{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin:0 -20px 24px;padding:10px 20px;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
+nav.toc a{display:inline-block;font-size:14px;padding:4px 10px;margin-right:4px;border-radius:8px;color:var(--sub)}
+nav.toc a:hover{background:var(--accent-soft);color:var(--accent);text-decoration:none}
+section{margin:36px 0}
+h2{font-size:22px;margin:0 0 6px;padding-top:8px}
+h2 .no{color:var(--accent);margin-right:8px}
+h3{font-size:17px;margin:22px 0 8px}
+p.desc{color:var(--sub);margin:0 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin:12px 0}
+.call{border-left:4px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:8px;margin:14px 0}
+.call.warn{border-color:var(--warn);background:var(--warn-soft)}
+.call.bad{border-color:var(--bad);background:var(--bad-soft)}
+.call b{color:inherit}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.tbl{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);margin:12px 0}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:14.5px}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--code);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.n{white-space:nowrap;color:var(--accent);font-weight:600}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--code);padding:1px 6px;border-radius:5px}
+.gate{display:grid;grid-template-columns:56px 1fr;gap:0 14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:12px 0}
+.gate .g{grid-row:span 5;width:48px;height:48px;border-radius:12px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px}
+.gate h3{margin:2px 0 6px}
+.gate dl{margin:0;display:grid;grid-template-columns:64px 1fr;gap:4px 10px;font-size:14.5px}
+.gate dt{color:var(--sub);white-space:nowrap}.gate dd{margin:0}
+ul.check{list-style:none;padding:0;margin:8px 0}
+ul.check li{position:relative;padding:6px 0 6px 30px;border-bottom:1px dashed var(--line)}
+ul.check li:last-child{border-bottom:none}
+ul.check li::before{content:"";position:absolute;left:4px;top:11px;width:15px;height:15px;border:2px solid var(--accent);border-radius:4px}
+.tag{display:inline-block;font-size:12px;padding:0 7px;border-radius:6px;margin-right:4px;vertical-align:1px}
+.t-ok{background:var(--accent-soft);color:var(--accent)}.t-bad{background:var(--bad-soft);color:var(--bad)}.t-warn{background:var(--warn-soft);color:var(--warn)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0}
+.flow span{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-size:14px}
+.flow i{color:var(--sub);font-style:normal}
+footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-top:16px;margin-top:48px}
+@media (max-width:640px){
+  body{font-size:15.5px}
+  h1{font-size:24px}h2{font-size:20px}
+  .wrap{padding:0 16px 64px}nav.toc{margin:0 -16px 20px;padding:8px 16px}
+  .gate{grid-template-columns:1fr}.gate .g{grid-row:auto;width:40px;height:40px;font-size:16px;margin-bottom:6px}
+  .gate dl{grid-template-columns:1fr}.gate dt{margin-top:4px}
+  table{font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">PODCAST EDITING · HUMAN-AI HARNESS</div>
+  <h1>播客访谈剪辑 · 人机协作 Harness 手册</h1>
+  <p class="lead">一期 2 小时 6 分钟的三人访谈，经 7 个版本剪成 1 小时 13 分钟成片，并做出约 70 秒的开场金句。这里整理了全过程里用得上的流程关卡、协作协议、技术参数、踩过的坑和执行清单。目标是：以后再做同类加工，哪怕换一个能力弱一些的模型，按这份手册走，结果也不会太差。</p>
+  <div class="meta"><span class="pill">v1.0 · 2026-10-30</span><span class="pill">适用：音频访谈 / 播客 / 课程录音</span><span class="pill">已脱敏：不含嘉宾隐私与节目原文</span></div>
+</header>
+
+<nav class="toc">
+  <a href="#s0">结论</a><a href="#s1">版本复盘</a><a href="#s2">七道关卡</a><a href="#s3">协作协议</a><a href="#s4">技术参数</a><a href="#s5">踩坑清单</a><a href="#s6">内容原则</a><a href="#s7">开场金句</a><a href="#s8">执行清单</a><a href="#s9">沉淀形态</a>
+</nav>
+
+<section id="s0">
+  <h2><span class="no">00</span>先看结论：五条铁律</h2>
+  <div class="grid">
+    <div class="card"><b>1. 文稿是唯一真相源</b><br>原始逐字稿做底稿，凡是剪掉的话都做成 Word 修订删除。切到“无标记”视图，读到的就是成片稿；音频由文稿逐字生成，两者必须逐字一致。</div>
+    <div class="card"><b>2. 先确认，再动音频</b><br>每轮先读回人的修改，出一张“我怎么理解、准备怎么改”的回执表，有歧义的标出来等确认，确认后才剪。动音频的成本远高于多问一句。</div>
+    <div class="card"><b>3. 读不到就立刻说</b><br>发现某个通道读不了批注、删除线或修订，马上停下来告诉人，并给出替代办法（比如导出 Word）。不要先去做别的，最后才提。</div>
+    <div class="card"><b>4. 每次出片都自检</b><br>每个剪点前后重新识别一遍，和文稿比对；只复核比上一版新增的问题。整片的音量、峰值、底噪每次都量。</div>
+    <div class="card"><b>5. 音频只能剪，不能改</b><br>文字只做识别纠错和加标点，不增字、不换词。人想要的原话如果节目里没有，就找最接近的一段，并如实说明。</div>
+  </div>
+</section>
+
+<section id="s1">
+  <h2><span class="no">01</span>版本复盘：每一版解决了什么</h2>
+  <p class="desc">看每一版是被什么问题推到下一版的。多数返工来自协作通道和母带处理，不来自剪辑本身。</p>
+  <div class="tbl"><table>
+    <tr><th>版本</th><th>输入</th><th>做了什么</th><th>暴露的问题 → 后来的约束</th></tr>
+    <tr><td class="n">V0.1</td><td>原始录音＋剪辑台本（只精确到秒、只标行首）</td><td>按台本估算时长，补齐台本没覆盖的决策</td><td>台本时间精度不够，一句话中间的删减剪不准 → <b>必须先做字级时间码</b></td></tr>
+    <tr><td class="n">V0.2</td><td>人对隐私、带货、事实疑点的决定</td><td>本机字级识别 → 和台本对齐 → 剪点吸附静音 → 拼接 → 接口自检</td><td>同一秒两人说话、三人重叠处、台本与音频不符 → <b>对齐层要处理多人同秒，手工剪点单独登记</b></td></tr>
+    <tr><td class="n">审阅稿</td><td>人要求“能批注”</td><td>先出“删除线＋批注”版，被否决，改成 Word 修订模式</td><td>多人交叉修改时，读者要从头读下来就是成片 → <b>一律用修订模式</b></td></tr>
+    <tr><td class="n">V0.3</td><td>多人在企业微信在线文档里修改</td><td>在线接口读不出删除和新增 → 推断 → 被质疑 → 让人导出 Word，精确读回</td><td>推断出来的结果漏掉了大量“拒绝删除＝恢复” → <b>禁止靠推断回读修订</b></td></tr>
+    <tr><td class="n">V0.4</td><td>人在修订稿上新增 10 条批注</td><td>逐条落地，含两处只改音频的（吸气声、残字）</td><td>导出的批注没有选中范围 → <b>按划线文字或相邻句子定位，并在回复里写明对应关系</b></td></tr>
+    <tr><td class="n">V0.5</td><td>人反馈几处“刺啦、电音”；前半段太长没有喘息</td><td>查明是音量统一处理的问题，重做母带链；转场音乐从 3 处加到 7 处</td><td>单遍动态响度标准化会把轻的录音来回放大、硬压 → <b>母带链固定为静态增益＋压缩＋兜底限幅</b></td></tr>
+    <tr><td class="n">V0.6</td><td>人新增 15 处删除；反馈转场处吞字</td><td>补删；逐个查音乐接口，修吞字、残字、多余空白</td><td>插音乐的接口另有一套风险 → <b>音乐接口单独自检</b></td></tr>
+    <tr><td class="n">开场 V2–V5.2</td><td>人的金句标注（分散在两份文档里）</td><td>从精简到完整、从讲道理到跳切，迭代 6 轮</td><td>精简版听不懂；句子挨得太近像在对话 → <b>每句补足前后文；句间 1.6 秒空档，音乐抬起</b></td></tr>
+    <tr><td class="n">V0.7</td><td>确认的开场</td><td>开场和正片从原始素材一起处理、一次导出</td><td>两个 MP3 直接首尾相接会让音量不一致 → <b>不拼接成品，从源头一次出片</b></td></tr>
+  </table></div>
+</section>
+
+<section id="s2">
+  <h2><span class="no">02</span>七道关卡（Gate）</h2>
+  <p class="desc">每道关卡都有通过标准，没达到就不进下一关。弱模型最容易出错的地方，是在没过关时就继续往下做。</p>
+
+  <div class="gate"><div class="g">G1</div><div>
+    <h3>素材盘点与决策补齐</h3>
+    <dl><dt>输入</dt><dd>原始音频、逐字稿、剪辑台本、人的补充决定</dd>
+    <dt>动作</dt><dd>核对台本是否覆盖全片；列出台本没说清的地方：说话人标错、剪了会穿帮的句子、节目惯例环节</dd>
+    <dt>通过</dt><dd>每一处删、留都有明确决定；隐私和带货逐项有结论；估算出粗剪时长</dd>
+    <dt>禁止</dt><dd>在决策没补齐时开剪</dd></dl>
+  </div></div>
+
+  <div class="gate"><div class="g">G2</div><div>
+    <h3>字级时间码与对齐</h3>
+    <dl><dt>输入</dt><dd>原始音频、逐行状态表（每行保留还是删除，行内哪些字删）</dd>
+    <dt>动作</dt><dd>本机字级识别；把参考文本和识别结果分块对齐；对不上的字按前后字的时间插值</dd>
+    <dt>通过</dt><dd>对齐覆盖率 ≥ 85%；行首时间偏差中位数 &lt; 1 秒；偏差超过 5 秒的行逐一解释</dd>
+    <dt>禁止</dt><dd>只用行首秒数去剪句中的删减</dd></dl>
+  </div></div>
+
+  <div class="gate"><div class="g">G3</div><div>
+    <h3>剪点计算与拼接</h3>
+    <dl><dt>动作</dt><dd>保留段的首尾吸附到 10ms 能量包络的最低点；接口加 20ms 淡入淡出，补 120ms 气口；被删部分短于 0.35 秒的不剪</dd>
+    <dt>通过</dt><dd>文稿里的每一处删除，在音频里都确实被剪掉了（逐段核验）</dd>
+    <dt>记录</dt><dd>所有手工改过的剪点写进 <code>overrides</code>，注明原因</dd></dl>
+  </div></div>
+
+  <div class="gate"><div class="g">G4</div><div>
+    <h3>自检</h3>
+    <dl><dt>动作</dt><dd>每个接口前后各 3.5 秒重新识别，和文稿比对；没通过的拉长到前后各 6–8 秒再听；本轮改过的地方逐条单独复听</dd>
+    <dt>通过</dt><dd>和上一版相比没有新增未通过项；新增的逐个说明是“识别误报”还是“真问题已修”</dd>
+    <dt>禁止</dt><dd>只报通过率，不对新增问题逐个下结论</dd></dl>
+  </div></div>
+
+  <div class="gate"><div class="g">G5</div><div>
+    <h3>母带与音乐</h3>
+    <dl><dt>动作</dt><dd>按固定母带链处理（见第 04 节）；转场音乐只放在话题转折处，每处用不同乐句</dd>
+    <dt>通过</dt><dd>整体响度 −16 LUFS ±0.5；最高峰 ≤ −1.5 dBFS；需要硬限幅的样本只有几十个量级；音乐接口两侧没有吞字或多余空白</dd></dl>
+  </div></div>
+
+  <div class="gate"><div class="g">G6</div><div>
+    <h3>配套文稿</h3>
+    <dl><dt>动作</dt><dd>生成同版本号的修订稿：删除修订的作者写“谁剪的”，每处本轮改动都有一条批注说明，每段开头标成片时间</dd>
+    <dt>通过</dt><dd>接受全部修订后的字流和音频保留的字流逐字相等；删除作者对得上；批注没有落在删除内容里</dd></dl>
+  </div></div>
+
+  <div class="gate"><div class="g">G7</div><div>
+    <h3>交付</h3>
+    <dl><dt>动作</dt><dd>完整版留本地；另出手机试听版（单声道、160k、&lt;100MB）并给出链接；回复写清改了什么、要听哪几个时间点</dd>
+    <dt>通过</dt><dd>人不打开任何中间文件，只看回复就知道这一版的结果</dd></dl>
+  </div></div>
+</section>
+
+<section id="s3">
+  <h2><span class="no">03</span>人机协作协议：文稿怎么来回</h2>
+  <h3>3.1 修订稿的约定</h3>
+  <div class="tbl"><table>
+    <tr><th>人想做什么</th><th>在 Word 里怎么做</th><th>机器读回时怎么理解</th></tr>
+    <tr><td>同意某处删除</td><td>接受，或者不处理</td><td>照剪</td></tr>
+    <tr><td>恢复某段</td><td>拒绝那处删除</td><td>恢复</td></tr>
+    <tr><td>再剪一段</td><td>直接选中删掉（文档默认打开了修订）</td><td>以这个人的名字记为新删除</td></tr>
+    <tr><td>听感问题、说明、疑问</td><td>批注，不在正文里打字</td><td>逐条处理，在回执表里回应</td></tr>
+    <tr><td>宏观意见</td><td>在对话里说</td><td>先确认理解，再执行</td></tr>
+  </table></div>
+  <div class="call">删除修订的作者名写版本号，比如“剪辑V0.2”“剪辑V0.6”，人名写真名。这样任何时候都能查到某句话是哪一轮、谁剪的。</div>
+
+  <h3>3.2 回读通道：哪条路能读到什么</h3>
+  <div class="tbl"><table>
+    <tr><th>通道</th><th>删除 / 新增</th><th>删除线</th><th>批注</th><th>结论</th></tr>
+    <tr><td>本地 .docx（含从在线文档“导出为 Word”）</td><td><span class="tag t-ok">可读</span>分得清，带作者</td><td><span class="tag t-ok">可读</span></td><td><span class="tag t-ok">可读</span>但可能没有选中范围</td><td><b>首选</b></td></tr>
+    <tr><td>在线文档读正文接口</td><td><span class="tag t-bad">不可用</span>只知道“谁改过”，分不清删还是加；导入时原有修订会丢</td><td><span class="tag t-ok">可读</span></td><td><span class="tag t-warn">部分</span></td><td>只能辅助，不能用来推断修订</td></tr>
+    <tr><td>智能文档（富文本页）</td><td>—</td><td><span class="tag t-warn">要解析</span>Markdown 导出不带删除线，要读块数据里的样式</td><td><span class="tag t-bad">读不到</span></td><td>请人用删除线或【】写说明，<b>别用批注</b></td></tr>
+  </table></div>
+  <div class="call bad"><b>事故：</b>一次读智能文档时，开始几分钟就发现批注读不到，却先去做了别的活，几十分钟后才告诉人，人一直白等。<b>约束：发现读取受限 → 立刻停下告知 → 给替代方案（导出 Word 或换标注方式）。</b></div>
+
+  <h3>3.3 每轮的固定节奏</h3>
+  <div class="flow"><span>读回修改</span><i>→</i><span>回执表（理解＋改法，歧义标“?”）</span><i>→</i><span>人确认</span><i>→</i><span>改音频＋改文稿</span><i>→</i><span>自检</span><i>→</i><span>交付＋试听链接</span></div>
+  <p>人两次打断过“直接开剪”，要求“先推敲文稿、列出建议和疑问，确认后再处理音频”。不过，人已经明确说过“直接开始”的，就不再重复确认。</p>
+</section>
+
+<section id="s4">
+  <h2><span class="no">04</span>技术参数（可直接照抄）</h2>
+  <div class="tbl"><table>
+    <tr><th>环节</th><th>参数</th><th>说明</th></tr>
+    <tr><td>字级识别</td><td><code>mlx-whisper</code> large-v3-turbo，<code>word_timestamps=True</code>，<code>condition_on_previous_text=False</code>，用 <code>initial_prompt</code> 写节目名、人名和术语</td><td>Apple 芯片上 2 小时音频约 17 分钟；模型放 <code>~/.cache</code>，镜像源不稳就换官方源，下载完校验 SHA256</td></tr>
+    <tr><td>对齐</td><td>按 12 行一块做 <code>difflib.SequenceMatcher</code>，ASR 窗口单调推进；匹配块 ≥ 2 字才采用</td><td>覆盖率约 90%；对不上的字按前后字时间插值</td></tr>
+    <tr><td>剪点</td><td>10ms RMS 包络；起点在 [−0.35, +0.04] 秒内找最低点，终点在 [−0.04, +0.35] 秒内找，取最低点 3dB 以内离原位最近的</td><td>剪点落在字间停顿上</td></tr>
+    <tr><td>拼接</td><td>接口 20ms 线性淡入淡出；接口补 0.12 秒静音；需要停顿的地方单独设 0.4–0.45 秒</td><td>例如切掉吸气声、残字后</td></tr>
+    <tr><td>母带链</td><td><code>highpass 70</code> → <code>lowpass 14.5k</code> → <code>afftdn nr=8</code> → 静态增益 → 峰值压缩（0.3ms / 8:1）→ RMS 慢压（20/400ms，2.5:1）→ 线性增益到目标 → <code>alimiter 0.80</code> 兜底</td><td>单声道 −19 LUFS ≈ 双声道成片 −16 LUFS</td></tr>
+    <tr><td>转场音乐</td><td>公有领域钢琴（萨蒂《Gymnopédie No.1》Musopen 录音，维基共享资源）；每处 5.1 秒，渐入 0.25 秒、渐出 1.8 秒，比人声低 6dB；前后各留 0.25 秒</td><td>每处用不同乐句，避免听着重复</td></tr>
+    <tr><td>开场垫乐</td><td>钢琴先起 3 秒，人声进来后压到 −20dB；句间空档 1.6 秒，空档里抬到比人声低约 12dB（每个空档单独算增益）；结尾回升 4 秒渐出</td><td>空档短了，几句话会听成一段连续对话</td></tr>
+    <tr><td>交付</td><td>正式版双声道 192k；试听版单声道 160k（约 90MB / 74 分钟）</td><td>企业微信微盘上传上限 100MB</td></tr>
+  </table></div>
+</section>
+
+<section id="s5">
+  <h2><span class="no">05</span>踩坑清单：症状 → 根因 → 对策</h2>
+  <div class="tbl"><table>
+    <tr><th>症状</th><th>根因</th><th>对策</th></tr>
+    <tr><td>几段话里有“刺啦、电音”</td><td>原片录得轻（约 −28 LUFS）但瞬间峰值高；单遍动态响度标准化随时调增益，被放大 15–19dB 且忽高忽低，响的瞬间又被硬压</td><td>换成固定母带链（第 04 节）；每版统计“需要硬限幅的样本数”，正常应只有几十个</td></tr>
+    <tr><td>测出来“削波”，其实没有</td><td>两个声道内容相同时，下混成单声道电平会 ×1.414</td><td>测峰值用单个声道，或者乘 0.707</td></tr>
+    <tr><td>转场音乐后吞掉半个字</td><td>音乐插在一句话的字中间；或者剪点落在上一个人最后一个字上</td><td>音乐接口单独做多候选剪点，逐个识别比对后再选</td></tr>
+    <tr><td>接口留下半个字、多一个字</td><td>对齐误差约 0.1–0.3 秒；逐字稿本身漏字（原音是“跟我说”，稿里没有）</td><td>按字级时间＋能量包络手工定剪点，登记到 overrides；以原音为准</td></tr>
+    <tr><td>同一句被分给两个人</td><td>同一秒有两人说话，台本只写了一行</td><td>同秒多行按文本相似度分配</td></tr>
+    <tr><td>三人同时说话的地方剪不干净</td><td>人声叠在一起，物理上分不开</td><td>只能连带剪或连带留，如实告诉人，让人二选一</td></tr>
+    <tr><td>自检报大量“待查”</td><td>识别器同音字（正念→正面）、重复输出（“松动了”×7）、窗口边界截断</td><td>只看比上一版新增的；新增的拉长窗口复听后下结论</td></tr>
+    <tr><td>中间文件突然全没了</td><td>放在 <code>/tmp</code>，被系统清理</td><td>工作目录放项目目录下的 <code>_work/</code>；只有临时上传才用 <code>/tmp</code></td></tr>
+    <tr><td>在线文档导入失败</td><td>CLI 只允许读工作区和 <code>/tmp</code> 下的文件；文档名不能含 <code>/</code></td><td>先拷到 <code>/tmp</code>；标题里用“、”代替“/”</td></tr>
+    <tr><td>shell 匹配中文文件名静默失效</td><td>macOS 磁盘上存的是 NFD，手写的字符串是 NFC</td><td>一律用 Python <code>os.listdir</code>＋<code>unicodedata.normalize</code></td></tr>
+  </table></div>
+</section>
+
+<section id="s6">
+  <h2><span class="no">06</span>内容判断原则</h2>
+  <div class="grid">
+    <div class="card"><b>不改原话</b><br>文字只纠识别错误和加标点。可剪的口癖字用〔〕标出，剪掉后仍要能听懂。</div>
+    <div class="card"><b>事实要核</b><br>年代、出处要查。例：某段说正念减压创立于“上世纪五六十年代”，实为 1979 年，只剪掉这几个字；某个典故被说成“童话”，音频不改，但字幕和节目简介要写对。</div>
+    <div class="card"><b>隐私与带货</b><br>价格、药名、未征得同意的第三方推荐，默认删除；嘉宾的家庭和情绪细节，由嘉宾本人决定。决定写进决策表。</div>
+    <div class="card"><b>防穿帮</b><br>“怎么收尾？”这类会暴露录制过程的话要剪；“第一……第二……”的结构剪掉“第一”时，要么补回，要么连“第二”一起剪。</div>
+    <div class="card"><b>转场位置</b><br>只放在话题真正转换的地方；连续论述中间、问答之间不放。大约每 10 分钟一处。</div>
+    <div class="card"><b>节目惯例</b><br>删除节目的固定环节（比如推荐下一位嘉宾）之前，提醒人跟主持人打招呼，并保留原始时间，方便恢复。</div>
+  </div>
+</section>
+
+<section id="s7">
+  <h2><span class="no">07</span>开场金句（Cold open）怎么做</h2>
+  <div class="tbl"><table>
+    <tr><th>轮次</th><th>做法</th><th>人的反馈 → 规则</th></tr>
+    <tr><td class="n">1</td><td>按参考节目的做法，只放嘉宾，约 60 秒</td><td>“要有主持人的声音” → <b>三个人都要出声</b></td></tr>
+    <tr><td class="n">2</td><td>出“推荐＋精简”两个方案，精简版只截金句本身</td><td>“精简方案听不懂在说什么” → <b>每句补足能单独听懂的前后文</b></td></tr>
+    <tr><td class="n">3</td><td>推荐表只写了编号和作用，原话要去下面查</td><td>格式不对 → <b>推荐和备选用同一种表头：序 / 开场内时间 / 成片位置 / 时长 / 说话人 / 原话</b></td></tr>
+    <tr><td class="n">4</td><td>按“讲一个完整故事”串句子</td><td>“不必是完整逻辑，可以是金句穿插；时长大致 60 秒就行” → <b>不追求叙事线</b></td></tr>
+    <tr><td class="n">5</td><td>人点名要一句节目里没有的原话</td><td>找最接近的一段并说明；补上让这句能听懂的话</td></tr>
+    <tr><td class="n">6</td><td>出“跳切”和“按人连续”两版</td><td>选跳切；“句子挨太近，听着像正式对话” → <b>句间 1.6 秒空档，空档里音乐抬起</b></td></tr>
+  </table></div>
+  <div class="call">最终形态：6 句、约 70 秒；最短的一句打头，不铺垫；嘉宾 4 句，两位主持人各 1 句，三人穿插；钢琴先起 3 秒、结尾回升 4 秒，接“大家好，欢迎来到……”。</div>
+  <p>金句标注常分散在多份文档里，人有时只写“金句”两个字。先把所有标注合并去重，再列出“标过但没用上的”，并说明为什么没用。</p>
+</section>
+
+<section id="s8">
+  <h2><span class="no">08</span>弱模型执行清单（每轮照着勾）</h2>
+  <div class="card"><b>开工前</b>
+  <ul class="check">
+    <li>确认本轮的输入文件：是 Word 导出还是在线文档？能读到修订、删除线、批注吗？<b>读不到，现在就说</b></li>
+    <li>把人的修改逐条列成回执表：位置（成片时间）/ 原意 / 我的改法 / 有疑问的标“?”</li>
+    <li>人确认了回执表，或者明确说过“直接开始”</li>
+    <li>工作目录不在 <code>/tmp</code>；识别模型在 <code>~/.cache</code></li>
+  </ul></div>
+  <div class="card"><b>出片后</b>
+  <ul class="check">
+    <li>接口自检完成，新增未通过项逐个下了结论</li>
+    <li>本轮改动逐条复听，确认没有残字、吞字</li>
+    <li>音乐接口两侧单独检查</li>
+    <li>测了响度（−16 LUFS ±0.5）、峰值（≤ −1.5 dBFS）、需要硬限幅的样本数</li>
+    <li>文稿接受全部修订后的字流 ＝ 音频保留的字流</li>
+    <li>音频和文稿版本号一致，文稿首页写了“相对上一版改了什么”</li>
+  </ul></div>
+  <div class="card"><b>交付时</b>
+  <ul class="check">
+    <li>给出手机能打开的试听链接</li>
+    <li>回复里列出：改了什么、要重点听的成片时间点、仍未解决的问题</li>
+    <li>写工作日志：本轮产物、手工剪点、新踩的坑</li>
+  </ul></div>
+</section>
+
+<section id="s9">
+  <h2><span class="no">09</span>这些经验沉淀成什么</h2>
+  <p class="desc">建议拆成三层，各管各的：</p>
+  <div class="tbl"><table>
+    <tr><th>层</th><th>形态</th><th>放什么</th><th>为什么</th></tr>
+    <tr><td class="n">规则层</td><td><b>Skill</b>（SKILL.md）</td><td>七道关卡、协作协议、回读通道表、内容原则、执行清单</td><td>每次触发都会被模型读到，是对模型的硬约束</td></tr>
+    <tr><td class="n">工具层</td><td><b>Skill 里的脚本</b></td><td>识别、对齐、剪点、渲染、自检、修订稿生成、片头合成，参数集中在一个配置文件里</td><td>弱模型最容易错在“临场写代码”。脚本带断言，跑不过就停下，比文字约束可靠得多</td></tr>
+    <tr><td class="n">项目层</td><td>每期一个 <code>episode.yaml</code>＋工作日志</td><td>本期的人名、手工剪点、隐私决定、版本记录</td><td>本期才有的事实不进 Skill，避免下一期被带偏</td></tr>
+  </table></div>
+  <div class="call warn">本手册是给人看的复盘文档；Skill 是给模型执行的约束和工具。两者内容同源，各自维护。</div>
+</section>
+
+<footer>
+  播客访谈剪辑 · 人机协作 Harness 手册 v1.0 · 2026-10-30<br>
+  本内容由 AI 根据实际剪辑过程整理生成，已去除嘉宾隐私与节目原文，请核实后使用。
+</footer>
+</div>
+</body>
+</html>
