@@ -79,8 +79,8 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
 <header class="hero">
   <div class="kicker">PODCAST EDITING · HUMAN-AI HARNESS</div>
   <h1>播客访谈剪辑 · 人机协作 Harness 手册</h1>
-  <p class="lead">一期 2 小时 6 分钟的三人访谈，经 7 个版本剪成 1 小时 13 分钟成片，并做出约 70 秒的开场金句。这里整理了全过程里用得上的流程关卡、协作协议、技术参数、踩过的坑和执行清单。目标是：以后再做同类加工，哪怕换一个能力弱一些的模型，按这份手册走，结果也不会太差。</p>
-  <div class="meta"><span class="pill">v1.0 · 2026-10-30</span><span class="pill">适用：音频访谈 / 播客 / 课程录音</span><span class="pill">已脱敏：不含嘉宾隐私与节目原文</span></div>
+  <p class="lead">一期 2 小时 6 分钟的三人访谈，经 8 个版本剪成 1 小时 13 分钟成片，并做出约 70 秒的开场金句。这里整理了全过程里用得上的流程关卡、协作协议、技术参数、踩过的坑和执行清单。目标是：以后再做同类加工，哪怕换一个能力弱一些的模型，按这份手册走，结果也不会太差。</p>
+  <div class="meta"><span class="pill">v1.1 · 2026-10-30</span><span class="pill">适用：音频访谈 / 播客 / 课程录音</span><span class="pill">已脱敏：不含嘉宾隐私与节目原文</span></div>
 </header>
 
 <nav class="toc">
@@ -112,6 +112,7 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
     <tr><td class="n">V0.6</td><td>人新增 15 处删除；反馈转场处吞字</td><td>补删；逐个查音乐接口，修吞字、残字、多余空白</td><td>插音乐的接口另有一套风险 → <b>音乐接口单独自检</b></td></tr>
     <tr><td class="n">开场 V2–V5.2</td><td>人的金句标注（分散在两份文档里）</td><td>从精简到完整、从讲道理到跳切，迭代 6 轮</td><td>精简版听不懂；句子挨得太近像在对话 → <b>每句补足前后文；句间 1.6 秒空档，音乐抬起</b></td></tr>
     <tr><td class="n">V0.7</td><td>确认的开场</td><td>开场和正片从原始素材一起处理、一次导出</td><td>两个 MP3 直接首尾相接会让音量不一致 → <b>不拼接成品，从源头一次出片</b></td></tr>
+    <tr><td class="n">V0.8</td><td>主持人反馈“声音低沉、更粗糙，嘉宾像在回音壁里，不如 V0.4”</td><td>测量确认是真的：V0.7 句尾回响比原声高约 3dB、高频高 2–3dB、动态被压掉约 6dB；改用“削尖峰＋轻慢压＋兜底限幅”，不降噪</td><td>修刺啦用力过猛会伤音色 → <b>母带链以“接近原声”为验收标准，用脚本量偏差；对比前先把响度调齐</b></td></tr>
   </table></div>
 </section>
 
@@ -203,7 +204,8 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
     <tr><td>对齐</td><td>按 12 行一块做 <code>difflib.SequenceMatcher</code>，ASR 窗口单调推进；匹配块 ≥ 2 字才采用</td><td>覆盖率约 90%；对不上的字按前后字时间插值</td></tr>
     <tr><td>剪点</td><td>10ms RMS 包络；起点在 [−0.35, +0.04] 秒内找最低点，终点在 [−0.04, +0.35] 秒内找，取最低点 3dB 以内离原位最近的</td><td>剪点落在字间停顿上</td></tr>
     <tr><td>拼接</td><td>接口 20ms 线性淡入淡出；接口补 0.12 秒静音；需要停顿的地方单独设 0.4–0.45 秒</td><td>例如切掉吸气声、残字后</td></tr>
-    <tr><td>母带链</td><td><code>highpass 70</code> → <code>lowpass 14.5k</code> → <code>afftdn nr=8</code> → 静态增益 → 峰值压缩（0.3ms / 8:1）→ RMS 慢压（20/400ms，2.5:1）→ 线性增益到目标 → <code>alimiter 0.80</code> 兜底</td><td>单声道 −19 LUFS ≈ 双声道成片 −16 LUFS</td></tr>
+    <tr><td>母带链（V0.8 定稿）</td><td><code>highpass 70</code> → 静态增益 → 削尖峰（peak −16dB，4:1，1/80ms）→ 轻慢压（RMS −26dB，1.6:1，30/600ms）→ 线性增益到目标 → <code>alimiter 0.80</code> 兜底。<b>不降噪、不低通</b></td><td>单声道 −19 LUFS ≈ 双声道成片 −16 LUFS。V0.5–V0.7 用过“降噪＋两级重压缩”，刺啦没了但回音和粗糙感明显，已弃用</td></tr>
+    <tr><td>音色验收</td><td>原片与成片同一段话对比：句尾回响偏差 ≤ +1.5dB；2–5k、5–10k ≤ +2dB；70–200Hz ≤ +1dB；动态范围 ≥ −4dB；任意 10 秒接近满幅 ≤ 1000 个采样点</td><td>V0.8：+0.8 / +1.1 / +1.6 / +0.8 / −3.1，全部合格；V0.7 四项不合格</td></tr>
     <tr><td>转场音乐</td><td>公有领域钢琴（萨蒂《Gymnopédie No.1》Musopen 录音，维基共享资源）；每处 5.1 秒，渐入 0.25 秒、渐出 1.8 秒，比人声低 6dB；前后各留 0.25 秒</td><td>每处用不同乐句，避免听着重复</td></tr>
     <tr><td>开场垫乐</td><td>钢琴先起 3 秒，人声进来后压到 −20dB；句间空档 1.6 秒，空档里抬到比人声低约 12dB（每个空档单独算增益）；结尾回升 4 秒渐出</td><td>空档短了，几句话会听成一段连续对话</td></tr>
     <tr><td>交付</td><td>正式版双声道 192k；试听版单声道 160k（约 90MB / 74 分钟）</td><td>企业微信微盘上传上限 100MB</td></tr>
@@ -215,6 +217,7 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
   <div class="tbl"><table>
     <tr><th>症状</th><th>根因</th><th>对策</th></tr>
     <tr><td>几段话里有“刺啦、电音”</td><td>原片录得轻（约 −28 LUFS）但瞬间峰值高；单遍动态响度标准化随时调增益，被放大 15–19dB 且忽高忽低，响的瞬间又被硬压</td><td>换成固定母带链（第 04 节）；每版统计“需要硬限幅的样本数”，正常应只有几十个</td></tr>
+    <tr><td>声音发粗、低沉，像在回音壁里</td><td>降噪和重压缩在说话间隙把房间回响抬起来，元音被压、辅音和气声相对突出；房间声本来就重的说话人最明显</td><td>不降噪；只削尖峰＋轻慢压；用音色验收脚本量偏差。对比前把响度调齐，越响越显得低沉</td></tr>
     <tr><td>测出来“削波”，其实没有</td><td>两个声道内容相同时，下混成单声道电平会 ×1.414</td><td>测峰值用单个声道，或者乘 0.707</td></tr>
     <tr><td>转场音乐后吞掉半个字</td><td>音乐插在一句话的字中间；或者剪点落在上一个人最后一个字上</td><td>音乐接口单独做多候选剪点，逐个识别比对后再选</td></tr>
     <tr><td>接口留下半个字、多一个字</td><td>对齐误差约 0.1–0.3 秒；逐字稿本身漏字（原音是“跟我说”，稿里没有）</td><td>按字级时间＋能量包络手工定剪点，登记到 overrides；以原音为准</td></tr>
@@ -285,7 +288,7 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
   <p class="desc">建议拆成三层，各管各的：</p>
   <div class="tbl"><table>
     <tr><th>层</th><th>形态</th><th>放什么</th><th>为什么</th></tr>
-    <tr><td class="n">规则层</td><td><b>Skill</b>（SKILL.md）</td><td>七道关卡、协作协议、回读通道表、内容原则、执行清单</td><td>每次触发都会被模型读到，是对模型的硬约束</td></tr>
+    <tr><td class="n">规则层</td><td><b>Skill</b>（<code>skills/podcast-interview-editing/SKILL.md</code>）</td><td>七道关卡、协作协议、回读通道表、内容原则、执行清单</td><td>每次触发都会被模型读到，是对模型的硬约束</td></tr>
     <tr><td class="n">工具层</td><td><b>Skill 里的脚本</b></td><td>识别、对齐、剪点、渲染、自检、修订稿生成、片头合成，参数集中在一个配置文件里</td><td>弱模型最容易错在“临场写代码”。脚本带断言，跑不过就停下，比文字约束可靠得多</td></tr>
     <tr><td class="n">项目层</td><td>每期一个 <code>episode.yaml</code>＋工作日志</td><td>本期的人名、手工剪点、隐私决定、版本记录</td><td>本期才有的事实不进 Skill，避免下一期被带偏</td></tr>
   </table></div>
@@ -293,7 +296,7 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
 </section>
 
 <footer>
-  播客访谈剪辑 · 人机协作 Harness 手册 v1.0 · 2026-10-30<br>
+  播客访谈剪辑 · 人机协作 Harness 手册 v1.1 · 2026-10-30（新增 V0.8 音色经验）<br>
   本内容由 AI 根据实际剪辑过程整理生成，已去除嘉宾隐私与节目原文，请核实后使用。
 </footer>
 </div>
