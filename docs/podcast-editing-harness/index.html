@@ -79,8 +79,8 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
 <header class="hero">
   <div class="kicker">PODCAST EDITING · HUMAN-AI HARNESS</div>
   <h1>播客访谈剪辑 · 人机协作 Harness 手册</h1>
-  <p class="lead">一期 2 小时 6 分钟的三人访谈，经 8 个版本剪成 1 小时 13 分钟成片，并做出约 70 秒的开场金句。这里整理了全过程里用得上的流程关卡、协作协议、技术参数、踩过的坑和执行清单。目标是：以后再做同类加工，哪怕换一个能力弱一些的模型，按这份手册走，结果也不会太差。</p>
-  <div class="meta"><span class="pill">v1.1 · 2026-10-30</span><span class="pill">适用：音频访谈 / 播客 / 课程录音</span><span class="pill">已脱敏：不含嘉宾隐私与节目原文</span></div>
+  <p class="lead">一期 2 小时 6 分钟的三人访谈，经 10 个版本剪成 1 小时 14 分钟成片，并做出约 70 秒的开场金句。这里整理了全过程里用得上的流程关卡、协作协议、技术参数、踩过的坑和执行清单。目标是：以后再做同类加工，哪怕换一个能力弱一些的模型，按这份手册走，结果也不会太差。</p>
+  <div class="meta"><span class="pill">v1.2 · 2026-10-31</span><span class="pill">适用：音频访谈 / 播客 / 课程录音</span><span class="pill">已脱敏：不含嘉宾隐私与节目原文</span></div>
 </header>
 
 <nav class="toc">
@@ -113,6 +113,8 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
     <tr><td class="n">开场 V2–V5.2</td><td>人的金句标注（分散在两份文档里）</td><td>从精简到完整、从讲道理到跳切，迭代 6 轮</td><td>精简版听不懂；句子挨得太近像在对话 → <b>每句补足前后文；句间 1.6 秒空档，音乐抬起</b></td></tr>
     <tr><td class="n">V0.7</td><td>确认的开场</td><td>开场和正片从原始素材一起处理、一次导出</td><td>两个 MP3 直接首尾相接会让音量不一致 → <b>不拼接成品，从源头一次出片</b></td></tr>
     <tr><td class="n">V0.8</td><td>主持人反馈“声音低沉、更粗糙，嘉宾像在回音壁里，不如 V0.4”</td><td>测量确认是真的：V0.7 句尾回响比原声高约 3dB、高频高 2–3dB、动态被压掉约 6dB；改用“削尖峰＋轻慢压＋兜底限幅”，不降噪</td><td>修刺啦用力过猛会伤音色 → <b>母带链以“接近原声”为验收标准，用脚本量偏差；对比前先把响度调齐</b></td></tr>
+    <tr><td class="n">V0.9</td><td>“V0.8 的结构最好，V0.4 的音质更好”，要求内容保留 V0.8、声音换回 V0.4</td><td>查明 V0.4 好听是因为没压缩、音量低；但原片很轻，直接放大会硬压上万个采样点（刺啦的根因）。改为“只削最尖的峰，其余不动”，音量定 −19 LUFS，与 V0.4 同</td><td>音色优先于响度 → <b>不为追响度加压缩；成片比常规播客小约 3dB，作为已知取舍写进交付说明</b></td></tr>
+    <tr><td class="n">V1.0</td><td>“09 很好，不动了，结尾加 10 秒左右音乐，渐弱”</td><td>同一首钢琴曲的最后 11.5 秒（终止和弦自然衰减），人声结束后留 0.6 秒，比人声低 6dB，渐入 0.4 秒、最后 4 秒渐出；前面 1:13:42 与 V0.9 逐样本相同</td><td>已定稿的版本只加不改 → <b>用逐样本比对证明前段没变</b>；之后<b>只出一个版本</b></td></tr>
   </table></div>
 </section>
 
@@ -153,7 +155,7 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
   <div class="gate"><div class="g">G5</div><div>
     <h3>母带与音乐</h3>
     <dl><dt>动作</dt><dd>按固定母带链处理（见第 04 节）；转场音乐只放在话题转折处，每处用不同乐句</dd>
-    <dt>通过</dt><dd>整体响度 −16 LUFS ±0.5；最高峰 ≤ −1.5 dBFS；需要硬限幅的样本只有几十个量级；音乐接口两侧没有吞字或多余空白</dd></dl>
+    <dt>通过</dt><dd>整体响度 −19 LUFS ±0.5（V0.9 定稿，宁可小声也不压缩）；最高峰 ≤ −1.5 dBFS；需要硬限幅的样本只有几十个量级；音乐接口两侧没有吞字或多余空白</dd></dl>
   </div></div>
 
   <div class="gate"><div class="g">G6</div><div>
@@ -164,7 +166,7 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
 
   <div class="gate"><div class="g">G7</div><div>
     <h3>交付</h3>
-    <dl><dt>动作</dt><dd>完整版留本地；另出手机试听版（单声道、160k、&lt;100MB）并给出链接；回复写清改了什么、要听哪几个时间点</dd>
+    <dl><dt>动作</dt><dd><b>只出一个版本</b>：双声道 160k（约 88MB，&lt;100MB），直接上传出手机链接，不另出试听版；回复写清改了什么、要听哪几个时间点</dd>
     <dt>通过</dt><dd>人不打开任何中间文件，只看回复就知道这一版的结果</dd></dl>
   </div></div>
 </section>
@@ -192,7 +194,7 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
   <div class="call bad"><b>事故：</b>一次读智能文档时，开始几分钟就发现批注读不到，却先去做了别的活，几十分钟后才告诉人，人一直白等。<b>约束：发现读取受限 → 立刻停下告知 → 给替代方案（导出 Word 或换标注方式）。</b></div>
 
   <h3>3.3 每轮的固定节奏</h3>
-  <div class="flow"><span>读回修改</span><i>→</i><span>回执表（理解＋改法，歧义标“?”）</span><i>→</i><span>人确认</span><i>→</i><span>改音频＋改文稿</span><i>→</i><span>自检</span><i>→</i><span>交付＋试听链接</span></div>
+  <div class="flow"><span>读回修改</span><i>→</i><span>回执表（理解＋改法，歧义标“?”）</span><i>→</i><span>人确认</span><i>→</i><span>改音频＋改文稿</span><i>→</i><span>自检</span><i>→</i><span>交付＋手机链接</span></div>
   <p>人两次打断过“直接开剪”，要求“先推敲文稿、列出建议和疑问，确认后再处理音频”。不过，人已经明确说过“直接开始”的，就不再重复确认。</p>
 </section>
 
@@ -204,11 +206,12 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
     <tr><td>对齐</td><td>按 12 行一块做 <code>difflib.SequenceMatcher</code>，ASR 窗口单调推进；匹配块 ≥ 2 字才采用</td><td>覆盖率约 90%；对不上的字按前后字时间插值</td></tr>
     <tr><td>剪点</td><td>10ms RMS 包络；起点在 [−0.35, +0.04] 秒内找最低点，终点在 [−0.04, +0.35] 秒内找，取最低点 3dB 以内离原位最近的</td><td>剪点落在字间停顿上</td></tr>
     <tr><td>拼接</td><td>接口 20ms 线性淡入淡出；接口补 0.12 秒静音；需要停顿的地方单独设 0.4–0.45 秒</td><td>例如切掉吸气声、残字后</td></tr>
-    <tr><td>母带链（V0.8 定稿）</td><td><code>highpass 70</code> → 静态增益 → 削尖峰（peak −16dB，4:1，1/80ms）→ 轻慢压（RMS −26dB，1.6:1，30/600ms）→ 线性增益到目标 → <code>alimiter 0.80</code> 兜底。<b>不降噪、不低通</b></td><td>单声道 −19 LUFS ≈ 双声道成片 −16 LUFS。V0.5–V0.7 用过“降噪＋两级重压缩”，刺啦没了但回音和粗糙感明显，已弃用</td></tr>
-    <tr><td>音色验收</td><td>原片与成片同一段话对比：句尾回响偏差 ≤ +1.5dB；2–5k、5–10k ≤ +2dB；70–200Hz ≤ +1dB；动态范围 ≥ −4dB；任意 10 秒接近满幅 ≤ 1000 个采样点</td><td>V0.8：+0.8 / +1.1 / +1.6 / +0.8 / −3.1，全部合格；V0.7 四项不合格</td></tr>
+    <tr><td>母带链（V0.9 定稿）</td><td><code>volume 8dB</code> → 只削最尖的峰（peak −12dB，6:1，0.5/60ms）→ 线性增益到目标 → <code>alimiter 0.80</code> 兜底。<b>不降噪、不滤波、不做慢压</b></td><td>单声道 −22 LUFS ≈ 双声道成片 −19 LUFS（与 V0.4 同音量）。V0.5–V0.7 用“降噪＋两级重压缩”、V0.8 用“轻慢压”，都让回响和粗糙感高出原声，已弃用</td></tr>
+    <tr><td>片尾音乐</td><td>同一首曲子最后 11.5s（自 172.0s 起）；人声结束后留 0.6s；比人声低 6dB，渐入 0.4s，最后 4s 渐出</td><td>选结尾气氛平静收束的段落，不用有鼓点的</td></tr>
+    <tr><td>音色验收</td><td>原片与成片同一段话对比：句尾回响偏差 ≤ +1.5dB；2–5k、5–10k ≤ +2dB；70–200Hz ≤ +1dB；动态范围 ≥ −4dB；任意 10 秒接近满幅 ≤ 1000 个采样点</td><td>V0.9：+0.2 / +0.3 / +0.3 / +0.1 / −0.2，全部合格；V0.8 勉强合格；V0.7 四项不合格</td></tr>
     <tr><td>转场音乐</td><td>公有领域钢琴（萨蒂《Gymnopédie No.1》Musopen 录音，维基共享资源）；每处 5.1 秒，渐入 0.25 秒、渐出 1.8 秒，比人声低 6dB；前后各留 0.25 秒</td><td>每处用不同乐句，避免听着重复</td></tr>
     <tr><td>开场垫乐</td><td>钢琴先起 3 秒，人声进来后压到 −20dB；句间空档 1.6 秒，空档里抬到比人声低约 12dB（每个空档单独算增益）；结尾回升 4 秒渐出</td><td>空档短了，几句话会听成一段连续对话</td></tr>
-    <tr><td>交付</td><td>正式版双声道 192k；试听版单声道 160k（约 90MB / 74 分钟）</td><td>企业微信微盘上传上限 100MB</td></tr>
+    <tr><td>交付</td><td><b>只出一个版本</b>：双声道 160k（约 88MB / 74 分钟）</td><td>MP3 恒定码率的大小只取决于码率，与声道数无关；192k 双声道约 107MB，超过企业微信微盘 100MB 上限</td></tr>
   </table></div>
 </section>
 
@@ -217,7 +220,7 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
   <div class="tbl"><table>
     <tr><th>症状</th><th>根因</th><th>对策</th></tr>
     <tr><td>几段话里有“刺啦、电音”</td><td>原片录得轻（约 −28 LUFS）但瞬间峰值高；单遍动态响度标准化随时调增益，被放大 15–19dB 且忽高忽低，响的瞬间又被硬压</td><td>换成固定母带链（第 04 节）；每版统计“需要硬限幅的样本数”，正常应只有几十个</td></tr>
-    <tr><td>声音发粗、低沉，像在回音壁里</td><td>降噪和重压缩在说话间隙把房间回响抬起来，元音被压、辅音和气声相对突出；房间声本来就重的说话人最明显</td><td>不降噪；只削尖峰＋轻慢压；用音色验收脚本量偏差。对比前把响度调齐，越响越显得低沉</td></tr>
+    <tr><td>声音发粗、低沉，像在回音壁里</td><td>降噪和重压缩在说话间隙把房间回响抬起来，元音被压、辅音和气声相对突出；房间声本来就重的说话人最明显</td><td>不降噪；只削最尖的峰；音量保持 −19 LUFS，不为追响度加压缩；用音色验收脚本量偏差。对比前把响度调齐，越响越显得低沉</td></tr>
     <tr><td>测出来“削波”，其实没有</td><td>两个声道内容相同时，下混成单声道电平会 ×1.414</td><td>测峰值用单个声道，或者乘 0.707</td></tr>
     <tr><td>转场音乐后吞掉半个字</td><td>音乐插在一句话的字中间；或者剪点落在上一个人最后一个字上</td><td>音乐接口单独做多候选剪点，逐个识别比对后再选</td></tr>
     <tr><td>接口留下半个字、多一个字</td><td>对齐误差约 0.1–0.3 秒；逐字稿本身漏字（原音是“跟我说”，稿里没有）</td><td>按字级时间＋能量包络手工定剪点，登记到 overrides；以原音为准</td></tr>
@@ -277,7 +280,7 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
   </ul></div>
   <div class="card"><b>交付时</b>
   <ul class="check">
-    <li>给出手机能打开的试听链接</li>
+    <li>给出手机能打开的链接（成片本身，不另出试听版）</li>
     <li>回复里列出：改了什么、要重点听的成片时间点、仍未解决的问题</li>
     <li>写工作日志：本轮产物、手工剪点、新踩的坑</li>
   </ul></div>
@@ -296,7 +299,7 @@ footer{color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-
 </section>
 
 <footer>
-  播客访谈剪辑 · 人机协作 Harness 手册 v1.1 · 2026-10-30（新增 V0.8 音色经验）<br>
+  播客访谈剪辑 · 人机协作 Harness 手册 v1.2 · 2026-10-31（音色经验更新到 V0.9，新增片尾音乐、单版本交付）<br>
   本内容由 AI 根据实际剪辑过程整理生成，已去除嘉宾隐私与节目原文，请核实后使用。
 </footer>
 </div>

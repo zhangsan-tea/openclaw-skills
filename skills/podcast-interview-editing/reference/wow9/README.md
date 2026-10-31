@@ -7,8 +7,8 @@
 | 3 | `align_cut.py` | 参考字流与 ASR 字流分块对齐、插值；保留段吸附能量最低点 | `align.json`、`keep_runs.json` |
 | 4 | `(v0x_state.py)` | 把每轮人的修订/批注落到逐字保留状态（含原文，未收录） | `state_v0x.json` |
 | 5 | `cut_v06.py` | 逐字状态 → 保留段；手工剪点（overrides）；转场音乐位置与乐句；音乐接口修正 | `keep_runs_v06.json`、`map_v06.json` |
-| 6 | `render_coldopen_v08.py` | 开场金句：原片切段、压长停顿、句间 1.6s、钢琴垫底与空档抬升 | `coldopen_*.npy` |
-| 7 | `render_v08.py` | 拼接正片 + 转场音乐 + 前接开场，V0.8 母带链，一次出片；支持 `mono 160k` 出试听版 | 成片 mp3 |
+| 6 | `render_coldopen_v09.py` | 开场金句：原片切段、压长停顿、句间 1.6s、钢琴垫底与空档抬升 | `coldopen_*.npy` |
+| 7 | `render_v10.py` | 拼接正片 + 转场音乐 + 前接开场，V0.9 母带链（只削最尖的峰，−19 LUFS）+ 片尾音乐 11.5s，一次出片；母带链与片尾音乐在此（不再另出试听版，成片直接出双声道 160k） | 成片 mp3 |
 | 8 | `build_tracked_v06.py` | 生成 Word 修订稿：删除作者按“谁剪的”、批注、黄底、成片时间 | `.docx` |
 | 9 | `qa_v06.py`、`music_check.py`、`refine_music.py` | 接口重新识别比对；音乐接口检查；多候选剪点试剪 | `junction_qa_*.json` |
 | 10 | `tone_cmp.py`、`make_blind.py` | 音色对比；响度对齐的 A/B/C 盲听小样 | — |

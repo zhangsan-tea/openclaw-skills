@@ -1,4 +1,4 @@
-# 第九期参考实现（已脱敏：原文引文替换为〔原文略〕，嘉宾称谓替换）。只作结构参考，不能直接运行于新一期。
+# 第九期参考实现（已脱敏）。只作结构参考，不能直接运行于新一期。
 # V0.5 渲染：语音单独做母带（高通/低通/轻降噪/削峰/慢压/静态增益到 -16 LUFS），音乐处理后再放进占位，最后安全限幅
 import json,subprocess,numpy as np,sys,re
 FF='/opt/homebrew/bin/ffmpeg'; SR=44100
@@ -23,12 +23,11 @@ def ff(af,x):
 def lufs_mono(x):
     o=subprocess.run([FF,'-hide_banner','-f','f32le','-ac','1','-ar',str(SR),'-i','-','-af','ebur128','-f','null','-'],input=x.tobytes(),capture_output=True).stderr.decode()
     return float(re.findall(r'I:\s+(-?[\d.]+) LUFS',o)[-1])
-CHAIN=('highpass=f=70,volume=8dB,'   # V0.8 轻处理：无降噪、无低通，只削尖峰＋很轻的慢压，保留原声音色
-       'acompressor=detection=peak:threshold=-16dB:ratio=4:attack=1:release=80:knee=6,'
-       'acompressor=detection=rms:threshold=-26dB:ratio=1.6:attack=30:release=600:knee=8')
+CHAIN=('volume=8dB,'   # V0.9：回到 V0.4 音色——不降噪、不滤波、不做慢压，只削最尖的峰；目标 −19 LUFS（与 V0.4 同）
+       'acompressor=detection=peak:threshold=-12dB:ratio=6:attack=0.5:release=60:knee=4')
 z=ff(CHAIN,y).copy(); assert abs(len(z)-len(y))<SR, (len(z),len(y))
 z=z[:len(y)] if len(z)>=len(y) else np.pad(z,(0,len(y)-len(z)))
-I=lufs_mono(z); TGT=-19.0   # 单声道 -19 = 双声道成片 -16 LUFS
+I=lufs_mono(z); TGT=-22.0   # 单声道 -22 = 双声道成片 -19 LUFS（V0.4 同音量）
 z*=10**((TGT-I)/20)
 # 音乐：每处取不同乐句，渐入 0.25s / 渐出 1.8s，音量比语音有声部分低 6dB
 def act_rms(x):
@@ -39,8 +38,15 @@ for st,k in slots:
     m=np.frombuffer(subprocess.run([FF,'-v','error','-ss',str(MS[str(k)]),'-t','5.1','-i','music/satie_gymnopedie1_musopen_PD.ogg','-ac','1','-ar',str(SR),'-f','f32le','-'],capture_output=True).stdout,np.float32)[:MLEN].copy()
     m=np.pad(m,(0,MLEN-len(m)))*env; m*=(sp/act_rms(m))*10**(-6/20)
     z[st:st+MLEN]+=m
-# V0.8：前面接开场金句（A跳切V2），与正片间留 0.3s
-CO=np.load('coldopen/coldopen_A跳切V2_v08.npy'); z=np.concatenate([CO,np.zeros(int(0.3*SR),np.float32),z]); print('开场 %.1fs + 0.3s 后接正片'%(len(CO)/SR))
+# V0.9：前面接开场金句（A跳切V2），与正片间留 0.3s
+CO=np.load('coldopen/coldopen_A跳切V2_v09.npy'); z=np.concatenate([CO,np.zeros(int(0.3*SR),np.float32),z]); print('开场 %.1fs + 0.3s 后接正片'%(len(CO)/SR))
+# V1.0：片尾音乐——萨蒂《Gymnopédie No.1》全曲最后 11.5 秒（172.0s 起，终止和弦自然衰减），人声结束后留 0.6s；
+# 音量同转场（比人声有声部分低 6dB），渐入 0.4s，最后 4s 再叠加渐出
+OUT_SS=172.0; OUT_LEN=11.5
+mo=np.frombuffer(subprocess.run([FF,'-v','error','-ss',str(OUT_SS),'-t',str(OUT_LEN),'-i','music/satie_gymnopedie1_musopen_PD.ogg','-ac','1','-ar',str(SR),'-f','f32le','-'],capture_output=True).stdout,np.float32).copy()
+mo*=(sp/act_rms(mo))*10**(-6/20)
+fi=int(0.4*SR); fo=int(4.0*SR); mo[:fi]*=np.linspace(0,1,fi); mo[-fo:]*=np.cos(np.linspace(0,np.pi/2,fo))**2
+z=np.concatenate([z,np.zeros(int(0.6*SR),np.float32),mo.astype(np.float32)]); print('片尾音乐 %.1fs'%(len(mo)/SR))
 pk_before=np.abs(z).max()
 st2=(z[:,None] if MONO else np.repeat(z[:,None],2,axis=1)).astype(np.float32); NC='1' if MONO else '2'
 subprocess.run([FF,'-y','-v','error','-f','f32le','-ac',NC,'-ar',str(SR),'-i','-',

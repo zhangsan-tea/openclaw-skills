@@ -1,23 +1,22 @@
 #!/usr/bin/env python3
-"""V0.8 母带链（播客人声，保留原声音色）。
+"""V0.9 母带链（播客人声，保留原声音色）。
 
 用法（CLI）：
-  python master_chain.py 输入音频 输出.mp3 [--target -16] [--mono] [--bitrate 192k]
+  python master_chain.py 输入音频 输出.mp3 [--target -19] [--mono] [--bitrate 160k]
 用法（函数）：
   from master_chain import master, lufs, limiter_load
   y = master(x, sr)          # x: 单声道 float32，真实电平（双声道相同的源取单声道 ×1，不要用 -ac 1 下混，那样会 ×1.414）
 
-链：highpass 70 → +8dB → 削尖峰(peak -16dB 4:1 1/80ms) → 轻慢压(rms -26dB 1.6:1 30/600ms)
-    → 线性增益到单声道 target-3 LUFS（≈双声道 target）→ alimiter 0.80（出文件时）。
-不降噪、不低通：降噪和重压缩会抬高房间回响、让声音发粗（第九期 V0.7 的教训）。
+链：+8dB → 只削最尖的峰(peak -12dB 6:1 0.5/60ms) → 线性增益到单声道 target-3 LUFS（≈双声道 target）→ alimiter 0.80（出文件时）。
+不降噪、不滤波、不做慢压、不为追响度加压缩：降噪和压缩会抬高房间回响、让声音发粗（第九期 V0.7/V0.8 的教训）。
+目标默认 -19 LUFS（与未经处理的 V0.4 同音量，比常规播客小约 3dB，这是用音色换的）。
 """
 import subprocess, re, sys, argparse
 import numpy as np
 
 FF = '/opt/homebrew/bin/ffmpeg'
-CHAIN = ('highpass=f=70,volume=8dB,'
-         'acompressor=detection=peak:threshold=-16dB:ratio=4:attack=1:release=80:knee=6,'
-         'acompressor=detection=rms:threshold=-26dB:ratio=1.6:attack=30:release=600:knee=8')
+CHAIN = ('volume=8dB,'
+         'acompressor=detection=peak:threshold=-12dB:ratio=6:attack=0.5:release=60:knee=4')
 LIMIT = 0.80
 LIMITER = f'alimiter=limit={LIMIT}:attack=3:release=80:level=false:latency=1'
 
@@ -38,7 +37,7 @@ def lufs(x, sr):
     return float(re.findall(r'I:\s+(-?[\d.]+) LUFS', o)[-1])
 
 
-def master(x, sr, target_stereo=-16.0):
+def master(x, sr, target_stereo=-19.0):
     """返回未限幅的单声道信号，已调到 target（双声道等效）。限幅在写文件时做。"""
     y = _ff(CHAIN, x, sr)
     y = y[:len(x)] if len(y) >= len(x) else np.pad(y, (0, len(x) - len(y)))
@@ -62,8 +61,8 @@ def write(y, sr, out, mono=False, bitrate='192k'):
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('src'); ap.add_argument('out')
-    ap.add_argument('--target', type=float, default=-16.0)
-    ap.add_argument('--mono', action='store_true'); ap.add_argument('--bitrate', default='192k')
+    ap.add_argument('--target', type=float, default=-19.0)
+    ap.add_argument('--mono', action='store_true'); ap.add_argument('--bitrate', default='160k')
     ap.add_argument('--sr', type=int, default=44100)
     a = ap.parse_args()
     raw = subprocess.run([FF, '-v', 'error', '-i', a.src, '-f', 'f32le', '-ar', str(a.sr), '-'], capture_output=True).stdout

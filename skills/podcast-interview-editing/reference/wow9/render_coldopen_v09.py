@@ -1,4 +1,4 @@
-# 第九期参考实现（已脱敏：原文引文替换为〔原文略〕，嘉宾称谓替换）。只作结构参考，不能直接运行于新一期。
+# 第九期参考实现（已脱敏）。只作结构参考，不能直接运行于新一期。
 # 开场金句 Cold open 渲染：原片切段 → 压长停顿 → 母带链 → 萨蒂钢琴垫底 → 接 V0.6 开头 8 秒
 import json,subprocess,numpy as np,sys,re
 FF='/opt/homebrew/bin/ffmpeg'; SR=44100
@@ -65,11 +65,10 @@ def ff(af,x): return np.frombuffer(subprocess.run([FF,'-v','error','-f','f32le',
 def lufs(x):
     o=subprocess.run([FF,'-hide_banner','-f','f32le','-ac','1','-ar',str(SR),'-i','-','-af','ebur128','-f','null','-'],input=x.tobytes(),capture_output=True).stderr.decode()
     return float(re.findall(r'I:\s+(-?[\d.]+) LUFS',o)[-1])
-CHAIN=('highpass=f=70,volume=8dB,'   # V0.8 轻处理：无降噪、无低通，只削尖峰＋很轻的慢压，保留原声音色
-       'acompressor=detection=peak:threshold=-16dB:ratio=4:attack=1:release=80:knee=6,'
-       'acompressor=detection=rms:threshold=-26dB:ratio=1.6:attack=30:release=600:knee=8')
+CHAIN=('volume=8dB,'   # V0.9：回到 V0.4 音色——不降噪、不滤波、不做慢压，只削最尖的峰；目标 −19 LUFS（与 V0.4 同）
+       'acompressor=detection=peak:threshold=-12dB:ratio=6:attack=0.5:release=60:knee=4')
 z=ff(CHAIN,y)[:len(y)]; z=np.pad(z,(0,len(y)-len(z)))
-z*=10**((-19.0-lufs(z[int(LEAD*SR):int(speech_end*SR)]))/20)
+z*=10**((-22.0-lufs(z[int(LEAD*SR):int(speech_end*SR)]))/20)
 # 钢琴垫底：开头/结尾 -6dB（同正文转场），人声段 -20dB
 N=len(z); m=np.frombuffer(subprocess.run([FF,'-v','error','-ss','1.9','-t','%.2f'%(N/SR+0.5),'-i','music/satie_gymnopedie1_musopen_PD.ogg','-ac','1','-ar',str(SR),'-f','f32le','-'],capture_output=True).stdout,np.float32)[:N].copy()
 m=np.pad(m,(0,N-len(m)))
@@ -86,7 +85,7 @@ if P in GAPS:   # 句间空档：音乐从 -20 抬到 -12 dB（0.35s 上升 / 0.
         top=float(np.clip(top,-20,-4)); g[sel]=-20+(top+20)*np.minimum(up,dn)
 env=10**(g/20); fi=int(0.3*SR); env[:fi]*=np.linspace(0,1,fi); fo=int(2.5*SR); env[-fo:]*=np.cos(np.linspace(0,np.pi/2,fo))**2
 z=z+m*env
-np.save(f'coldopen/coldopen_{P}_v08.npy',z.astype(np.float32))   # 供正片拼接（未限幅、单声道真实电平）
+np.save(f'coldopen/coldopen_{P}_v09.npy',z.astype(np.float32))   # 供正片拼接（未限幅、单声道真实电平）
 # 接 V0.6 正片开头 8 秒（“大家好，欢迎来到 WOW 时刻”），听交接
 v=np.frombuffer(subprocess.run([FF,'-v','error','-t','8','-i','../WOW时刻第九期_V0.6粗剪.mp3','-ac','1','-ar',str(SR),'-f','f32le','-'],capture_output=True).stdout,np.float32)*0.70710678
 full=np.concatenate([z,np.zeros(int(0.3*SR),np.float32),v]).astype(np.float32)
