@@ -26,7 +26,7 @@
 import os, re, sys, argparse
 from PIL import Image, ImageOps
 
-CARD_W, CARD_H = 750, 1334          # 375x667 @ deviceScaleFactor=2
+CARD_W, CARD_H = 2250, 4002        # 375x667 @ deviceScaleFactor=6（2026-09-26 起新标准；旧 2x 为 750x1334）
 
 
 def dhash(im):
