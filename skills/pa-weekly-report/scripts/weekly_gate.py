@@ -53,7 +53,7 @@ def first_sentence(s):
 
 
 STANCE = re.compile(r'(后续|下一步|接下来)?(将)?(继续|持续)(关注|跟进|推进|跟踪)[^。]*。?$')
-REL = re.compile(r'(上周|本周|下周|近期)')
+REL = re.compile(r'(上周|本周|下周)')
 NAME = re.compile(r'(?:局长|副局长|部长|副部长|主任|副主任|司长|副司长|处长|书记|厅长|总监)([\u4e00-\u9fa5]{2,3})')
 
 
@@ -113,7 +113,11 @@ def main():
         for s2, n2, t2, b2 in cur[i + 1:]:
             c = lcs(t1, t2)
             if len(c) >= 6:
-                rows.append(('WARN', '规则91', f'{s1}-{n1} / {s2}-{n2}', f'标题含相同词“{c}”，同一专项信息是否应集中为一条'))
+                rows.append(('WARN', '规则91', f'{s1}-{n1} / {s2}-{n2}', f'标题含相同词“{c}”，是否同一事件、可提整合建议（合并后篇幅不大才建议）'))
+
+    gaps = sum(len(re.findall(r'[\u4e00-\u9fa5][A-Za-z]{2,}|[A-Za-z]{2,}[\u4e00-\u9fa5]', b)) for _, _, _, b in cur)
+    if gaps:
+        rows.append(('WARN', '规则93', '全文', f'汉字与英文之间缺半角空格共{gaps}处，集中提示一次；被要求改时统一改出'))
 
     ne = sum(1 for r in rows if r[0] == 'ERROR')
     nw = sum(1 for r in rows if r[0] == 'WARN')
