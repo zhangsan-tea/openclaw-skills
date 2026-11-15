@@ -4,13 +4,13 @@
 
 用途：在生成新批次金句卡前，
   1) 确认所选背景照片既没跟历史批次撞车，也没在批内重复（dhash + 汉明距离）；
-  2) 确认每张图清晰度足够（导出 750×1334 时图片区 750×494，不得放大）；
+  2) 确认每张图清晰度足够（导出 2250×4002 时图片区 2250×1482，不得放大）；
   3) 从未使用过的照片池里列出可用候选（已按清晰度过滤 + 视觉去重）。
 
 铁律：
   - 判重按图像内容（dhash），不按文件名 —— photos/ 里存在 IMG 与 UUID 两套命名的
     同一批照片副本，按文件名筛选必然选出"以前用过的图"。
-  - 清晰度按导出尺寸判定（宽 ≥750 且 高 ≥494），不是"长边 ≥1000"。
+  - 清晰度按导出尺寸判定（宽 ≥2250 且 高 ≥1482，实务上 w≥2300 且 h≥1500），不是"长边 ≥1000"。
     `_4_5005_c` 后缀一律是缩略图，选图时直接排除。
 
 用法：
@@ -33,12 +33,8 @@ import os, re, sys, glob, argparse, itertools
 try:
     from PIL import Image, ImageDraw, ImageStat, ImageOps
 except ImportError:
-    sys.exit("需要 Pillow：~/.workbuddy/binaries/python/envs/default/bin/pip install Pillow")
+    sys.exit("需要 Pillow：/Users/sanzhang/.workbuddy/binaries/python/envs/default/bin/pip install Pillow")
 
-# 权威照片池 = 跨电脑同步盘里的 海报制作素材/photos/（HTML 与 photos/ 同级、一起同步）。
-# 2026-10-11 Lee 定：背景照片不放 Obsidian 库内（图片量大，每次同步开销太高），
-# 改放跨电脑同步的独立路径；只要 HTML 落在素材根目录、用 photos/xxx 相对前缀引用，
-# 换电脑/换用户名都能正常显示 —— 绝不能写绝对路径，也不能依赖软链（同步盘不同步软链）。
 PHOTO_DIR = "photos"
 SUBDIR_USED = "已用"           # photos/已用/ 归档目录
 QRCODE = "qrcode.jpg"
@@ -49,7 +45,7 @@ INDEX_HTML_PAT = ("一览", "索引", "gallery", "index", "-预览")
 
 HAM_THRESHOLD = 10             # 256-bit dhash，>10 视为不同图
 SAME_IMAGE = 12                # <=12 视为"同一张图的不同规格"
-EXPORT_W, EXPORT_H = 750, 494  # 图片区导出尺寸（卡高 37% × deviceScaleFactor 2）
+EXPORT_W, EXPORT_H = 2250, 1482  # 图片区导出尺寸（卡高 37% × deviceScaleFactor 6；2026-09-26 起新标准，旧值 750×494 会放行 768 宽缩略图）
 MAX_SCALE = 1.15               # 放大幅度容差，超过则必须换图
 
 
@@ -112,7 +108,7 @@ def size_of(name, base=PHOTO_DIR):
 
 
 def scale_needed(size):
-    """导出 750×494 所需的放大倍数，<=1 表示无需放大"""
+    """导出 2250×1482 所需的放大倍数，<=1 表示无需放大"""
     w, h = size
     return max(EXPORT_W / w, EXPORT_H / h)
 
@@ -131,8 +127,7 @@ def photos_in_html(path):
     """按出现顺序返回 HTML 引用的照片（去重、去二维码）"""
     txt = open(path, encoding="utf-8", errors="ignore").read()
     out = []
-    # 兼容两种历史写法：photos/（2026-10-11 前的软链式）与 ../背景照片/（现行相对路径）
-    for f in re.findall(r'(?:photos/|\.\./背景照片/)([^"\']+\.(?:jpeg|jpg|JPG|JPEG))', txt):
+    for f in re.findall(r'photos/([^"\']+\.(?:jpeg|jpg|JPG|JPEG))', txt):
         if f != QRCODE and f not in out:
             out.append(f)
     return out
@@ -167,40 +162,8 @@ def load_blacklist(base=PHOTO_DIR):
     return out
 
 
-def load_listed(base=PHOTO_DIR, exclude_names=()):
-    """used-photos.json 里登记为「已用」的照片（batches + all_used + 早期批次已用）。
-
-    2026-10-11 重大修正：判重此前只扫历史 HTML 的 src，完全没读这份清单 ——
-    结果十月版选出的 12 张里有 4 张（IMG_8613/8046/0026/9289）早已登记为已用却漏检。
-    很多批次只在清单里登记、HTML 未必留在同一台机器，光扫 HTML 必然漏。
-
-    exclude_names：本批自己的照片（清单里可能已写入当前批次），需剔除，否则 d=0 自查。
-    """
-    p = os.path.join(os.path.dirname(os.path.abspath(base)) or ".", USED_JSON)
-    if not os.path.exists(p):
-        return set()
-    try:
-        import json
-        d = json.load(open(p, encoding="utf-8"))
-    except Exception:
-        return set()
-    out = set()
-    for b in d.get("batches", []) if isinstance(d.get("batches"), list) else []:
-        out.update(b.get("photos", []) if isinstance(b, dict) else [])
-    for k in ("all_used",):
-        v = d.get(k)
-        if isinstance(v, list):
-            out.update(v)
-    e = d.get("早期批次已用")
-    if isinstance(e, dict):
-        out.update(e.get("photos", []))
-    elif isinstance(e, list):
-        out.update(e)
-    return {f for f in out if f not in set(exclude_names)}
-
-
 def build_used_set(base=PHOTO_DIR, exclude_html=None):
-    """已用内容真值集：全部历史 HTML 的引用 + photos/已用/ 归档 + 清单登记（used-photos.json）
+    """已用内容真值集：全部历史 HTML 的引用 + photos/已用/ 归档
 
     exclude_html 可传单个文件名或文件名列表 —— 同一批次的多个 HTML
     （如「9月版.html」与「9月版-双语.html」共用同一批图）必须一并排除，
@@ -225,13 +188,6 @@ def build_used_set(base=PHOTO_DIR, exclude_html=None):
     if os.path.isdir(used_dir):
         used.update(f for f in os.listdir(used_dir)
                     if f.lower().endswith((".jpeg", ".jpg")) and find_photo(f, base))
-    # 清单登记：本批自己的照片要剔除（清单可能已写入当前批次）
-    own = set()
-    for h in (exclude_html if isinstance(exclude_html, (list, tuple)) else
-              ([exclude_html] if exclude_html else [])):
-        if os.path.exists(h):
-            own.update(photos_in_html(h))
-    used.update(f for f in load_listed(base, exclude_names=own) if find_photo(f, base))
     return used
 
 
