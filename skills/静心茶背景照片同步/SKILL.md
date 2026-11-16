@@ -47,9 +47,19 @@ Lee 看到照片 → 存进 iCloud 相簿「静心茶海报背景」
 
 同理不要跑 `scene_dedup.py build` 扫全库（SKIP_DIRS 未含 低清归档/台账/成品/收件箱）。
 
-## 四、前置：一次性授权（当前未打通）
+## 四、前置：一次性授权（🔶 分层：第 1 层已通，第 2 层待补）
 
-实测 `osascript -e 'tell application "Photos" ...'` 返回 **`-10004` 权限违例**，脚本会打印完整指引。
+**12:10 实测结论**：`tell application "Photos" to get version` ✅ `12.0`（「自动化 → WorkBuddy → 照片」已生效），
+但 `count of albums` / `exists album` / `count of media items` / `get name of every container` 全部 **`-10004`**。
+非沙箱执行同样被拒、`tccutil dump` 与 TCC.db 均不可读 → **不是 WorkBuddy 沙箱问题**，
+而是 macOS 对「读取照片图库内容」的独立授权。`--check` 已内置分层诊断，会自动打印对应指引。
+
+**第 2 层最可能缺「完全磁盘访问」**（Photos 图库是受保护位置）：系统设置 → 隐私与安全性 →
+完全磁盘访问 → 打开 WorkBuddy（以及 osascript / 终端，若可见）；再到「照片」页把 WorkBuddy 设为允许；
+**完全退出并重启 WorkBuddy**；仍不行在终端跑 `sudo tccutil reset AppleEvents`，重跑时按弹窗显示的
+**发起方 App 名**授权（可能不是 WorkBuddy 主程序）。完整步骤见 `00-iCloud相簿同步-授权与定时.md` 2.4 节。
+
+以下是**第 1 层**的步骤（已完成，留作换电脑后重配）：
 
 1. 系统设置 → 隐私与安全性 → **自动化** → WorkBuddy → 勾选「照片 / Photos」
 2. 系统设置 → 隐私与安全性 → **照片** → 有 WorkBuddy 就设为允许
@@ -59,6 +69,7 @@ Lee 看到照片 → 存进 iCloud 相簿「静心茶海报背景」
 
 WorkBuddy bundle id：`com.tencent.workbuddy.mac`。
 验证：`python scripts/sync_album_to_inbox.py --check` 输出 `[授权] ✅ 可访问照片 App` + 相簿张数即成功。
+> 授权打通前脚本拒绝任何导出，**不写入、不移动文件**，可反复跑 `--check`。
 
 > 已验证的死路：直读 `~/Pictures/*.photoslibrary/database/` 的 SQLite 同样受 TCC 管控，绕不开 AppleScript。
 
