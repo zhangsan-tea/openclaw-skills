@@ -384,14 +384,34 @@ chmod +x /tmp/tmeet_wait.sh
 - 启动后 `sleep 10` 再读 `/tmp/tmeet_url.txt`，取最后一条链接给 Lee，并告知「有效期约 5 分钟，超时回我一个字，我立刻贴下一条」。
 - 循环约可撑 2 小时（24 轮 × 5 分钟）。循环进程已死（`ps aux | grep tmeet_wait.sh` 为空）→ `pkill -f "tmeet auth login"` 后重启。
 
+### 2.0 CLI 版本适配（2026-11-20 实测，优先按本节执行）
+
+腾讯会议 CLI 已升级，`record` 域命令改名。**先按本节新版命令执行；若报 `unknown command`，再回退到下文留存的旧命令**（旧命令在 2026-09～10 版本有效）。
+
+| 用途 | 新版命令（当前） | 旧版命令（历史） |
+|---|---|---|
+| 查录制列表 | `tmeet record search --start ... --end ... --format json` | `tmeet record list --start ... --end ... --format json` |
+| 拿段落总段数 | `tmeet record content --action paragraphs --record-file-id ... --meeting-id ... --format json` | `tmeet record transcript-paragraphs ...` |
+| 拉正文 | `tmeet record content --action transcript --record-file-id ... --meeting-id ... --pid 0 --limit ... --format json` | `tmeet record transcript-get ...` |
+
+**回包结构差异（解析前必须先判版本，否则会把有数据的回包误判为空）**：
+
+- 新版 `record search` → `data.records[]`、`data.total_count`、`data.has_more`；**不再是**旧版 `data.record_meetings[]`。录制 id 仍在每条记录的 `record_file_id`，同条带 `meeting_id`。
+- `has_more=True` 时必须翻页补全列表，不能只看第一页就下「只有这几场」的结论。
+- 新版 `record content --action paragraphs` → `data.total` 与 `data.pids[]`（与旧版一致，**仍无正文**）。
+- 新版正文仍在 `data.minutes.paragraphs[]`，并新增 `data.more`、`data.minutes.is_transcripts_complete`；用这两个字段确认转写未被分页截断。
+- 其余字段路径不变：`data.minutes.paragraphs[].speaker.user_name`、`...sentences[].words[].text`。
+
+实测样例（2026-11-16）：`record content --action paragraphs` 返回 `total=166`；`record content --action transcript --pid 0 --limit 176` 一次取回 166 段，`more=False`、`is_transcripts_complete=true`。
+
 ### 2.1 查询录制列表
 
 ```bash
-tmeet record list --start "2026-09-01T00:00:00+08:00" --end "2026-09-30T23:59:59+08:00" --format json
+tmeet record search --start "2026-09-01T00:00:00+08:00" --end "2026-09-30T23:59:59+08:00" --format json
 ```
 
 - **日期必须是 RFC3339 完整格式**（`2026-09-01T00:00:00+08:00`）；只给 `YYYY-MM-DD` 会报 `--start format error`。
-- 返回路径 `data.record_meetings[].record_files[]`，取 `record_file_id` 与 `meeting_id`。
+- 新版返回路径 `data.records[]`，取 `record_file_id` 与 `meeting_id`；另有 `data.total_count` / `data.has_more`（旧版为 `data.record_meetings[].record_files[]`）。见 §2.0。
 - ⚠️ **只认 `record_files[].record_file_id`，不要用上一层的 `meeting_record_id`**（2026-10-15 实测）。两者**数值相差 1**：
 
   | 场次 | `meeting_record_id`（会议级，❌ 不能用） | `record_files[].record_file_id`（✅ 用它） |
@@ -399,7 +419,7 @@ tmeet record list --start "2026-09-01T00:00:00+08:00" --end "2026-09-30T23:59:59
   | 10/14 | 2110126980411604992 | **2110126980411604993** |
   | 10/15 | 2110489326892814336 | **2110489326892814337** |
 
-  误用会议级 id 调 `transcript-paragraphs` / `transcript-get` 会返回 `error_code 7003 找不到会议录制文件`，**极易被误读成「这一天没有转写」**——历史上多起「查不到录制」的误判即源于此。拉转写前先确认手上 id 来自 `record_files[]`。
+  误用会议级 id 调 `record content --action paragraphs|transcript`（旧版 `transcript-paragraphs` / `transcript-get`）会返回 `error_code 7003 找不到会议录制文件`，**极易被误读成「这一天没有转写」**——历史上多起「查不到录制」的误判即源于此。拉转写前先确认手上 id 来自 `record_files[]`。
 - 一场会议通常有 **2 条 `record_files`**：会前短片段（0–6 分钟、几 MB）+ 正片（45–130 分钟、几百 MB）。按 `record_start_time` 升序，**取时长覆盖完整会议的那条**。会前短片段常已被删除，拉取时报 `error_code 4051 录制文件已经被删除`，跳过即可。
 
 #### ⚠️ 录制「查不到」≠「不存在」——转码与可见有延迟，隔日必须复查
@@ -418,17 +438,17 @@ tmeet record list --start "2026-09-01T00:00:00+08:00" --end "2026-09-30T23:59:59
 **第一步：拿段落索引与总段数**
 
 ```bash
-tmeet record transcript-paragraphs --record-file-id "<fid>" --meeting-id "<mid>" --format json
+tmeet record content --action paragraphs --record-file-id "<fid>" --meeting-id "<mid>" --format json
 ```
 
-返回 `data.pids[]` 与 **`data.total`**（总段数）。**这一步拿不到任何正文文字**——只用来确定 `total`。
+返回 `data.pids[]` 与 **`data.total`**（总段数）。**这一步拿不到任何正文文字**——只用来确定 `total`。新版同时返回 `data.more`；正文回包带 `data.minutes.is_transcripts_complete`，两者一起用来确认非截断。
 
 > ⚠️ 常见误判：直接拿这个接口的结果去数段落，会得到「0 段」的错觉（它没有 `minutes.paragraphs` 字段）。正文必须走第二步。
 
 **第二步：按 `pid` 拉正文**
 
 ```bash
-tmeet record transcript-get --record-file-id "<fid>" --meeting-id "<mid>" \
+tmeet record content --action transcript --record-file-id "<fid>" --meeting-id "<mid>" \
   --pid "0" --limit "<total + 10>" --format json > /tmp/st_full_YYYYMMDD.json
 ```
 
@@ -462,10 +482,10 @@ data.minutes.paragraphs[].sentences[].words[].text
 ```bash
 P=/Users/lee/.workbuddy/binaries/python/versions/3.13.12/bin/python3
 # 1. 先取 total（此步无正文）
-tmeet record transcript-paragraphs --record-file-id "<fid>" --meeting-id "<mid>" --format json \
+tmeet record content --action paragraphs --record-file-id "<fid>" --meeting-id "<mid>" --format json \
   | $P -c "import json,sys; print(json.load(sys.stdin)['data']['total'])"
 # 2. 再按 pid 拉正文到临时文件
-tmeet record transcript-get --record-file-id "<fid>" --meeting-id "<mid>" \
+tmeet record content --action transcript --record-file-id "<fid>" --meeting-id "<mid>" \
   --pid "0" --limit "<total+10>" --format json > /tmp/st_full_YYYYMMDD.json
 # 3. 解析 data.minutes.paragraphs，按 §1.2B 版式写目标 md（2026-10-07 起新稿默认）
 ```
