@@ -98,8 +98,15 @@ def extract_docx(filepath):
             lines.append("")
             continue
 
-        # Detect heading style
-        if para.style.name.startswith("Heading"):
+        # Detect heading style (guard: para.style may be None for
+        # docx whose style reference is missing/undefined)
+        style_name = ""
+        try:
+            if para.style is not None and para.style.name:
+                style_name = str(para.style.name)
+        except Exception:
+            style_name = ""
+        if style_name.startswith("Heading"):
             level = para.style.name.split()[-1]
             try:
                 level = int(level)
