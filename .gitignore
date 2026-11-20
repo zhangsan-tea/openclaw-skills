@@ -49,3 +49,5 @@ identity/
 subagents/
 templates/
 workspace/
+__pycache__/
+*.pyc
